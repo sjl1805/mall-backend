@@ -2,20 +2,15 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.model.dto.address.AddressPageQueryDTO;
 import com.example.model.dto.address.AdminAddressDTO;
 import com.example.model.entity.UserAddress;
 import com.example.model.enums.UserAddressStatusEnum;
-import com.example.model.dto.address.AddressPageQueryDTO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【user_address(用户收货地址表)】的数据库操作Mapper
@@ -55,8 +50,8 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
     @Update("UPDATE user_address SET is_default = #{status} " +
             "WHERE user_id = #{userId} AND id = #{addressId}")
     int updateDefaultStatus(@Param("userId") Long userId,
-                           @Param("addressId") Long addressId,
-                           @Param("status") UserAddressStatusEnum status);
+                            @Param("addressId") Long addressId,
+                            @Param("status") UserAddressStatusEnum status);
 
     /**
      * 获取用户默认地址
@@ -78,7 +73,7 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
             "</foreach>" +
             "</script>")
     int batchUpdateStatus(@Param("ids") List<Long> ids,
-                         @Param("status") UserAddressStatusEnum status);
+                          @Param("status") UserAddressStatusEnum status);
 
     /**
      * 获取用户地址列表（按更新时间倒序）

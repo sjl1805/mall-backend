@@ -2,21 +2,14 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.entity.Users;
 import com.example.model.dto.user.AdminUserDTO;
+import com.example.model.entity.Users;
 import com.example.model.enums.UserRoleEnum;
-
 import com.example.model.enums.UserStatusEnum;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-
-import java.util.Optional;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author 31815
@@ -62,16 +55,16 @@ public interface UsersMapper extends BaseMapper<Users> {
             "ORDER BY create_time DESC" +
             "</script>")
     List<AdminUserDTO> selectAdminUserList(Page<AdminUserDTO> page,
-                                          @Param("role") UserRoleEnum role,
-                                          @Param("username") String username,
-                                          @Param("phone") String phone);
+                                           @Param("role") UserRoleEnum role,
+                                           @Param("username") String username,
+                                           @Param("phone") String phone);
 
     /**
      * 根据ID获取管理员视角用户详情
      */
     @Results(id = "adminUserMap", value = {
-        @Result(property = "createTime", column = "create_time"),
-        @Result(property = "updateTime", column = "update_time")
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time")
     })
     @Select("SELECT id, username, nickname, phone, email, avatar, gender, status, role, create_time, update_time " +
             "FROM users WHERE id = #{userId}")
@@ -83,8 +76,8 @@ public interface UsersMapper extends BaseMapper<Users> {
      */
     @Update("UPDATE users SET status = #{status}, role = #{role} WHERE id = #{userId}")
     int updateUserStatusAndRole(@Param("userId") Long userId,
-                               @Param("status") UserStatusEnum status,
-                               @Param("role") UserRoleEnum role);
+                                @Param("status") UserStatusEnum status,
+                                @Param("role") UserRoleEnum role);
 
     /**
      * 更新密码（带版本号校验）
@@ -92,9 +85,9 @@ public interface UsersMapper extends BaseMapper<Users> {
     @Update("UPDATE users SET password_hash = #{newPassword}, salt = #{salt}, version = version + 1 " +
             "WHERE id = #{userId} AND version = #{version}")
     int updatePassword(@Param("userId") Long userId,
-                      @Param("newPassword") String newPassword,
-                      @Param("salt") String salt,
-                      @Param("version") Integer version);
+                       @Param("newPassword") String newPassword,
+                       @Param("salt") String salt,
+                       @Param("version") Integer version);
 }
 
 

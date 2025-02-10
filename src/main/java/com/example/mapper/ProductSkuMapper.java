@@ -7,13 +7,7 @@ import com.example.model.dto.sku.SkuDetailDTO;
 import com.example.model.dto.sku.SkuPageQueryDTO;
 import com.example.model.entity.ProductSku;
 import com.example.model.enums.ProductSkuStatusEnum;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,7 +50,7 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "ORDER BY sku.create_time DESC" +
             "</script>")
     List<AdminSkuDTO> selectAdminSkuList(Page<AdminSkuDTO> page,
-                                       @Param("query") SkuPageQueryDTO query);
+                                         @Param("query") SkuPageQueryDTO query);
 
     /**
      * 更新SKU库存（带乐观锁）
@@ -64,8 +58,8 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
     @Update("UPDATE product_sku SET stock = stock - #{quantity}, version = version + 1 " +
             "WHERE id = #{skuId} AND stock >= #{quantity} AND version = #{version}")
     int deductStock(@Param("skuId") Long skuId,
-                  @Param("quantity") Integer quantity,
-                  @Param("version") Integer version);
+                    @Param("quantity") Integer quantity,
+                    @Param("version") Integer version);
 
     /**
      * 获取SKU详情
@@ -92,10 +86,10 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "#{id}" +
             "</foreach>" +
             " AND product_id IN (SELECT product_id FROM products WHERE merchant_id = #{merchantId})"
-            +"</script>")
+            + "</script>")
     int batchUpdateStatus(@Param("skuIds") List<Long> skuIds,
-                        @Param("status") ProductSkuStatusEnum status,
-                        @Param("merchantId") Long merchantId);
+                          @Param("status") ProductSkuStatusEnum status,
+                          @Param("merchantId") Long merchantId);
 
     /**
      * 根据商品ID获取最低价SKU
@@ -108,7 +102,7 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
      */
     @Update("UPDATE product_sku SET sales = sales + #{quantity} WHERE id = #{skuId}")
     int increaseSales(@Param("skuId") Long skuId,
-                    @Param("quantity") Integer quantity);
+                      @Param("quantity") Integer quantity);
 }
 
 

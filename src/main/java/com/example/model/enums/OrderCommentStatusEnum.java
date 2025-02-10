@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public enum OrderCommentStatusEnum {
-    /** 
+    /**
      * 未评价
      */
     UNCOMMENTED(0, "未评价"),

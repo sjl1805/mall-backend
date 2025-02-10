@@ -5,21 +5,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.recommend.AdminRecommendDTO;
 import com.example.model.dto.recommend.RecommendDetailDTO;
 import com.example.model.dto.recommend.RecommendPageQueryDTO;
-
 import com.example.model.entity.RecommendProduct;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【recommend_product(推荐商品表)】的数据库操作Mapper
-
  * @createDate 2025-02-10 02:08:45
  * @Entity gg.model.RecommendProduct
  */
@@ -52,8 +46,8 @@ public interface RecommendProductMapper extends BaseMapper<RecommendProduct> {
             "</where>" +
             "ORDER BY rp.sort DESC, rp.create_time DESC" +
             "</script>")
-    List<AdminRecommendDTO> selectAdminRecommendList(Page<AdminRecommendDTO> page, 
-                                                   @Param("query") RecommendPageQueryDTO query);
+    List<AdminRecommendDTO> selectAdminRecommendList(Page<AdminRecommendDTO> page,
+                                                     @Param("query") RecommendPageQueryDTO query);
 
     /**
      * 获取推荐商品详情
@@ -96,8 +90,8 @@ public interface RecommendProductMapper extends BaseMapper<RecommendProduct> {
      * 检查推荐记录是否存在
      */
     @Select("SELECT COUNT(*) FROM recommend_product WHERE product_id = #{productId} AND type = #{type}")
-    int existsRecommend(@Param("productId") Long productId, 
-                       @Param("type") Integer type);
+    int existsRecommend(@Param("productId") Long productId,
+                        @Param("type") Integer type);
 }
 
 

@@ -1,6 +1,7 @@
 package com.example.model.enums;
 
 import lombok.Getter;
+
 /**
  * 推荐类型枚举
  */

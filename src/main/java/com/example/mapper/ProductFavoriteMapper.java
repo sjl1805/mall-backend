@@ -3,15 +3,9 @@ package com.example.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.favorite.FavoriteItemDTO;
-import com.example.model.entity.ProductFavorite;
 import com.example.model.dto.favorite.FavoritePageQueryDTO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import com.example.model.entity.ProductFavorite;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,12 +19,12 @@ import java.util.List;
 public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
 
     @Results(id = "favoriteItemMap", value = {
-        @Result(property = "favoriteId", column = "favorite_id"),
-        @Result(property = "productId", column = "product_id"),
-        @Result(property = "productName", column = "product_name"),
-        @Result(property = "mainImage", column = "main_image"),
-        @Result(property = "collectTime", column = "collect_time"),
-        @Result(property = "folderName", column = "folder_name")
+            @Result(property = "favoriteId", column = "favorite_id"),
+            @Result(property = "productId", column = "product_id"),
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "mainImage", column = "main_image"),
+            @Result(property = "collectTime", column = "collect_time"),
+            @Result(property = "folderName", column = "folder_name")
     })
     @Select("<script>" +
             "SELECT pf.id AS favorite_id, p.id AS product_id, p.name AS product_name, " +
@@ -49,8 +43,8 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
             "ORDER BY pf.create_time DESC" +
             "</script>")
     List<FavoriteItemDTO> selectFavoriteItems(Page<FavoriteItemDTO> page,
-                                            @Param("userId") Long userId,
-                                            @Param("query") FavoritePageQueryDTO query);
+                                              @Param("userId") Long userId,
+                                              @Param("query") FavoritePageQueryDTO query);
 
     @Update("<script>" +
             "DELETE FROM product_favorite " +
@@ -59,11 +53,11 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
             "#{id}" +
             "</foreach>" +
             " AND user_id = #{userId} " +
-            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})" 
-            +"</script>")
+            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})"
+            + "</script>")
     int batchDeleteFavorites(@Param("userId") Long userId,
-                          @Param("favoriteIds") List<Long> favoriteIds,
-                          @Param("merchantId") Long merchantId);
+                             @Param("favoriteIds") List<Long> favoriteIds,
+                             @Param("merchantId") Long merchantId);
 
     @Options(useCache = true)
     @Select("SELECT COUNT(*) FROM product_favorite WHERE user_id = #{userId}")
@@ -75,7 +69,7 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
     @Select("SELECT COUNT(*) FROM product_favorite " +
             "WHERE user_id = #{userId} AND product_id = #{productId}")
     int existsFavorite(@Param("userId") Long userId,
-                     @Param("productId") Long productId);
+                       @Param("productId") Long productId);
 }
 
 

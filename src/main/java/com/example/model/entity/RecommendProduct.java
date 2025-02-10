@@ -8,8 +8,10 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import com.example.model.enums.RecommendProductStatusEnum;
 import com.example.model.enums.RecommendTypeEnum;
+
 /**
  * 推荐商品表
  *

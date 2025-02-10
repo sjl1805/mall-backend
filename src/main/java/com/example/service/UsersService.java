@@ -1,8 +1,6 @@
 package com.example.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.model.dto.auth.UserRegisterDTO;
-import com.example.model.dto.user.UserUpdateDTO;
 import com.example.model.entity.Users;
 
 /**
@@ -11,5 +9,5 @@ import com.example.model.entity.Users;
  * @createDate 2025-02-10 02:08:11
  */
 public interface UsersService extends IService<Users> {
-    
+
 }

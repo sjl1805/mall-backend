@@ -1,11 +1,12 @@
 package com.example.model.dto.recommend;
 
 import com.example.model.enums.RecommendProductStatusEnum;
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "推荐商品更新请求")
 @Data

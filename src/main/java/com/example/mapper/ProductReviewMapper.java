@@ -7,16 +7,11 @@ import com.example.model.dto.review.ReviewDetailDTO;
 import com.example.model.dto.review.ReviewPageQueryDTO;
 import com.example.model.entity.ProductReview;
 import com.example.model.enums.ReviewStatusEnum;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【product_review(商品评价表)】的数据库操作Mapper
@@ -27,13 +22,13 @@ import java.util.Optional;
 public interface ProductReviewMapper extends BaseMapper<ProductReview> {
 
     @Results(id = "adminReviewMap", value = {
-        @Result(property = "userId", column = "user_id"),
-        @Result(property = "userName", column = "user_name"),
-        @Result(property = "productId", column = "product_id"),
-        @Result(property = "productName", column = "product_name"),
-        @Result(property = "auditRemark", column = "audit_remark"),
-        @Result(property = "createTime", column = "create_time"),
-        @Result(property = "auditTime", column = "audit_time")
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "userName", column = "user_name"),
+            @Result(property = "productId", column = "product_id"),
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "auditRemark", column = "audit_remark"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "auditTime", column = "audit_time")
     })
     @Select("<script>" +
             "SELECT pr.id, pr.user_id AS userId, u.username AS userName, " +
@@ -56,7 +51,7 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "ORDER BY pr.create_time DESC" +
             "</script>")
     List<AdminReviewDTO> selectAdminReviewList(Page<AdminReviewDTO> page,
-                                             @Param("query") ReviewPageQueryDTO query);
+                                               @Param("query") ReviewPageQueryDTO query);
 
     /**
      * 更新评价审核状态
@@ -64,8 +59,8 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
     @Update("UPDATE product_review SET status = #{status}, audit_remark = #{auditRemark}, audit_time = NOW() " +
             "WHERE id = #{reviewId}")
     int updateReviewStatus(@Param("reviewId") Long reviewId,
-                         @Param("status") ReviewStatusEnum status,
-                         @Param("auditRemark") String auditRemark);
+                           @Param("status") ReviewStatusEnum status,
+                           @Param("auditRemark") String auditRemark);
 
     @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT pr.id AS reviewId, u.username AS userName, p.name AS productName, " +
@@ -90,10 +85,10 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "<foreach collection='reviewIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})" 
+            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})"
             + "</script>")
     int batchDeleteReviews(@Param("reviewIds") List<Long> reviewIds,
-                          @Param("merchantId") Long merchantId);
+                           @Param("merchantId") Long merchantId);
 }
 
 

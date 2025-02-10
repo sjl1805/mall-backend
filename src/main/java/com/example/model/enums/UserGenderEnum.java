@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum UserGenderEnum {
     UNKNOWN(0, "未知"),
     MALE(1, "男"),
-    FEMALE(2, "女");    
+    FEMALE(2, "女");
 
     @EnumValue
     private final int code;

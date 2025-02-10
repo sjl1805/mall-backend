@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.CartCheckedStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.example.model.enums.CartCheckedStatusEnum;
 
 /**
  * 购物车表

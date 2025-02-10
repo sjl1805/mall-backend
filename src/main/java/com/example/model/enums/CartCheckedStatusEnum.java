@@ -1,7 +1,7 @@
 package com.example.model.enums;
 
-import lombok.Getter;
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Getter;
 
 @Getter
 public enum CartCheckedStatusEnum {

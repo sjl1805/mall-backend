@@ -1,9 +1,10 @@
 package com.example.model.dto.review;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "评价详情信息")
 @Data

@@ -1,8 +1,9 @@
 package com.example.model.dto.sku;
 
-import lombok.Data;
-import java.math.BigDecimal;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Schema(description = "SKU详情信息")
 @Data

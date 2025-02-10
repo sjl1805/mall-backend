@@ -1,9 +1,10 @@
 package com.example.model.dto.address;
 
 import com.example.model.enums.UserAddressStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Schema(description = "地址更新请求参数")
 @Data

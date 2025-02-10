@@ -1,11 +1,11 @@
 package com.example.model.dto.favorite;
 
 import com.example.model.enums.FavoriteFolderStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Schema(description = "收藏夹创建请求参数")
 @Data

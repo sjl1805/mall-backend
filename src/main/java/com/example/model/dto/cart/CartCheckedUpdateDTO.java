@@ -1,10 +1,11 @@
 package com.example.model.dto.cart;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "购物车选中状态更新请求参数")
 @Data

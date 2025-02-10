@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum UserBehaviorTypeEnum {
     VIEW(1, "浏览"),
     COLLECT(2, "收藏"),
-    BUY(3, "购买"); 
+    BUY(3, "购买");
 
     @EnumValue
     private final int code;

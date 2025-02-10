@@ -1,9 +1,9 @@
 package com.example.model.dto.cart;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Schema(description = "购物车项更新请求参数")
 @Data

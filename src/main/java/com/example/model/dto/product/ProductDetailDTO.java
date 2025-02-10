@@ -1,9 +1,10 @@
 package com.example.model.dto.product;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "商品详情信息")
 @Data

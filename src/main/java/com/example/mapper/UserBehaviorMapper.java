@@ -3,27 +3,20 @@ package com.example.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.behavior.AdminBehaviorDTO;
-import com.example.model.dto.behavior.BehaviorStatsDTO;
-import com.example.model.dto.behavior.BehaviorPageQueryDTO;
-
 import com.example.model.dto.behavior.BehaviorAnalysisQueryDTO;
+import com.example.model.dto.behavior.BehaviorPageQueryDTO;
+import com.example.model.dto.behavior.BehaviorStatsDTO;
 import com.example.model.entity.UserBehavior;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Insert;
+import jakarta.validation.constraints.Max;
+import org.apache.ibatis.annotations.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import java.util.List;
-import java.time.LocalDateTime;
-import jakarta.validation.constraints.Max;
 /**
  * @author 31815
  * @description 针对表【user_behavior(用户行为记录表)】的数据库操作Mapper
-
  * @createDate 2025-02-10 02:08:35
  * @Entity gg.model.UserBehavior
  */
@@ -80,7 +73,7 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             "ORDER BY time_segment ASC" +
             "</script>")
     List<BehaviorStatsDTO> analyzeBehavior(@Param("query") BehaviorAnalysisQueryDTO query,
-                                          @Param("timeFunction") String timeFunction);
+                                           @Param("timeFunction") String timeFunction);
 
     /**
      * 获取用户最近浏览记录（带商品图片）
@@ -92,8 +85,8 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             "WHERE ub.user_id = #{userId} AND ub.behavior_type = 'VIEW' " +
             "ORDER BY ub.behavior_time DESC " +
             "LIMIT #{limit}")
-    List<AdminBehaviorDTO> selectRecentViews(@Param("userId") Long userId, 
-                                           @Param("limit") @Max(100) int limit);
+    List<AdminBehaviorDTO> selectRecentViews(@Param("userId") Long userId,
+                                             @Param("limit") @Max(100) int limit);
 
     /**
      * 统计商品行为数据（带缓存标记）
@@ -120,16 +113,16 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             "ORDER BY hour ASC")
     @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     List<BehaviorStatsDTO> selectUserActivityHeatmap(@Param("userId") Long userId,
-                                                   @Param("startTime") LocalDateTime startTime,
-                                                   @Param("endTime") LocalDateTime endTime);
+                                                     @Param("startTime") LocalDateTime startTime,
+                                                     @Param("endTime") LocalDateTime endTime);
 
     /**
      * 批量插入用户行为记录（高性能）
      */
     @Insert("<script>"
-          + "INSERT INTO user_behavior (...) VALUES "
-          + "<foreach collection='list' item='item' separator=','>(...)</foreach>"
-          + "</script>")
+            + "INSERT INTO user_behavior (...) VALUES "
+            + "<foreach collection='list' item='item' separator=','>(...)</foreach>"
+            + "</script>")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int batchInsertBehaviors(@Param("list") List<UserBehavior> behaviors);
 }

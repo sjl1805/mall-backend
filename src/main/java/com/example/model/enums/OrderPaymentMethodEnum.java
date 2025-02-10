@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum OrderPaymentMethodEnum {
     /**
      * 微信支付
-     */     
+     */
     WECHAT(1, "微信支付"),
     /**
      * 支付宝支付

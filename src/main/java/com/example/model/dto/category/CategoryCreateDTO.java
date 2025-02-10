@@ -1,13 +1,9 @@
 package com.example.model.dto.category;
 
 import com.example.model.enums.CategoryStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Max;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import lombok.Data;
 
 @Schema(description = "分类创建请求参数")
 @Data

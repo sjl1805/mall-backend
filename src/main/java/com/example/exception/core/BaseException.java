@@ -1,10 +1,11 @@
 package com.example.exception.core;
 
+import com.example.exception.ErrorType;
+
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import com.example.exception.ErrorType;
 
 public class BaseException extends RuntimeException {
     private final ErrorType errorType;
@@ -23,7 +24,15 @@ public class BaseException extends RuntimeException {
     }
 
     // Getters
-    public ErrorType getErrorType() { return errorType; }
-    public Map<String, Object> getContext() { return Collections.unmodifiableMap(context); }
-    public Instant getTimestamp() { return timestamp; }
+    public ErrorType getErrorType() {
+        return errorType;
+    }
+
+    public Map<String, Object> getContext() {
+        return Collections.unmodifiableMap(context);
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 } 

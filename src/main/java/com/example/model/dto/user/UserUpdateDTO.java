@@ -1,14 +1,14 @@
 package com.example.model.dto.user;
 
 import com.example.model.enums.UserGenderEnum;
-import lombok.Data;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户信息更新DTO
@@ -26,7 +26,7 @@ public class UserUpdateDTO {
     @Schema(description = "头像URL", example = "https://example.com/avatar.jpg")
     @Pattern(regexp = "^(http|https)://.*$", message = "头像必须是合法的URL地址")
     private String avatar;
-    
+
     @Schema(description = "性别", implementation = UserGenderEnum.class, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "性别不能为空")
     private UserGenderEnum gender;

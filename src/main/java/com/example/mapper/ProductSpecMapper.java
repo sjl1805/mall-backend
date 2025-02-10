@@ -6,16 +6,11 @@ import com.example.model.dto.spec.AdminSpecDTO;
 import com.example.model.dto.spec.SpecDetailDTO;
 import com.example.model.dto.spec.SpecPageQueryDTO;
 import com.example.model.entity.ProductSpec;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【product_spec(商品规格表)】的数据库操作Mapper
@@ -48,7 +43,7 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
             "ORDER BY ps.create_time DESC" +
             "</script>")
     List<AdminSpecDTO> selectAdminSpecList(Page<AdminSpecDTO> page,
-                                        @Param("query") SpecPageQueryDTO query);
+                                           @Param("query") SpecPageQueryDTO query);
 
     /**
      * 获取规格详情
@@ -72,8 +67,8 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
             "</foreach>" +
             " AND product_id IN (SELECT product_id FROM products WHERE merchant_id = #{merchantId})"
             + "</script>")
-    int batchDeleteSpecs(@Param("specIds") List<Long> specIds, 
-                        @Param("merchantId") Long merchantId);
+    int batchDeleteSpecs(@Param("specIds") List<Long> specIds,
+                         @Param("merchantId") Long merchantId);
 
     /**
      * 检查规格是否被SKU使用

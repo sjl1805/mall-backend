@@ -3,9 +3,11 @@ package com.example.model.dto.user;
 import com.example.model.enums.UserGenderEnum;
 import com.example.model.enums.UserRoleEnum;
 import com.example.model.enums.UserStatusEnum;
-import lombok.Data;
-import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
 /**
  * 用户信息DTO
  */
@@ -18,18 +20,15 @@ public class UserInfoDTO {
     private Long id;
     /**
      * 用户名
-
      */
     @Schema(description = "用户名", example = "admin")
     private String username;
     /**
-
      * 用户昵称
      */
     @Schema(description = "用户昵称", example = "admin")
     private String nickname;
     /**
-
      * 手机号
      */
     @Schema(description = "手机号", example = "12345678901")
@@ -40,7 +39,6 @@ public class UserInfoDTO {
     @Schema(description = "邮箱", example = "admin@example.com")
     private String email;
     /**
-
      * 头像
      */
     @Schema(description = "头像", example = "https://example.com/avatar.jpg")

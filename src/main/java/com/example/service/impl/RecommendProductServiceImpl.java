@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.RecommendProductMapper;
 import com.example.model.entity.RecommendProduct;
 import com.example.service.RecommendProductService;
-
 import org.springframework.stereotype.Service;
 
 
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class RecommendProductServiceImpl extends ServiceImpl<RecommendProductMapper, RecommendProduct>
         implements RecommendProductService {
 
-    
+
 }
 
 

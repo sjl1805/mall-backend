@@ -1,9 +1,10 @@
 package com.example.model.dto.sku;
 
 import com.example.model.enums.ProductSkuStatusEnum;
-import lombok.Data;
-import java.math.BigDecimal;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Schema(description = "SKU分页查询参数")
 @Data

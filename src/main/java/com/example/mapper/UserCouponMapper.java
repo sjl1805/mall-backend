@@ -2,15 +2,10 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.dto.coupon.UserCouponDTO;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
+import com.example.model.dto.coupon.UserCouponDTO;
 import com.example.model.entity.UserCoupon;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -48,8 +43,8 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "ORDER BY uc.get_time DESC" +
             "</script>")
     List<UserCouponDTO> selectUserCoupons(Page<UserCouponDTO> page,
-                                        @Param("userId") Long userId,
-                                        @Param("query") CouponPageQueryDTO query);
+                                          @Param("userId") Long userId,
+                                          @Param("query") CouponPageQueryDTO query);
 
     /**
      * 批量标记优惠券为已使用
@@ -98,7 +93,7 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "AND status = 'UNUSED' " +
             "AND expire_time &gt;= NOW()")
     int checkCouponAvailability(@Param("userCouponId") Long userCouponId,
-                               @Param("userId") Long userId);
+                                @Param("userId") Long userId);
 }
 
 

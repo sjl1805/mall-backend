@@ -1,13 +1,14 @@
 package com.example.model.dto.product;
 
 import com.example.model.enums.ProductStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Schema(description = "商品更新请求参数")
 @Data

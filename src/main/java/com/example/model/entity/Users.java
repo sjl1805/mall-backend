@@ -3,13 +3,14 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.UserGenderEnum;
+import com.example.model.enums.UserRoleEnum;
+import com.example.model.enums.UserStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import com.example.model.enums.UserGenderEnum;
-import com.example.model.enums.UserStatusEnum;  
-import com.example.model.enums.UserRoleEnum;
+
 /**
  * 用户表
  *

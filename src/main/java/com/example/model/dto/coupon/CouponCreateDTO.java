@@ -2,11 +2,12 @@ package com.example.model.dto.coupon;
 
 import com.example.model.enums.CouponStatusEnum;
 import com.example.model.enums.CouponTypeEnum;
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "优惠券创建请求参数")
 @Data

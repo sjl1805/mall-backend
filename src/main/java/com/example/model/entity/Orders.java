@@ -3,15 +3,14 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.OrderCommentStatusEnum;
+import com.example.model.enums.OrderPaymentMethodEnum;
+import com.example.model.enums.OrderStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import com.example.model.enums.OrderStatusEnum;
-import com.example.model.enums.OrderPaymentMethodEnum;
-import com.example.model.enums.OrderCommentStatusEnum;
 
 /**
  * 订单表

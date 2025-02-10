@@ -5,7 +5,7 @@ import com.example.mapper.UserAddressMapper;
 import com.example.model.entity.UserAddress;
 import com.example.service.UserAddressService;
 import org.springframework.stereotype.Service;
- 
+
 
 /**
  * @author 31815
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserAddress>
         implements UserAddressService {
 
-   
+
 }
 
 

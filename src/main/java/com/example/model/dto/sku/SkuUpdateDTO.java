@@ -1,11 +1,12 @@
 package com.example.model.dto.sku;
 
 import com.example.model.enums.ProductSkuStatusEnum;
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import lombok.Data;
+
 import java.math.BigDecimal;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "SKU更新请求参数")
 @Data

@@ -3,17 +3,11 @@ package com.example.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.category.AdminCategoryDTO;
+import com.example.model.dto.category.CategoryPageQueryDTO;
 import com.example.model.dto.category.CategoryTreeDTO;
 import com.example.model.entity.Category;
 import com.example.model.enums.CategoryStatusEnum;
-import com.example.model.dto.category.CategoryPageQueryDTO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -58,9 +52,9 @@ public interface CategoryMapper extends BaseMapper<Category> {
     @Update("UPDATE category SET status = #{status} " +
             "WHERE id = #{id} " +
             "AND EXISTS (SELECT 1 FROM products WHERE category_id = #{id} AND merchant_id = #{merchantId})")
-    int updateStatus(@Param("id") Long id, 
-                   @Param("status") CategoryStatusEnum status,
-                   @Param("merchantId") Long merchantId);
+    int updateStatus(@Param("id") Long id,
+                     @Param("status") CategoryStatusEnum status,
+                     @Param("merchantId") Long merchantId);
 
     @Options(useCache = true)
     @Select("SELECT * FROM category WHERE parent_id = #{parentId} ORDER BY sort ASC")

@@ -1,11 +1,12 @@
 package com.example.model.dto.product;
 
 import com.example.model.enums.ProductStatusEnum;
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "商品创建请求参数")
 @Data

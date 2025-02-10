@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum ProductSkuStatusEnum {
     OFFLINE(0, "下架"),
-    ONLINE(1, "上架");  
+    ONLINE(1, "上架");
 
     @EnumValue
     private final int code;

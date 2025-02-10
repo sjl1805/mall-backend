@@ -1,9 +1,11 @@
 package com.example.model.dto.spec;
 
-import lombok.Data;
-import jakarta.validation.constraints.*;
-import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+import java.util.List;
 
 @Schema(description = "规格更新请求参数")
 @Data

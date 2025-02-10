@@ -1,9 +1,9 @@
 package com.example.model.dto.review;
 
 import com.example.model.enums.ReviewStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Schema(description = "评价审核请求参数")
 @Data

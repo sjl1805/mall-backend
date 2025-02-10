@@ -1,9 +1,9 @@
 package com.example.model.dto.favorite;
 
 import com.example.model.enums.FavoriteFolderStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Schema(description = "收藏夹更新请求参数")
 @Data

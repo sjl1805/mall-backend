@@ -5,13 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.favorite.FavoriteFolderDTO;
 import com.example.model.dto.favorite.FavoriteFolderPageQueryDTO;
 import com.example.model.entity.FavoriteFolder;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,9 +19,9 @@ import java.util.List;
 public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
 
     @Results(id = "folderMap", value = {
-        @Result(property = "isPublic", column = "is_public"),
-        @Result(property = "itemCount", column = "item_count"),
-        @Result(property = "createTime", column = "create_time")
+            @Result(property = "isPublic", column = "is_public"),
+            @Result(property = "itemCount", column = "item_count"),
+            @Result(property = "createTime", column = "create_time")
     })
     @Select("<script>" +
             "SELECT id, name, description, is_public AS isPublic, " +
@@ -39,14 +33,14 @@ public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
             "ORDER BY sort ASC, create_time DESC" +
             "</script>")
     List<FavoriteFolderDTO> selectUserFolders(Page<FavoriteFolderDTO> page,
-                                           @Param("userId") Long userId,
-                                           @Param("query") FavoriteFolderPageQueryDTO query);
+                                              @Param("userId") Long userId,
+                                              @Param("query") FavoriteFolderPageQueryDTO query);
 
     @Update("UPDATE favorite_folder SET item_count = item_count + #{increment} " +
             "WHERE id = #{folderId} AND user_id = #{userId}")
     int updateItemCount(@Param("folderId") Long folderId,
-                      @Param("increment") int increment,
-                      @Param("userId") Long userId);
+                        @Param("increment") int increment,
+                        @Param("userId") Long userId);
 
     @Update("<script>" +
             "UPDATE favorite_folder SET sort = CASE id " +
@@ -64,7 +58,7 @@ public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
             "WHERE id = #{folderId} AND user_id = #{userId}")
     @Options(useCache = true)
     int checkFolderOwnership(@Param("userId") Long userId,
-                           @Param("folderId") Long folderId);
+                             @Param("folderId") Long folderId);
 }
 
 

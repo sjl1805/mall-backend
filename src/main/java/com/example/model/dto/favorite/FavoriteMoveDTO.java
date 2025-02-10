@@ -1,9 +1,10 @@
 package com.example.model.dto.favorite;
 
-import lombok.Data;
-import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.util.List;
 
 
 @Schema(description = "移动收藏项请求参数")

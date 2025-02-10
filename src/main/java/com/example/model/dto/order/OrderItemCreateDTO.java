@@ -1,11 +1,12 @@
 package com.example.model.dto.order;
 
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
 import java.math.BigDecimal;
-import jakarta.validation.constraints.DecimalMin;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "订单项创建参数")
 @Data

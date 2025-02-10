@@ -7,20 +7,11 @@ import com.example.model.dto.product.ProductDetailDTO;
 import com.example.model.dto.product.ProductPageQueryDTO;
 import com.example.model.entity.Products;
 import com.example.model.enums.ProductStatusEnum;
-
-
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
-
-
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【products(商品表)】的数据库操作Mapper
@@ -59,8 +50,8 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "</where>" +
             "ORDER BY p.create_time DESC" +
             "</script>")
-    List<AdminProductDTO> selectAdminProductList(Page<AdminProductDTO> page, 
-                                                @Param("query") ProductPageQueryDTO query);
+    List<AdminProductDTO> selectAdminProductList(Page<AdminProductDTO> page,
+                                                 @Param("query") ProductPageQueryDTO query);
 
     /**
      * 更新商品库存（带乐观锁）
@@ -68,8 +59,8 @@ public interface ProductsMapper extends BaseMapper<Products> {
     @Update("UPDATE products SET stock = stock - #{quantity}, version = version + 1 " +
             "WHERE id = #{productId} AND stock >= #{quantity} AND version = #{version}")
     int deductStock(@Param("productId") Long productId,
-                  @Param("quantity") Integer quantity,
-                  @Param("version") Integer version);
+                    @Param("quantity") Integer quantity,
+                    @Param("version") Integer version);
 
     /**
      * 获取商品详情
@@ -95,10 +86,10 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "#{id}" +
             "</foreach>" +
             " AND merchant_id = #{merchantId}"
-            +"</script>")
+            + "</script>")
     int batchUpdateStatus(@Param("productIds") List<Long> productIds,
-                        @Param("status") ProductStatusEnum status,
-                        @Param("merchantId") Long merchantId);
+                          @Param("status") ProductStatusEnum status,
+                          @Param("merchantId") Long merchantId);
 
 }
 

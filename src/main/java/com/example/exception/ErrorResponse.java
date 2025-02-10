@@ -1,11 +1,11 @@
 package com.example.exception;
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
 import java.util.Map;
-import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor

@@ -1,9 +1,10 @@
 package com.example.model.dto.product;
 
 import com.example.model.enums.ProductStatusEnum;
-import lombok.Data;
-import java.math.BigDecimal;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Schema(description = "商品分页查询参数")
 @Data

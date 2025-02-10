@@ -1,8 +1,8 @@
 package com.example.model.dto.coupon;
 
-import lombok.Data;
-import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Schema(description = "优惠券领取请求参数")
 @Data

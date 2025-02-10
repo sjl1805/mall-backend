@@ -1,14 +1,14 @@
 package com.example.model.dto.recommend;
 
 import com.example.model.enums.RecommendProductStatusEnum;
-import lombok.Data;
-import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime; 
 import com.example.model.enums.RecommendTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.validation.constraints.*;
+import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Schema(description = "推荐商品创建请求")

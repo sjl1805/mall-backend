@@ -7,13 +7,7 @@ import com.example.model.dto.coupon.CouponPageQueryDTO;
 import com.example.model.dto.coupon.UserCouponDTO;
 import com.example.model.entity.Coupon;
 import com.example.model.enums.CouponStatusEnum;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,10 +21,10 @@ import java.util.List;
 public interface CouponMapper extends BaseMapper<Coupon> {
 
     @Results(id = "adminCouponMap", value = {
-        @Result(property = "totalIssued", column = "total_issued"),
-        @Result(property = "usedCount", column = "used_count"),
-        @Result(property = "startTime", column = "start_time"),
-        @Result(property = "endTime", column = "end_time")
+            @Result(property = "totalIssued", column = "total_issued"),
+            @Result(property = "usedCount", column = "used_count"),
+            @Result(property = "startTime", column = "start_time"),
+            @Result(property = "endTime", column = "end_time")
     })
     @Select("<script>" +
             "SELECT c.*, COUNT(uc.id) AS total_issued, " +
@@ -55,9 +49,9 @@ public interface CouponMapper extends BaseMapper<Coupon> {
             "AND merchant_id = #{merchantId} " +
             "AND start_time &lt;= NOW() " +
             "AND end_time &gt;= NOW()")
-    int updateStatusWithTimeCheck(@Param("couponId") Long couponId, 
-                                @Param("status") CouponStatusEnum status,
-                                @Param("merchantId") Long merchantId);
+    int updateStatusWithTimeCheck(@Param("couponId") Long couponId,
+                                  @Param("status") CouponStatusEnum status,
+                                  @Param("merchantId") Long merchantId);
 
     @Select("SELECT * FROM coupon " +
             "WHERE end_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) " +
@@ -79,12 +73,12 @@ public interface CouponMapper extends BaseMapper<Coupon> {
     int batchExpireCoupons();
 
     @Results(id = "userCouponMap", value = {
-        @Result(property = "userCouponId", column = "user_coupon_id"),
-        @Result(property = "couponName", column = "coupon_name"),
-        @Result(property = "discountDesc", column = "discount_desc"),
-        @Result(property = "getTime", column = "get_time"),
-        @Result(property = "expireTime", column = "expire_time"),
-        @Result(property = "statusDesc", column = "status_desc")
+            @Result(property = "userCouponId", column = "user_coupon_id"),
+            @Result(property = "couponName", column = "coupon_name"),
+            @Result(property = "discountDesc", column = "discount_desc"),
+            @Result(property = "getTime", column = "get_time"),
+            @Result(property = "expireTime", column = "expire_time"),
+            @Result(property = "statusDesc", column = "status_desc")
     })
     @Select("SELECT uc.id AS user_coupon_id, c.name AS coupon_name, " +
             "CONCAT('满', c.min_amount, '减', c.value) AS discount_desc, " +

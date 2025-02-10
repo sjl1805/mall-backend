@@ -5,14 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.cart.CartItemDTO;
 import com.example.model.dto.cart.CartPageQueryDTO;
 import com.example.model.entity.Cart;
-
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -26,10 +19,10 @@ import java.util.List;
 public interface CartMapper extends BaseMapper<Cart> {
 
     @Results(id = "cartItemMap", value = {
-        @Result(property = "cartId", column = "cart_id"),
-        @Result(property = "productId", column = "product_id"),
-        @Result(property = "productName", column = "product_name"),
-        @Result(property = "mainImage", column = "main_image")
+            @Result(property = "cartId", column = "cart_id"),
+            @Result(property = "productId", column = "product_id"),
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "mainImage", column = "main_image")
     })
     @Select("<script>" +
             "SELECT c.id as cart_id, c.product_id, c.quantity, c.checked, " +
@@ -43,9 +36,9 @@ public interface CartMapper extends BaseMapper<Cart> {
             "<if test='query.inStock != null and query.inStock'>AND p.stock > 0</if>" +
             "ORDER BY c.create_time DESC" +
             "</script>")
-    List<CartItemDTO> selectCartItems(Page<CartItemDTO> page, 
-                                    @Param("userId") Long userId,
-                                    @Param("query") CartPageQueryDTO query);
+    List<CartItemDTO> selectCartItems(Page<CartItemDTO> page,
+                                      @Param("userId") Long userId,
+                                      @Param("query") CartPageQueryDTO query);
 
     /**
      * 批量更新选中状态
@@ -59,8 +52,8 @@ public interface CartMapper extends BaseMapper<Cart> {
             " AND user_id = #{userId}" +
             "</script>")
     int batchUpdateCheckedStatus(@Param("cartIds") List<Long> cartIds,
-                                @Param("checked") Boolean checked,
-                                @Param("userId") Long userId);
+                                 @Param("checked") Boolean checked,
+                                 @Param("userId") Long userId);
 
     /**
      * 清空已选中的购物车项
@@ -84,8 +77,8 @@ public interface CartMapper extends BaseMapper<Cart> {
     @Update("UPDATE cart SET quantity = #{quantity}, version = version + 1 " +
             "WHERE id = #{cartId} AND version = #{version}")
     int updateQuantityWithLock(@Param("cartId") Long cartId,
-                             @Param("quantity") Integer quantity,
-                             @Param("version") Integer version);
+                               @Param("quantity") Integer quantity,
+                               @Param("version") Integer version);
 }
 
 

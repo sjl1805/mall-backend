@@ -3,9 +3,10 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.ProductSkuStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.example.model.enums.ProductSkuStatusEnum;
+
 import java.math.BigDecimal;
 
 /**

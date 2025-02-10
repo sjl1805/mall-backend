@@ -1,10 +1,10 @@
 package com.example.model.dto.order;
 
 import com.example.model.enums.OrderPaymentMethodEnum;
-import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Schema(description = "订单支付请求参数")
 @Data

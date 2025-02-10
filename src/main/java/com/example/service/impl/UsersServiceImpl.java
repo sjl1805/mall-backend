@@ -1,12 +1,11 @@
 package com.example.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.UsersMapper;
 import com.example.model.entity.Users;
 import com.example.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * @author 31815
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         implements UsersService {
-   
+
 }
 
 

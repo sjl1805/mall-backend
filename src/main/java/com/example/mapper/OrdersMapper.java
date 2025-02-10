@@ -3,19 +3,14 @@ package com.example.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.order.AdminOrderDTO;
-import com.example.model.enums.OrderStatusEnum;
 import com.example.model.dto.order.OrderPageQueryDTO;
 import com.example.model.entity.Orders;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Options;
+import com.example.model.enums.OrderStatusEnum;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
+
 /**
  * @author 31815
  * @description 针对表【orders(订单表)】的数据库操作Mapper
@@ -26,12 +21,12 @@ import java.util.Optional;
 public interface OrdersMapper extends BaseMapper<Orders> {
 
     @Results(id = "adminOrderMap", value = {
-        @Result(property = "orderNo", column = "order_no"),
-        @Result(property = "userId", column = "user_id"),
-        @Result(property = "createTime", column = "create_time"),
-        @Result(property = "payTime", column = "pay_time"),
-        @Result(property = "deliveryTime", column = "delivery_time"),
-        @Result(property = "receiveTime", column = "receive_time")
+            @Result(property = "orderNo", column = "order_no"),
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "payTime", column = "pay_time"),
+            @Result(property = "deliveryTime", column = "delivery_time"),
+            @Result(property = "receiveTime", column = "receive_time")
     })
     @Select("<script>" +
             "SELECT o.*, u.username " +
@@ -60,9 +55,9 @@ public interface OrdersMapper extends BaseMapper<Orders> {
             "WHERE id = #{id} AND version = #{version} " +
             "AND user_id = #{userId}")
     int updateOrderStatus(@Param("id") Long id,
-                         @Param("status") OrderStatusEnum status,
-                         @Param("version") Integer version,
-                         @Param("userId") Long userId);
+                          @Param("status") OrderStatusEnum status,
+                          @Param("version") Integer version,
+                          @Param("userId") Long userId);
 
     /**
      * 获取用户订单列表
