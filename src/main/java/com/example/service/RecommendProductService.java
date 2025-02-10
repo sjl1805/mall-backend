@@ -1,9 +1,11 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.recommend.RecommendDetailDTO;
 import com.example.model.dto.recommend.RecommendPageQueryDTO;
 import com.example.model.entity.RecommendProduct;
+
 
 import java.util.Optional;
 
@@ -13,7 +15,8 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:45
  */
 public interface RecommendProductService extends IService<RecommendProduct> {
-    RecommendPageQueryDTO getRecommendPage(RecommendPageQueryDTO query);
+    IPage<RecommendPageQueryDTO> getRecommendPage(RecommendPageQueryDTO query);
+
 
     Optional<RecommendDetailDTO> getRecommendDetail(Long recommendId);
 

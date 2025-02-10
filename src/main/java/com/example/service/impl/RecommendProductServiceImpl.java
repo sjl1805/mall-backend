@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.RecommendProductMapper;
 import com.example.model.dto.recommend.RecommendDetailDTO;
@@ -25,9 +26,10 @@ public class RecommendProductServiceImpl extends ServiceImpl<RecommendProductMap
     private final RecommendProductMapper recommendProductMapper;
 
     @Override
-    public RecommendPageQueryDTO getRecommendPage(RecommendPageQueryDTO query) {
+    public IPage<RecommendPageQueryDTO> getRecommendPage(RecommendPageQueryDTO query) {
         return recommendProductMapper.selectAdminRecommendList(query);
     }
+
 
 
     @Override

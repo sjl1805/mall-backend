@@ -2,6 +2,7 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.example.model.dto.user.AdminUserDTO;
 import com.example.model.dto.user.UserPageQueryDTO;
@@ -57,7 +58,8 @@ public interface UsersMapper extends BaseMapper<Users> {
             "</where>" +
             "ORDER BY create_time DESC" +
             "</script>")
-    UserPageQueryDTO selectAdminUserList(@Param("query") UserPageQueryDTO query);
+    IPage<UserPageQueryDTO> selectAdminUserList(@Param("query") UserPageQueryDTO query);
+
 
 
     /**

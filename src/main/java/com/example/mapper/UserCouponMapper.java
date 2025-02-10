@@ -2,9 +2,11 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
 import com.example.model.entity.UserCoupon;
 import org.apache.ibatis.annotations.*;
+
 
 import java.util.List;
 
@@ -41,9 +43,10 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "ORDER BY uc.get_time DESC" +
             "</script>")
     @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
-    CouponPageQueryDTO selectUserCoupons(@Param("query") CouponPageQueryDTO query,
+    IPage<CouponPageQueryDTO> selectUserCoupons(@Param("query") CouponPageQueryDTO query,
                                          @Param("userId") Long userId
     );
+
 
     /**
      * 批量标记优惠券为已使用

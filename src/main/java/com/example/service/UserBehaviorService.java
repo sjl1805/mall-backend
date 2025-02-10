@@ -1,12 +1,14 @@
 package com.example.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.behavior.AdminBehaviorDTO;
 import com.example.model.dto.behavior.BehaviorAnalysisQueryDTO;
 import com.example.model.dto.behavior.BehaviorPageQueryDTO;
 import com.example.model.dto.behavior.BehaviorStatsDTO;
 import com.example.model.entity.UserBehavior;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.List;
  * @createDate 2025-02-10 02:08:35
  */
 public interface UserBehaviorService extends IService<UserBehavior> {
-    BehaviorPageQueryDTO getBehaviorPage(BehaviorPageQueryDTO query);
+    IPage<BehaviorPageQueryDTO> getBehaviorPage(BehaviorPageQueryDTO query);
+
 
     List<BehaviorStatsDTO> analyzeBehavior(BehaviorAnalysisQueryDTO query, String timeFunction);
 

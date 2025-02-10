@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.UsersMapper;
 import com.example.model.dto.user.AdminUserDTO;
@@ -7,6 +8,7 @@ import com.example.model.dto.user.UserPageQueryDTO;
 import com.example.model.entity.Users;
 import com.example.model.enums.UserRoleEnum;
 import com.example.model.enums.UserStatusEnum;
+
 import com.example.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,9 +39,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     }
 
     @Override
-    public UserPageQueryDTO getAdminUserList(UserPageQueryDTO query) {
+    public IPage<UserPageQueryDTO> getAdminUserList(UserPageQueryDTO query) {
         return usersMapper.selectAdminUserList(query);
     }
+
 
 
     @Override

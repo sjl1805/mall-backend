@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.UserAddressMapper;
 import com.example.model.dto.address.AddressPageQueryDTO;
@@ -26,9 +27,10 @@ public class UserAddressServiceImpl extends ServiceImpl<UserAddressMapper, UserA
     private final UserAddressMapper userAddressMapper;
 
     @Override
-    public AddressPageQueryDTO getAddressPage(AddressPageQueryDTO query) {
+    public IPage<AddressPageQueryDTO> getAddressPage(AddressPageQueryDTO query) {
         return userAddressMapper.selectAdminAddressList(query);
     }
+
 
     @Override
     @Transactional

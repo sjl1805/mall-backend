@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.behavior.AdminBehaviorDTO;
 import com.example.model.dto.behavior.BehaviorAnalysisQueryDTO;
 import com.example.model.dto.behavior.BehaviorPageQueryDTO;
@@ -42,7 +43,8 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             + "</where>"
             + "ORDER BY ub.behavior_time DESC"
             + "</script>")
-    BehaviorPageQueryDTO selectAdminBehaviorList(@Param("query") BehaviorPageQueryDTO query);
+    IPage<BehaviorPageQueryDTO> selectAdminBehaviorList(@Param("query") BehaviorPageQueryDTO query);
+
 
 
     /**

@@ -1,9 +1,11 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.address.AddressPageQueryDTO;
 import com.example.model.entity.UserAddress;
 import com.example.model.enums.UserAddressStatusEnum;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +16,8 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:40
  */
 public interface UserAddressService extends IService<UserAddress> {
-    AddressPageQueryDTO getAddressPage(AddressPageQueryDTO query);
+    IPage<AddressPageQueryDTO> getAddressPage(AddressPageQueryDTO query);
+
 
     boolean setDefaultAddress(Long userId, Long addressId);
 

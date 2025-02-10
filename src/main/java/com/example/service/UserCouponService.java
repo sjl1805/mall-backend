@@ -1,8 +1,10 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
 import com.example.model.entity.UserCoupon;
+
 
 import java.util.List;
 
@@ -12,7 +14,8 @@ import java.util.List;
  * @createDate 2025-02-10 02:08:27
  */
 public interface UserCouponService extends IService<UserCoupon> {
-    CouponPageQueryDTO getUserCouponPage(Long userId, CouponPageQueryDTO query);
+    IPage<CouponPageQueryDTO> getUserCouponPage(Long userId, CouponPageQueryDTO query);
+
 
     boolean markCouponsAsUsed(List<Long> couponIds, Long userId);
 

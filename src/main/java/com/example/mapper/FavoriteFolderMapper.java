@@ -1,10 +1,12 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.favorite.FavoriteFolderDTO;
 import com.example.model.dto.favorite.FavoriteFolderPageQueryDTO;
 import com.example.model.entity.FavoriteFolder;
 import org.apache.ibatis.annotations.*;
+
 
 import java.util.List;
 
@@ -31,8 +33,9 @@ public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
             "<if test='query.status != null'>AND is_public = #{query.status}</if>" +
             "ORDER BY sort ASC, create_time DESC" +
             "</script>")
-    FavoriteFolderPageQueryDTO selectUserFolders(@Param("userId") Long userId,
+    IPage<FavoriteFolderPageQueryDTO> selectUserFolders(@Param("userId") Long userId,
                                                  @Param("query") FavoriteFolderPageQueryDTO query);
+
 
 
     @Update("UPDATE favorite_folder SET item_count = item_count + #{increment} " +

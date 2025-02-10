@@ -2,6 +2,7 @@ package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.recommend.RecommendDetailDTO;
 import com.example.model.dto.recommend.RecommendPageQueryDTO;
 import com.example.model.entity.RecommendProduct;
@@ -36,7 +37,8 @@ public interface RecommendProductMapper extends BaseMapper<RecommendProduct> {
             + "   <if test='query.status != null'>AND rp.status = #{query.status}</if>"
             + "</where>"
             + "</script>")
-    RecommendPageQueryDTO selectAdminRecommendList(@Param("query") RecommendPageQueryDTO query);
+    IPage<RecommendPageQueryDTO> selectAdminRecommendList(@Param("query") RecommendPageQueryDTO query);
+
 
 
     /**

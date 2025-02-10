@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.UserBehaviorMapper;
 import com.example.model.dto.behavior.AdminBehaviorDTO;
@@ -28,7 +29,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     private final UserBehaviorMapper userBehaviorMapper;
 
     @Override
-    public BehaviorPageQueryDTO getBehaviorPage(BehaviorPageQueryDTO query) {
+    public IPage<BehaviorPageQueryDTO> getBehaviorPage(BehaviorPageQueryDTO query) {
         return userBehaviorMapper.selectAdminBehaviorList(query);
     }
 

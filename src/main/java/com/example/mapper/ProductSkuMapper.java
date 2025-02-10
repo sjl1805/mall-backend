@@ -1,11 +1,13 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.sku.SkuDetailDTO;
 import com.example.model.dto.sku.SkuPageQueryDTO;
 import com.example.model.entity.ProductSku;
 import com.example.model.enums.ProductSkuStatusEnum;
 import org.apache.ibatis.annotations.*;
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,7 +48,8 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "</where>" +
             "ORDER BY sku.create_time DESC" +
             "</script>")
-    SkuPageQueryDTO selectAdminSkuList(@Param("query") SkuPageQueryDTO query);
+    IPage<SkuPageQueryDTO> selectAdminSkuList(@Param("query") SkuPageQueryDTO query);
+
 
 
     /**

@@ -1,6 +1,7 @@
 package com.example.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.user.AdminUserDTO;
 import com.example.model.dto.user.UserPageQueryDTO;
@@ -23,7 +24,7 @@ public interface UsersService extends IService<Users> {
 
     Optional<Users> getUserByEmail(String email);
 
-    UserPageQueryDTO getAdminUserList(UserPageQueryDTO query);
+    IPage<UserPageQueryDTO> getAdminUserList(UserPageQueryDTO query);
 
     Optional<AdminUserDTO> getAdminUserById(Long userId);
 

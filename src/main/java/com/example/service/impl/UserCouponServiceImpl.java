@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.UserCouponMapper;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
@@ -24,7 +25,7 @@ public class UserCouponServiceImpl extends ServiceImpl<UserCouponMapper, UserCou
     private final UserCouponMapper userCouponMapper;
 
     @Override
-    public CouponPageQueryDTO getUserCouponPage(Long userId, CouponPageQueryDTO query) {
+    public IPage<CouponPageQueryDTO> getUserCouponPage(Long userId, CouponPageQueryDTO query) {
         return userCouponMapper.selectUserCoupons(query, userId);
     }
 

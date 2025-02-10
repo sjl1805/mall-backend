@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.model.dto.product.ProductDetailDTO;
 import com.example.model.dto.product.ProductPageQueryDTO;
 import com.example.model.entity.Products;
@@ -48,7 +49,8 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "</where>" +
             "ORDER BY p.create_time DESC" +
             "</script>")
-    ProductPageQueryDTO selectAdminProductList(@Param("query") ProductPageQueryDTO query);
+    IPage<ProductPageQueryDTO> selectAdminProductList(@Param("query") ProductPageQueryDTO query);
+
 
 
     /**
