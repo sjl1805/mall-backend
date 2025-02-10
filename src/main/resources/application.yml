@@ -22,6 +22,19 @@ spring:
       port: 6379
       password:
       timeout: 5000
+  redis:
+    host: 127.0.0.1  # Redis服务器地址
+    port: 6379       # Redis服务器端口
+    password:        # 密码（没有密码留空）
+    database: 0      # 数据库索引（0-15）
+    timeout: 3000ms  # 连接超时时间
+    lettuce:
+      pool:
+        max-active: 20    # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms    # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+      shutdown-timeout: 100ms  # 关闭超时时间
 
 jwt:
   token-expire-hour: 24  # token有效期(小时)
@@ -60,3 +73,11 @@ mybatis-plus:
       logic-delete-field: deleted  # 逻辑删除字段
       logic-delete-value: 1
       logic-not-delete-value: 0 
+
+# 可选缓存配置
+cache:
+  type: redis
+  redis:
+    time-to-live: 3600000  # 缓存过期时间（毫秒），1小时
+    key-prefix: CACHE_     # 缓存key前缀
+    cache-null-values: true # 是否缓存空值 
