@@ -29,7 +29,7 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
             "p.main_image, p.price, p.stock, pf.create_time AS collect_time, " +
             "ff.name AS folder_name " +
             "FROM product_favorite pf " +
-            "JOIN product p ON pf.product_id = p.id " +
+            "JOIN products p ON pf.product_id = p.id " +
             "LEFT JOIN favorite_folder ff ON pf.folder_id = ff.id " +
             "WHERE pf.user_id = #{userId} " +
             "<if test='query.folderId != null'>AND pf.folder_id = #{query.folderId}</if>" +

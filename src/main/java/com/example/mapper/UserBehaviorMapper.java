@@ -31,7 +31,7 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             + "SELECT ub.*, u.username, p.name as product_name "
             + "FROM user_behavior ub "
             + "LEFT JOIN users u ON ub.user_id = u.id "
-            + "LEFT JOIN product p ON ub.product_id = p.id "
+            + "LEFT JOIN products p ON ub.product_id = p.id "
             + "<where>"
             + "   <if test='query.userId != null'>AND ub.user_id = #{query.userId}</if>"
             + "   <if test='query.productId != null'>AND ub.product_id = #{query.productId}</if>"

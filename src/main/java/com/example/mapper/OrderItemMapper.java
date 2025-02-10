@@ -38,7 +38,7 @@ public interface OrderItemMapper extends BaseMapper<OrderItem> {
     @Select("<script>" +
             "SELECT oi.*, p.name as product_name, u.username " +
             "FROM order_item oi " +
-            "LEFT JOIN product p ON oi.product_id = p.id " +
+            "LEFT JOIN products p ON oi.product_id = p.id " +
             "LEFT JOIN users u ON oi.user_id = u.id " +
             "<where>" +
             "   <if test='query.orderNo != null'>AND oi.order_no = #{query.orderNo}</if>" +
