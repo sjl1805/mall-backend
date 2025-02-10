@@ -10,9 +10,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
-
+import java.util.Optional;
 /**
  * @author 31815
  * @description 针对表【user_address(用户收货地址表)】的数据库操作Mapper
@@ -25,6 +28,13 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
     /**
      * 分页查询地址列表（管理员用）
      */
+    @Results(id = "adminAddressMap", value = {
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time"),
+            @Result(property = "receiverName", column = "receiver_name"),
+            @Result(property = "receiverPhone", column = "receiver_phone"),
+            @Result(property = "isDefault", column = "is_default")
+    })
     @Select("<script>" +
             "SELECT a.*, u.username " +
             "FROM user_address a " +
@@ -54,7 +64,8 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
     @Select("SELECT * FROM user_address " +
             "WHERE user_id = #{userId} AND is_default = 'DEFAULT' " +
             "LIMIT 1")
-    UserAddress selectDefaultAddress(@Param("userId") Long userId);
+    Optional<UserAddress> selectDefaultAddress(@Param("userId") Long userId);
+
 
     /**
      * 批量更新地址状态
@@ -66,7 +77,7 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
             "#{id}" +
             "</foreach>" +
             "</script>")
-    int batchUpdateStatus(@Param("ids") List<Long> ids, 
+    int batchUpdateStatus(@Param("ids") List<Long> ids,
                          @Param("status") UserAddressStatusEnum status);
 
     /**
@@ -75,6 +86,7 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
     @Select("SELECT * FROM user_address " +
             "WHERE user_id = #{userId} " +
             "ORDER BY update_time DESC")
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     List<UserAddress> selectUserAddressList(@Param("userId") Long userId);
 }
 

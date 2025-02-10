@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
 
 import java.util.List;
 
@@ -24,6 +26,13 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
     /**
      * 分页查询用户优惠券
      */
+    @Results(id = "userCouponMap", value = {
+            @Result(property = "userCouponId", column = "user_coupon_id"),
+            @Result(property = "couponName", column = "coupon_name"),
+            @Result(property = "getTime", column = "get_time"),
+            @Result(property = "expireTime", column = "expire_time"),
+            @Result(property = "statusDesc", column = "status_desc")
+    })
     @Select("<script>" +
             "SELECT uc.id AS user_coupon_id, c.name AS coupon_name, " +
             "CONCAT('满', c.min_amount, '减', c.value) AS discount_desc, " +
@@ -53,7 +62,7 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "</foreach>" +
             "AND status = 'UNUSED'" +
             "</script>")
-    int batchMarkAsUsed(@Param("couponIds") List<Long> couponIds);
+    int batchMarkAsUsed(@Param("couponIds") List<Long> couponIds, @Param("userId") Long userId);
 
     /**
      * 统计用户未使用优惠券数量

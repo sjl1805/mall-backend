@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
-
+import java.util.Optional;
 /**
  * @author 31815
  * @description 针对表【product_review(商品评价表)】的数据库操作Mapper
@@ -68,7 +68,8 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "JOIN users u ON pr.user_id = u.id " +
             "JOIN products p ON pr.product_id = p.id " +
             "WHERE pr.id = #{reviewId}")
-    ReviewDetailDTO selectReviewDetail(@Param("reviewId") Long reviewId);
+    Optional<ReviewDetailDTO> selectReviewDetail(@Param("reviewId") Long reviewId);
+
 
     /**
      * 统计用户未审核评价数量

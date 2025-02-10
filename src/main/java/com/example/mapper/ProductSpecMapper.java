@@ -10,9 +10,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
-
+import java.util.Optional;
 /**
  * @author 31815
  * @description 针对表【product_spec(商品规格表)】的数据库操作Mapper
@@ -25,6 +28,13 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
     /**
      * 分页查询规格（管理员用）
      */
+    @Results(id = "adminSpecMap", value = {
+            @Result(property = "productId", column = "product_id"),
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "specName", column = "spec_name"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time")
+    })
     @Select("<script>" +
             "SELECT ps.id, ps.product_id AS productId, p.name AS productName, " +
             "ps.spec_name AS specName, ps.spec_values AS specValues, " +
@@ -47,7 +57,9 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
             "FROM product_spec ps " +
             "JOIN products p ON ps.product_id = p.id " +
             "WHERE ps.id = #{specId}")
-    SpecDetailDTO selectSpecDetail(@Param("specId") Long specId);
+    @Options(useCache = true)
+    Optional<SpecDetailDTO> selectSpecDetail(@Param("specId") Long specId);
+
 
     /**
      * 批量删除规格
@@ -58,13 +70,16 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
             "<foreach collection='specIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            "</script>")
-    int batchDeleteSpecs(@Param("specIds") List<Long> specIds);
+            " AND product_id IN (SELECT product_id FROM products WHERE merchant_id = #{merchantId})"
+            + "</script>")
+    int batchDeleteSpecs(@Param("specIds") List<Long> specIds, 
+                        @Param("merchantId") Long merchantId);
 
     /**
      * 检查规格是否被SKU使用
      */
     @Select("SELECT COUNT(*) FROM product_sku WHERE spec_values LIKE CONCAT('%',#{specValue},'%')")
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     int countSkuUsage(@Param("specValue") String specValue);
 
     /**

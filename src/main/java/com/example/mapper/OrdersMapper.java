@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
-
+import java.util.Optional;
 /**
  * @author 31815
  * @description 针对表【orders(订单表)】的数据库操作Mapper
@@ -47,7 +47,8 @@ public interface OrdersMapper extends BaseMapper<Orders> {
             "FROM orders o " +
             "LEFT JOIN users u ON o.user_id = u.id " +
             "WHERE o.order_no = #{orderNo}")
-    AdminOrderDTO selectByOrderNo(@Param("orderNo") String orderNo);
+    Optional<   AdminOrderDTO> selectByOrderNo(@Param("orderNo") String orderNo);
+
 
     /**
      * 更新订单状态（带乐观锁）

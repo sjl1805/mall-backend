@@ -11,7 +11,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
 
+import java.util.Optional;
 
 import java.util.List;
 
@@ -28,19 +31,22 @@ public interface UsersMapper extends BaseMapper<Users> {
      * 根据登录标识（用户名/手机/邮箱）查询用户
      */
     @Select("SELECT * FROM users WHERE username = #{loginId} OR phone = #{loginId} OR email = #{loginId}")
-    Users selectByLoginId(@Param("loginId") String loginId);
+    Optional<Users> selectByLoginId(@Param("loginId") String loginId);
+
 
     /**
      * 根据手机号查询用户
      */
     @Select("SELECT * FROM users WHERE phone = #{phone}")
-    Users selectByPhone(@Param("phone") String phone);
+    Optional<Users> selectByPhone(@Param("phone") String phone);
+
 
     /**
      * 根据邮箱查询用户
      */
     @Select("SELECT * FROM users WHERE email = #{email}")
-    Users selectByEmail(@Param("email") String email);
+    Optional<Users> selectByEmail(@Param("email") String email);
+
 
     /**
      * 分页查询用户列表（管理员用）
@@ -63,9 +69,14 @@ public interface UsersMapper extends BaseMapper<Users> {
     /**
      * 根据ID获取管理员视角用户详情
      */
+    @Results(id = "adminUserMap", value = {
+        @Result(property = "createTime", column = "create_time"),
+        @Result(property = "updateTime", column = "update_time")
+    })
     @Select("SELECT id, username, nickname, phone, email, avatar, gender, status, role, create_time, update_time " +
             "FROM users WHERE id = #{userId}")
-    AdminUserDTO selectAdminUserById(@Param("userId") Long userId);
+    Optional<AdminUserDTO> selectAdminUserById(@Param("userId") Long userId);
+
 
     /**
      * 更新用户状态和角色（管理员操作）

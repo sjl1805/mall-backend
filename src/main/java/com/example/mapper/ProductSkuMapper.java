@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author 31815
@@ -63,7 +64,8 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "FROM product_sku sku " +
             "JOIN products p ON sku.product_id = p.id " +
             "WHERE sku.id = #{skuId}")
-    SkuDetailDTO selectSkuDetail(@Param("skuId") Long skuId);
+    Optional<SkuDetailDTO> selectSkuDetail(@Param("skuId") Long skuId);
+
 
     /**
      * 批量更新SKU状态

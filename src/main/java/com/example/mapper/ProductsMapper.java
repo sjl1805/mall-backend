@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Update;
 
 
 import java.util.List;
-
+import java.util.Optional;
 /**
  * @author 31815
  * @description 针对表【products(商品表)】的数据库操作Mapper
@@ -71,7 +71,8 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "FROM products p " +
             "LEFT JOIN category c ON p.category_id = c.id " +
             "WHERE p.id = #{productId}")
-    ProductDetailDTO selectProductDetail(@Param("productId") Long productId);
+    Optional<ProductDetailDTO> selectProductDetail(@Param("productId") Long productId);
+
 
     /**
      * 批量更新商品状态
