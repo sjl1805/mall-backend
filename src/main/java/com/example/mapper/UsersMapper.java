@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.user.AdminUserDTO;
 import com.example.model.entity.Users;
@@ -54,7 +55,7 @@ public interface UsersMapper extends BaseMapper<Users> {
             "</where>" +
             "ORDER BY create_time DESC" +
             "</script>")
-    List<AdminUserDTO> selectAdminUserList(Page<AdminUserDTO> page,
+    IPage<AdminUserDTO> selectAdminUserList(Page<AdminUserDTO> page,
                                            @Param("role") UserRoleEnum role,
                                            @Param("username") String username,
                                            @Param("phone") String phone);
@@ -63,8 +64,8 @@ public interface UsersMapper extends BaseMapper<Users> {
      * 根据ID获取管理员视角用户详情
      */
     @Results(id = "adminUserMap", value = {
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time")
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "avatar", column = "avatar")
     })
     @Select("SELECT id, username, nickname, phone, email, avatar, gender, status, role, create_time, update_time " +
             "FROM users WHERE id = #{userId}")
@@ -88,6 +89,22 @@ public interface UsersMapper extends BaseMapper<Users> {
                        @Param("newPassword") String newPassword,
                        @Param("salt") String salt,
                        @Param("version") Integer version);
+
+    /**
+     * 根据用户名查询（继承自BaseMapper）
+     */
+    Optional<Users> selectByUsername(@Param("username") String username);
+
+    /**
+     * 批量更新状态（示例）
+     */
+    @Update("<script>" +
+            "UPDATE users SET status = #{status} WHERE id IN " +
+            "<foreach item='id' collection='ids' open='(' separator=',' close=')'>" +
+            "#{id}" +
+            "</foreach>" +
+            "</script>")
+    int batchUpdateStatus(@Param("ids") List<Long> ids, @Param("status") UserStatusEnum status);
 }
 
 

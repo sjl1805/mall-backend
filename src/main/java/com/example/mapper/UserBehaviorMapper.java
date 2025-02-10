@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.behavior.AdminBehaviorDTO;
 import com.example.model.dto.behavior.BehaviorAnalysisQueryDTO;
@@ -27,7 +28,6 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
      * 分页查询用户行为记录（管理员用）
      */
     @Results(id = "adminBehaviorMap", value = {
-            @Result(property = "behaviorTime", column = "behavior_time"),
             @Result(property = "productName", column = "product_name"),
             @Result(property = "productImage", column = "product_image")
     })
@@ -45,7 +45,7 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
             + "</where>"
             + "ORDER BY ub.behavior_time DESC"
             + "</script>")
-    List<AdminBehaviorDTO> selectAdminBehaviorList(Page<AdminBehaviorDTO> page, @Param("query") BehaviorPageQueryDTO query);
+    IPage<AdminBehaviorDTO> selectAdminBehaviorList(Page<AdminBehaviorDTO> page, @Param("query") BehaviorPageQueryDTO query);
 
     /**
      * 用户行为统计分析（支持多维度）
@@ -119,10 +119,13 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
     /**
      * 批量插入用户行为记录（高性能）
      */
-    @Insert("<script>"
-            + "INSERT INTO user_behavior (...) VALUES "
-            + "<foreach collection='list' item='item' separator=','>(...)</foreach>"
-            + "</script>")
+    @Insert("<script>" +
+            "INSERT INTO user_behavior (user_id, product_id, behavior_type, duration, behavior_time) " +
+            "VALUES " +
+            "<foreach collection='list' item='item' separator=','>" +
+            "(#{item.userId}, #{item.productId}, #{item.behaviorType}, #{item.duration}, #{item.behaviorTime})" +
+            "</foreach>" +
+            "</script>")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int batchInsertBehaviors(@Param("list") List<UserBehavior> behaviors);
 }

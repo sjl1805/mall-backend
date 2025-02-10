@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.coupon.AdminCouponDTO;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
@@ -42,7 +43,7 @@ public interface CouponMapper extends BaseMapper<Coupon> {
             "GROUP BY c.id " +
             "ORDER BY c.create_time DESC" +
             "</script>")
-    List<AdminCouponDTO> selectAdminCouponList(Page<AdminCouponDTO> page, @Param("query") CouponPageQueryDTO query);
+    IPage<AdminCouponDTO> selectAdminCouponList(Page<AdminCouponDTO> page, @Param("query") CouponPageQueryDTO query);
 
     @Update("UPDATE coupon SET status = #{status} " +
             "WHERE id = #{couponId} " +

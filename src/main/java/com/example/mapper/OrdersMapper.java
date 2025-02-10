@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.order.AdminOrderDTO;
 import com.example.model.dto.order.OrderPageQueryDTO;
@@ -41,7 +42,7 @@ public interface OrdersMapper extends BaseMapper<Orders> {
             "</where>" +
             "ORDER BY o.create_time DESC" +
             "</script>")
-    List<AdminOrderDTO> selectAdminOrderList(Page<AdminOrderDTO> page, @Param("query") OrderPageQueryDTO query);
+    IPage<AdminOrderDTO> selectAdminOrderList(Page<AdminOrderDTO> page, @Param("query") OrderPageQueryDTO query);
 
     @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT o.*, u.username " +

@@ -1,11 +1,13 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
 import com.example.model.dto.coupon.UserCouponDTO;
 import com.example.model.entity.UserCoupon;
 import org.apache.ibatis.annotations.*;
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 
 import java.util.List;
 
@@ -22,11 +24,11 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
      * 分页查询用户优惠券
      */
     @Results(id = "userCouponMap", value = {
-            @Result(property = "userCouponId", column = "user_coupon_id"),
+            @Result(property = "userCouponId", column = "user_coupon_id", id = true),
             @Result(property = "couponName", column = "coupon_name"),
             @Result(property = "getTime", column = "get_time"),
             @Result(property = "expireTime", column = "expire_time"),
-            @Result(property = "statusDesc", column = "status_desc")
+            @Result(property = "statusDesc", column = "status", typeHandler = MybatisEnumTypeHandler.class)
     })
     @Select("<script>" +
             "SELECT uc.id AS user_coupon_id, c.name AS coupon_name, " +
@@ -42,7 +44,7 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "</if>" +
             "ORDER BY uc.get_time DESC" +
             "</script>")
-    List<UserCouponDTO> selectUserCoupons(Page<UserCouponDTO> page,
+    IPage<UserCouponDTO> selectUserCoupons(Page<UserCouponDTO> page,
                                           @Param("userId") Long userId,
                                           @Param("query") CouponPageQueryDTO query);
 
@@ -55,6 +57,7 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "<foreach collection='couponIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
+            "AND user_id = #{userId} " +
             "AND status = 'UNUSED'" +
             "</script>")
     int batchMarkAsUsed(@Param("couponIds") List<Long> couponIds, @Param("userId") Long userId);

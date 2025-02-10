@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.cart.CartItemDTO;
 import com.example.model.dto.cart.CartPageQueryDTO;
@@ -36,7 +37,7 @@ public interface CartMapper extends BaseMapper<Cart> {
             "<if test='query.inStock != null and query.inStock'>AND p.stock > 0</if>" +
             "ORDER BY c.create_time DESC" +
             "</script>")
-    List<CartItemDTO> selectCartItems(Page<CartItemDTO> page,
+    IPage<CartItemDTO> selectCartItems(Page<CartItemDTO> page,
                                       @Param("userId") Long userId,
                                       @Param("query") CartPageQueryDTO query);
 

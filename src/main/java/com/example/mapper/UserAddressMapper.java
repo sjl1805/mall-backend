@@ -1,13 +1,14 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.address.AddressPageQueryDTO;
 import com.example.model.dto.address.AdminAddressDTO;
 import com.example.model.entity.UserAddress;
 import com.example.model.enums.UserAddressStatusEnum;
 import org.apache.ibatis.annotations.*;
-
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +25,9 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
      * 分页查询地址列表（管理员用）
      */
     @Results(id = "adminAddressMap", value = {
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time"),
             @Result(property = "receiverName", column = "receiver_name"),
             @Result(property = "receiverPhone", column = "receiver_phone"),
-            @Result(property = "isDefault", column = "is_default")
+            @Result(property = "isDefault", column = "is_default", typeHandler = MybatisEnumTypeHandler.class)
     })
     @Select("<script>" +
             "SELECT a.*, u.username " +
@@ -42,7 +41,7 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
             "</where>" +
             "ORDER BY a.create_time DESC" +
             "</script>")
-    List<AdminAddressDTO> selectAdminAddressList(Page<AdminAddressDTO> page, @Param("query") AddressPageQueryDTO query);
+    IPage<AdminAddressDTO> selectAdminAddressList(Page<AdminAddressDTO> page, @Param("query") AddressPageQueryDTO query);
 
     /**
      * 设置用户默认地址（带事务）
@@ -71,9 +70,11 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
             "<foreach collection='ids' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
+            "AND user_id = #{userId} " +
             "</script>")
     int batchUpdateStatus(@Param("ids") List<Long> ids,
-                          @Param("status") UserAddressStatusEnum status);
+                          @Param("status") UserAddressStatusEnum status,
+                          @Param("userId") Long userId);
 
     /**
      * 获取用户地址列表（按更新时间倒序）

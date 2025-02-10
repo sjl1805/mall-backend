@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.sku.AdminSkuDTO;
 import com.example.model.dto.sku.SkuDetailDTO;
@@ -49,7 +50,7 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "</where>" +
             "ORDER BY sku.create_time DESC" +
             "</script>")
-    List<AdminSkuDTO> selectAdminSkuList(Page<AdminSkuDTO> page,
+    IPage<AdminSkuDTO> selectAdminSkuList(Page<AdminSkuDTO> page,
                                          @Param("query") SkuPageQueryDTO query);
 
     /**

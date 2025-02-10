@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.spec.AdminSpecDTO;
 import com.example.model.dto.spec.SpecDetailDTO;
@@ -42,7 +43,7 @@ public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
             "</where>" +
             "ORDER BY ps.create_time DESC" +
             "</script>")
-    List<AdminSpecDTO> selectAdminSpecList(Page<AdminSpecDTO> page,
+    IPage<AdminSpecDTO> selectAdminSpecList(Page<AdminSpecDTO> page,
                                            @Param("query") SpecPageQueryDTO query);
 
     /**

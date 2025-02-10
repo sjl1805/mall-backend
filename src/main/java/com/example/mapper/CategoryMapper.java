@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.category.AdminCategoryDTO;
 import com.example.model.dto.category.CategoryPageQueryDTO;
@@ -47,7 +48,7 @@ public interface CategoryMapper extends BaseMapper<Category> {
             "</where>" +
             "ORDER BY c.sort ASC, c.create_time DESC" +
             "</script>")
-    List<AdminCategoryDTO> selectAdminCategoryList(Page<AdminCategoryDTO> page, @Param("query") CategoryPageQueryDTO query);
+    IPage<AdminCategoryDTO> selectAdminCategoryList(Page<AdminCategoryDTO> page, @Param("query") CategoryPageQueryDTO query);
 
     @Update("UPDATE category SET status = #{status} " +
             "WHERE id = #{id} " +

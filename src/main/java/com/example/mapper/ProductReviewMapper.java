@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.review.AdminReviewDTO;
 import com.example.model.dto.review.ReviewDetailDTO;
@@ -50,7 +51,7 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "</where>" +
             "ORDER BY pr.create_time DESC" +
             "</script>")
-    List<AdminReviewDTO> selectAdminReviewList(Page<AdminReviewDTO> page,
+    IPage<AdminReviewDTO> selectAdminReviewList(Page<AdminReviewDTO> page,
                                                @Param("query") ReviewPageQueryDTO query);
 
     /**

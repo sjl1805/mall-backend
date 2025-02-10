@@ -49,5 +49,14 @@ mybatis:
 
 mybatis-plus:
   configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
-  type-enums-package: com.example.enums # 枚举包路径 
+  type-enums-package: com.example.model.enums # 枚举包路径
+  global-config:
+    db-config:
+      id-type: auto
+
+      logic-delete-field: deleted  # 逻辑删除字段
+      logic-delete-value: 1
+      logic-not-delete-value: 0 
