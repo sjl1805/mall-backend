@@ -9,6 +9,10 @@ import com.example.model.entity.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -21,9 +25,10 @@ import java.util.List;
 @Mapper
 public interface OrderItemMapper extends BaseMapper<OrderItem> {
 
-    /**
-     * 根据订单号查询订单项（带商品信息）
-     */
+    @Results(id = "orderItemMap", value = {
+        @Result(property = "productName", column = "product_name"),
+        @Result(property = "productImage", column = "product_image")
+    })
     @Select("SELECT oi.*, p.name as product_name, " +
             "JSON_UNQUOTE(JSON_EXTRACT(p.images, '$[0]')) as product_image, " +
             "'' as sku_spec " +
@@ -32,9 +37,7 @@ public interface OrderItemMapper extends BaseMapper<OrderItem> {
             "WHERE oi.order_no = #{orderNo}")
     List<OrderItemDTO> selectByOrderNoWithProduct(@Param("orderNo") String orderNo);
 
-    /**
-     * 分页查询订单项（管理员用）
-     */
+    @Options(useCache = true)
     @Select("<script>" +
             "SELECT oi.*, p.name as product_name, u.username " +
             "FROM order_item oi " +
@@ -50,9 +53,10 @@ public interface OrderItemMapper extends BaseMapper<OrderItem> {
             "</script>")
     List<AdminOrderItemDTO> selectAdminOrderItemList(Page<AdminOrderItemDTO> page, @Param("query") OrderItemPageQueryDTO query);
 
-    /**
-     * 批量插入订单项
-     */
+    @Update("<script>" +
+            "INSERT INTO order_item (...) VALUES " +
+            "<foreach collection='list' item='item' separator=','>(...)</foreach>" +
+            "</script>")
     int batchInsert(@Param("list") List<OrderItem> orderItems);
 
     /**

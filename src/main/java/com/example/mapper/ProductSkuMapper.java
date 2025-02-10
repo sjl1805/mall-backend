@@ -11,6 +11,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +31,14 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
     /**
      * 分页查询SKU（管理员用）
      */
+    @Results(id = "adminSkuMap", value = {
+            @Result(property = "productId", column = "product_id"),
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "mainImage", column = "main_image"),
+            @Result(property = "statusDesc", column = "status_desc"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time")
+    })
     @Select("<script>" +
             "SELECT sku.id, sku.product_id AS productId, p.name AS productName, " +
             "sku.spec_values, sku.price, sku.stock, sku.sales, " +
@@ -59,11 +70,15 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
     /**
      * 获取SKU详情
      */
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT sku.id AS skuId, p.name AS productName, sku.spec_values, " +
             "sku.price, sku.stock, sku.sales, sku.main_image, sku.status AS statusDesc " +
             "FROM product_sku sku " +
             "JOIN products p ON sku.product_id = p.id " +
             "WHERE sku.id = #{skuId}")
+    @Results(id = "skuDetailMap", value = {
+            @Result(property = "skuId", column = "sku_id")
+    })
     Optional<SkuDetailDTO> selectSkuDetail(@Param("skuId") Long skuId);
 
 
@@ -76,9 +91,11 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "<foreach collection='skuIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            "</script>")
+            " AND product_id IN (SELECT product_id FROM products WHERE merchant_id = #{merchantId})"
+            +"</script>")
     int batchUpdateStatus(@Param("skuIds") List<Long> skuIds,
-                        @Param("status") ProductSkuStatusEnum status);
+                        @Param("status") ProductSkuStatusEnum status,
+                        @Param("merchantId") Long merchantId);
 
     /**
      * 根据商品ID获取最低价SKU

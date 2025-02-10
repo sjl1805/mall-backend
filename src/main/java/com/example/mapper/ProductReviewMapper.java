@@ -11,6 +11,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +26,15 @@ import java.util.Optional;
 @Mapper
 public interface ProductReviewMapper extends BaseMapper<ProductReview> {
 
-    /**
-     * 分页查询评价（管理员用）
-     */
+    @Results(id = "adminReviewMap", value = {
+        @Result(property = "userId", column = "user_id"),
+        @Result(property = "userName", column = "user_name"),
+        @Result(property = "productId", column = "product_id"),
+        @Result(property = "productName", column = "product_name"),
+        @Result(property = "auditRemark", column = "audit_remark"),
+        @Result(property = "createTime", column = "create_time"),
+        @Result(property = "auditTime", column = "audit_time")
+    })
     @Select("<script>" +
             "SELECT pr.id, pr.user_id AS userId, u.username AS userName, " +
             "pr.product_id AS productId, p.name AS productName, pr.rating, pr.content, " +
@@ -58,9 +67,7 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
                          @Param("status") ReviewStatusEnum status,
                          @Param("auditRemark") String auditRemark);
 
-    /**
-     * 获取评价详情
-     */
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT pr.id AS reviewId, u.username AS userName, p.name AS productName, " +
             "pr.rating, pr.content, pr.images, pr.status AS statusDesc, " +
             "pr.create_time, pr.audit_time " +
@@ -77,17 +84,16 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
     @Select("SELECT COUNT(*) FROM product_review WHERE status = 'PENDING'")
     int countPendingReviews();
 
-    /**
-     * 批量删除评价
-     */
     @Update("<script>" +
             "DELETE FROM product_review " +
             "WHERE id IN " +
             "<foreach collection='reviewIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            "</script>")
-    int batchDeleteReviews(@Param("reviewIds") List<Long> reviewIds);
+            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})" 
+            + "</script>")
+    int batchDeleteReviews(@Param("reviewIds") List<Long> reviewIds,
+                          @Param("merchantId") Long merchantId);
 }
 
 

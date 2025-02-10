@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
@@ -22,9 +25,12 @@ import java.util.List;
 @Mapper
 public interface CartMapper extends BaseMapper<Cart> {
 
-    /**
-     * 分页查询购物车项（带商品信息）
-     */
+    @Results(id = "cartItemMap", value = {
+        @Result(property = "cartId", column = "cart_id"),
+        @Result(property = "productId", column = "product_id"),
+        @Result(property = "productName", column = "product_name"),
+        @Result(property = "mainImage", column = "main_image")
+    })
     @Select("<script>" +
             "SELECT c.id as cart_id, c.product_id, c.quantity, c.checked, " +
             "p.name as product_name, JSON_UNQUOTE(JSON_EXTRACT(p.images, '$[0]')) as main_image, " +
@@ -50,15 +56,18 @@ public interface CartMapper extends BaseMapper<Cart> {
             "<foreach collection='cartIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
+            " AND user_id = #{userId}" +
             "</script>")
     int batchUpdateCheckedStatus(@Param("cartIds") List<Long> cartIds,
-                                @Param("checked") Boolean checked);
+                                @Param("checked") Boolean checked,
+                                @Param("userId") Long userId);
 
     /**
      * 清空已选中的购物车项
      */
     @Update("DELETE FROM cart " +
             "WHERE user_id = #{userId} AND checked = true")
+    @Options(flushCache = Options.FlushCachePolicy.TRUE)
     int clearCheckedItems(@Param("userId") Long userId);
 
     /**
@@ -66,6 +75,7 @@ public interface CartMapper extends BaseMapper<Cart> {
      */
     @Select("SELECT IFNULL(SUM(quantity), 0) FROM cart " +
             "WHERE user_id = #{userId} AND checked = true")
+    @Options(useCache = true)
     Integer countSelectedItems(@Param("userId") Long userId);
 
     /**

@@ -11,7 +11,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
@@ -24,9 +26,11 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
-    /**
-     * 获取分类树形结构
-     */
+    @Results(id = "categoryTreeMap", value = {
+            @Result(property = "parentId", column = "parent_id"),
+            @Result(property = "statusDesc", column = "status"),
+            @Result(property = "createTime", column = "create_time")
+    })
     @Select("WITH RECURSIVE cte AS (" +
             "SELECT * FROM category WHERE parent_id = 0" +
             " UNION ALL " +
@@ -34,9 +38,11 @@ public interface CategoryMapper extends BaseMapper<Category> {
             ") SELECT * FROM cte ORDER BY sort ASC")
     List<CategoryTreeDTO> selectCategoryTree();
 
-    /**
-     * 分页查询分类列表（管理员用）
-     */
+    @Results(id = "adminCategoryMap", value = {
+            @Result(property = "parentName", column = "parent_name"),
+            @Result(property = "statusDesc", column = "status"),
+            @Result(property = "createTime", column = "create_time")
+    })
     @Select("<script>" +
             "SELECT c.*, p.name as parent_name FROM category c " +
             "LEFT JOIN category p ON c.parent_id = p.id " +
@@ -49,27 +55,21 @@ public interface CategoryMapper extends BaseMapper<Category> {
             "</script>")
     List<AdminCategoryDTO> selectAdminCategoryList(Page<AdminCategoryDTO> page, @Param("query") CategoryPageQueryDTO query);
 
-    /**
-     * 更新分类状态
-     */
-    @Update("UPDATE category SET status = #{status} WHERE id = #{id}")
-    int updateStatus(@Param("id") Long id, @Param("status") CategoryStatusEnum status);
+    @Update("UPDATE category SET status = #{status} " +
+            "WHERE id = #{id} " +
+            "AND EXISTS (SELECT 1 FROM products WHERE category_id = #{id} AND merchant_id = #{merchantId})")
+    int updateStatus(@Param("id") Long id, 
+                   @Param("status") CategoryStatusEnum status,
+                   @Param("merchantId") Long merchantId);
 
-    /**
-     * 根据父分类ID查询子分类
-     */
+    @Options(useCache = true)
     @Select("SELECT * FROM category WHERE parent_id = #{parentId} ORDER BY sort ASC")
     List<CategoryTreeDTO> selectByParentId(@Param("parentId") Long parentId);
 
-    /**
-     * 查询所有分类（用于构建树形结构）
-     */
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT id, parent_id, name, icon, level, sort, status FROM category ORDER BY parent_id, sort")
     List<CategoryTreeDTO> selectAllCategories();
 
-    /**
-     * 根据父ID分页查询子分类
-     */
     @Select("SELECT c.*, p.name as parent_name FROM category c " +
             "LEFT JOIN category p ON c.parent_id = p.id " +
             "WHERE c.parent_id = #{parentId} " +

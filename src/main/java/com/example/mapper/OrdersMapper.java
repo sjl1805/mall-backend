@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +25,14 @@ import java.util.Optional;
 @Mapper
 public interface OrdersMapper extends BaseMapper<Orders> {
 
-    /**
-     * 分页查询订单列表（管理员用）
-     */
+    @Results(id = "adminOrderMap", value = {
+        @Result(property = "orderNo", column = "order_no"),
+        @Result(property = "userId", column = "user_id"),
+        @Result(property = "createTime", column = "create_time"),
+        @Result(property = "payTime", column = "pay_time"),
+        @Result(property = "deliveryTime", column = "delivery_time"),
+        @Result(property = "receiveTime", column = "receive_time")
+    })
     @Select("<script>" +
             "SELECT o.*, u.username " +
             "FROM orders o " +
@@ -40,24 +48,21 @@ public interface OrdersMapper extends BaseMapper<Orders> {
             "</script>")
     List<AdminOrderDTO> selectAdminOrderList(Page<AdminOrderDTO> page, @Param("query") OrderPageQueryDTO query);
 
-    /**
-     * 根据订单号获取订单详情
-     */
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     @Select("SELECT o.*, u.username " +
             "FROM orders o " +
             "LEFT JOIN users u ON o.user_id = u.id " +
             "WHERE o.order_no = #{orderNo}")
-    Optional<   AdminOrderDTO> selectByOrderNo(@Param("orderNo") String orderNo);
+    Optional<AdminOrderDTO> selectByOrderNo(@Param("orderNo") String orderNo);
 
-
-    /**
-     * 更新订单状态（带乐观锁）
-     */
-    @Update("UPDATE orders SET status = #{status}, version = version + 1 " +
-            "WHERE id = #{id} AND version = #{version}")
-    int updateOrderStatus(@Param("id") Long id, 
+    @Update("<script>" +
+            "UPDATE orders SET status = #{status}, version = version + 1 " +
+            "WHERE id = #{id} AND version = #{version} " +
+            "AND user_id = #{userId}")
+    int updateOrderStatus(@Param("id") Long id,
                          @Param("status") OrderStatusEnum status,
-                         @Param("version") Integer version);
+                         @Param("version") Integer version,
+                         @Param("userId") Long userId);
 
     /**
      * 获取用户订单列表

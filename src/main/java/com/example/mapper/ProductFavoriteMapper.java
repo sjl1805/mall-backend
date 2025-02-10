@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
@@ -21,9 +24,14 @@ import java.util.List;
 @Mapper
 public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
 
-    /**
-     * 分页查询用户收藏商品
-     */
+    @Results(id = "favoriteItemMap", value = {
+        @Result(property = "favoriteId", column = "favorite_id"),
+        @Result(property = "productId", column = "product_id"),
+        @Result(property = "productName", column = "product_name"),
+        @Result(property = "mainImage", column = "main_image"),
+        @Result(property = "collectTime", column = "collect_time"),
+        @Result(property = "folderName", column = "folder_name")
+    })
     @Select("<script>" +
             "SELECT pf.id AS favorite_id, p.id AS product_id, p.name AS product_name, " +
             "p.main_image, p.price, p.stock, pf.create_time AS collect_time, " +
@@ -44,23 +52,20 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
                                             @Param("userId") Long userId,
                                             @Param("query") FavoritePageQueryDTO query);
 
-    /**
-     * 批量删除收藏项
-     */
     @Update("<script>" +
             "DELETE FROM product_favorite " +
             "WHERE id IN " +
             "<foreach collection='favoriteIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            "AND user_id = #{userId}" +
-            "</script>")
+            " AND user_id = #{userId} " +
+            " AND product_id IN (SELECT id FROM products WHERE merchant_id = #{merchantId})" 
+            +"</script>")
     int batchDeleteFavorites(@Param("userId") Long userId,
-                           @Param("favoriteIds") List<Long> favoriteIds);
+                          @Param("favoriteIds") List<Long> favoriteIds,
+                          @Param("merchantId") Long merchantId);
 
-    /**
-     * 统计用户收藏数量
-     */
+    @Options(useCache = true)
     @Select("SELECT COUNT(*) FROM product_favorite WHERE user_id = #{userId}")
     int countUserFavorites(@Param("userId") Long userId);
 

@@ -130,6 +130,7 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
           + "INSERT INTO user_behavior (...) VALUES "
           + "<foreach collection='list' item='item' separator=','>(...)</foreach>"
           + "</script>")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     int batchInsertBehaviors(@Param("list") List<UserBehavior> behaviors);
 }
 

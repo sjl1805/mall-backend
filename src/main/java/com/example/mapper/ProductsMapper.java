@@ -13,6 +13,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 
 
@@ -30,6 +33,13 @@ public interface ProductsMapper extends BaseMapper<Products> {
     /**
      * 分页查询商品（管理员用）
      */
+    @Results(id = "adminProductMap", value = {
+            @Result(property = "categoryName", column = "category_name"),
+            @Result(property = "statusDesc", column = "status_desc"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time"),
+            @Result(property = "salesVolume", column = "sales_volume")
+    })
     @Select("<script>" +
             "SELECT p.id, p.name, c.name AS category_name, p.price, p.stock, " +
             "p.status AS status_desc, p.create_time, p.update_time, " +
@@ -71,6 +81,7 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "FROM products p " +
             "LEFT JOIN category c ON p.category_id = c.id " +
             "WHERE p.id = #{productId}")
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
     Optional<ProductDetailDTO> selectProductDetail(@Param("productId") Long productId);
 
 
@@ -83,9 +94,11 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "<foreach collection='productIds' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
-            "</script>")
+            " AND merchant_id = #{merchantId}"
+            +"</script>")
     int batchUpdateStatus(@Param("productIds") List<Long> productIds,
-                        @Param("status") ProductStatusEnum status);
+                        @Param("status") ProductStatusEnum status,
+                        @Param("merchantId") Long merchantId);
 
 }
 

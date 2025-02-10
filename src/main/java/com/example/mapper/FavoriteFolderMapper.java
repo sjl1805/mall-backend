@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
@@ -21,9 +24,11 @@ import java.util.List;
 @Mapper
 public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
 
-    /**
-     * 分页查询用户收藏夹
-     */
+    @Results(id = "folderMap", value = {
+        @Result(property = "isPublic", column = "is_public"),
+        @Result(property = "itemCount", column = "item_count"),
+        @Result(property = "createTime", column = "create_time")
+    })
     @Select("<script>" +
             "SELECT id, name, description, is_public AS isPublic, " +
             "sort, item_count AS itemCount, create_time " +
@@ -37,29 +42,27 @@ public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
                                            @Param("userId") Long userId,
                                            @Param("query") FavoriteFolderPageQueryDTO query);
 
-    /**
-     * 更新收藏夹项目数量
-     */
     @Update("UPDATE favorite_folder SET item_count = item_count + #{increment} " +
-            "WHERE id = #{folderId}")
+            "WHERE id = #{folderId} AND user_id = #{userId}")
     int updateItemCount(@Param("folderId") Long folderId,
-                      @Param("increment") int increment);
+                      @Param("increment") int increment,
+                      @Param("userId") Long userId);
 
-    /**
-     * 批量更新收藏夹排序
-     */
     @Update("<script>" +
-            "<foreach collection='folders' item='folder' separator=';'>" +
-            "UPDATE favorite_folder SET sort = #{folder.sort} WHERE id = #{folder.id}" +
+            "UPDATE favorite_folder SET sort = CASE id " +
+            "<foreach collection='folders' item='folder'>" +
+            "WHEN #{folder.id} THEN #{folder.sort} " +
+            "</foreach>" +
+            "END WHERE id IN " +
+            "<foreach collection='folders' item='folder' open='(' separator=',' close=')'>" +
+            "#{folder.id}" +
             "</foreach>" +
             "</script>")
     int batchUpdateSort(@Param("folders") List<FavoriteFolderDTO> folders);
 
-    /**
-     * 检查收藏夹是否属于用户
-     */
     @Select("SELECT COUNT(*) FROM favorite_folder " +
             "WHERE id = #{folderId} AND user_id = #{userId}")
+    @Options(useCache = true)
     int checkFolderOwnership(@Param("userId") Long userId,
                            @Param("folderId") Long folderId);
 }
