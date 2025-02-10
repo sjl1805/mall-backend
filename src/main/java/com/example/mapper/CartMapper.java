@@ -27,9 +27,10 @@ public interface CartMapper extends BaseMapper<Cart> {
      */
     @Select("<script>" +
             "SELECT c.id as cart_id, c.product_id, c.quantity, c.checked, " +
-            "p.name as product_name, p.main_image, p.price, p.stock " +
+            "p.name as product_name, JSON_UNQUOTE(JSON_EXTRACT(p.images, '$[0]')) as main_image, " +
+            "p.price, p.stock " +
             "FROM cart c " +
-            "LEFT JOIN product p ON c.product_id = p.id " +
+            "LEFT JOIN products p ON c.product_id = p.id " +
             "WHERE c.user_id = #{userId} " +
             "<if test='query.productName != null'>AND p.name LIKE CONCAT('%',#{query.productName},'%')</if>" +
             "<if test='query.checkedStatus != null'>AND c.checked = #{query.checkedStatus}</if>" +

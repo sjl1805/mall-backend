@@ -123,6 +123,7 @@ CREATE TABLE `favorite_folder`
     `name`        VARCHAR(32) NOT NULL COMMENT '收藏夹名称',
     `description` VARCHAR(128) COMMENT '收藏夹描述',
     `is_public`   TINYINT   DEFAULT 0 COMMENT '公开状态：0-私密 1-公开',
+    `item_count`  INT       DEFAULT 0 COMMENT '收藏项数量',
     `sort`        INT       DEFAULT 0 COMMENT '排序',
     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（带时区）',
     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间（带时区）',

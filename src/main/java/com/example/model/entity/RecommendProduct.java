@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import com.example.model.enums.RecommendProductStatusEnum;
+import com.example.model.enums.RecommendTypeEnum;
 /**
  * 推荐商品表
  *
@@ -30,7 +31,7 @@ public class RecommendProduct extends BaseEntity {
     /**
      * 推荐类型：1-热门商品 2-新品推荐
      */
-    private Integer type;
+    private RecommendTypeEnum type;
     /**
      * 排序
      */

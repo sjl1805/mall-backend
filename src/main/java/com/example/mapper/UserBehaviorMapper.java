@@ -68,9 +68,9 @@ public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
      * 获取用户最近浏览记录（带商品图片）
      */
     @Select("SELECT ub.id, ub.product_id, ub.behavior_time, " +
-            "p.name as product_name, p.image as product_image " +
+            "p.name as product_name, JSON_UNQUOTE(JSON_EXTRACT(p.images, '$[0]')) as product_image " +
             "FROM user_behavior ub " +
-            "LEFT JOIN product p ON ub.product_id = p.id " +
+            "LEFT JOIN products p ON ub.product_id = p.id " +
             "WHERE ub.user_id = #{userId} AND ub.behavior_type = 'VIEW' " +
             "ORDER BY ub.behavior_time DESC " +
             "LIMIT #{limit}")

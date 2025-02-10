@@ -5,8 +5,9 @@ import lombok.Getter;
 
 @Getter
 public enum RecommendProductStatusEnum {
-    OFFLINE(0, "下架"),
-    ONLINE(1, "上架");
+    OFFLINE(0, "未生效"),
+    ONLINE(1, "生效中");
+
 
     @EnumValue
     private final int code;

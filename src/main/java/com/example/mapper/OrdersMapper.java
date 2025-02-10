@@ -26,10 +26,9 @@ public interface OrdersMapper extends BaseMapper<Orders> {
      * 分页查询订单列表（管理员用）
      */
     @Select("<script>" +
-            "SELECT o.*, u.username, a.receiver_name, a.receiver_phone, a.detail_address " +
+            "SELECT o.*, u.username " +
             "FROM orders o " +
             "LEFT JOIN users u ON o.user_id = u.id " +
-            "LEFT JOIN user_address a ON o.address_id = a.id " +
             "<where>" +
             "   <if test='query.orderNo != null'>AND o.order_no LIKE CONCAT('%',#{query.orderNo},'%')</if>" +
             "   <if test='query.status != null'>AND o.status = #{query.status}</if>" +
@@ -44,10 +43,9 @@ public interface OrdersMapper extends BaseMapper<Orders> {
     /**
      * 根据订单号获取订单详情
      */
-    @Select("SELECT o.*, u.username, a.receiver_name, a.receiver_phone, a.detail_address " +
+    @Select("SELECT o.*, u.username " +
             "FROM orders o " +
             "LEFT JOIN users u ON o.user_id = u.id " +
-            "LEFT JOIN user_address a ON o.address_id = a.id " +
             "WHERE o.order_no = #{orderNo}")
     AdminOrderDTO selectByOrderNo(@Param("orderNo") String orderNo);
 

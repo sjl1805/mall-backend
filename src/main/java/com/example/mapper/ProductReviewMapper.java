@@ -31,7 +31,7 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "pr.product_id AS productId, p.name AS productName, pr.rating, pr.content, " +
             "pr.audit_remark AS auditRemark, pr.create_time, pr.audit_time " +
             "FROM product_review pr " +
-            "JOIN user u ON pr.user_id = u.id " +
+            "JOIN users u ON pr.user_id = u.id " +
             "JOIN products p ON pr.product_id = p.id " +
             "<where>" +
             "   <if test='query.productId != null'>AND pr.product_id = #{query.productId}</if>" +
@@ -65,7 +65,7 @@ public interface ProductReviewMapper extends BaseMapper<ProductReview> {
             "pr.rating, pr.content, pr.images, pr.status AS statusDesc, " +
             "pr.create_time, pr.audit_time " +
             "FROM product_review pr " +
-            "JOIN user u ON pr.user_id = u.id " +
+            "JOIN users u ON pr.user_id = u.id " +
             "JOIN products p ON pr.product_id = p.id " +
             "WHERE pr.id = #{reviewId}")
     ReviewDetailDTO selectReviewDetail(@Param("reviewId") Long reviewId);

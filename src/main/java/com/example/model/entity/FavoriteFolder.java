@@ -40,6 +40,10 @@ public class FavoriteFolder extends BaseEntity {
      */
     private FavoriteFolderStatusEnum isPublic;
     /**
+     * 收藏项数量
+     */
+    private Integer itemCount;
+    /**
      * 排序
      */
     private Integer sort;

@@ -24,9 +24,11 @@ public interface OrderItemMapper extends BaseMapper<OrderItem> {
     /**
      * 根据订单号查询订单项（带商品信息）
      */
-    @Select("SELECT oi.*, p.name as product_name, p.image as product_image, p.spec as sku_spec " +
+    @Select("SELECT oi.*, p.name as product_name, " +
+            "JSON_UNQUOTE(JSON_EXTRACT(p.images, '$[0]')) as product_image, " +
+            "'' as sku_spec " +
             "FROM order_item oi " +
-            "LEFT JOIN product p ON oi.product_id = p.id " +
+            "LEFT JOIN products p ON oi.product_id = p.id " +
             "WHERE oi.order_no = #{orderNo}")
     List<OrderItemDTO> selectByOrderNoWithProduct(@Param("orderNo") String orderNo);
 
