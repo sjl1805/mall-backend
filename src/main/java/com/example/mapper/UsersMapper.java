@@ -46,7 +46,8 @@ public interface UsersMapper extends BaseMapper<Users> {
      * 分页查询用户列表（管理员用）
      */
     @Select("<script>" +
-            "SELECT * FROM users " +
+            "SELECT id, username, nickname, phone, email, avatar, gender, status, role, create_time, update_time " +
+            "FROM users " +
             "<where>" +
             "   <if test='role != null'>AND role = #{role}</if>" +
             "   <if test='username != null'>AND username LIKE CONCAT('%',#{username},'%')</if>" +
@@ -62,7 +63,8 @@ public interface UsersMapper extends BaseMapper<Users> {
     /**
      * 根据ID获取管理员视角用户详情
      */
-    @Select("SELECT * FROM users WHERE id = #{userId}")
+    @Select("SELECT id, username, nickname, phone, email, avatar, gender, status, role, create_time, update_time " +
+            "FROM users WHERE id = #{userId}")
     AdminUserDTO selectAdminUserById(@Param("userId") Long userId);
 
     /**
