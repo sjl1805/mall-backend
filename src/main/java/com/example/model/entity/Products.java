@@ -1,14 +1,12 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 商品表
@@ -17,9 +15,8 @@ import java.util.Date;
  */
 @TableName(value = "products", autoResultMap = true)
 @Data
-public class Products implements Serializable {
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class Products extends BaseEntity {
     /**
      * 商品ID
      */
@@ -50,23 +47,7 @@ public class Products implements Serializable {
      */
     private Object images;
     /**
-     * 创建时间（带时区）
-     */
-    private Date createTime;
-    /**
-     * 更新时间（带时区）
-     */
-    private Date updateTime;
-    /**
      * 商品状态：0-下架 1-上架
      */
     private Integer status;
-    /**
-     * 乐观锁版本号
-     */
-    private Integer version;
-    /**
-     * 删除标志：0存在 1删除
-     */
-    private Integer deleted;
 }

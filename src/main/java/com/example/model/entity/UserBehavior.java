@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 用户行为记录表
@@ -16,7 +16,8 @@ import java.util.Date;
  */
 @TableName(value = "user_behavior", autoResultMap = true)
 @Data
-public class UserBehavior implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class UserBehavior extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
     /**
@@ -39,7 +40,7 @@ public class UserBehavior implements Serializable {
     /**
      * 行为时间
      */
-    private Date behaviorTime;
+    private LocalDateTime behaviorTime;
     /**
      * 停留时长（秒）
      */
@@ -52,20 +53,5 @@ public class UserBehavior implements Serializable {
      * 地理位置
      */
     private String location;
-    /**
-     * 创建时间（带时区）
-     */
-    private Date createTime;
-    /**
-     * 更新时间（带时区）
-     */
-    private Date updateTime;
-    /**
-     * 乐观锁版本号
-     */
-    private Integer version;
-    /**
-     * 删除标志：0存在 1删除
-     */
-    private Integer deleted;
+
 }

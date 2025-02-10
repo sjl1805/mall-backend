@@ -1,14 +1,13 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 推荐商品表
@@ -17,9 +16,8 @@ import java.util.Date;
  */
 @TableName(value = "recommend_product", autoResultMap = true)
 @Data
-public class RecommendProduct implements Serializable {
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class RecommendProduct extends BaseEntity {
     /**
      * 推荐商品ID
      */
@@ -44,11 +42,11 @@ public class RecommendProduct implements Serializable {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 算法版本
      */
@@ -61,20 +59,5 @@ public class RecommendProduct implements Serializable {
      * 推荐理由
      */
     private String recommendReason;
-    /**
-     * 创建时间（带时区）
-     */
-    private Date createTime;
-    /**
-     * 更新时间（带时区）
-     */
-    private Date updateTime;
-    /**
-     * 乐观锁版本号
-     */
-    private Integer version;
-    /**
-     * 删除标志：0存在 1删除
-     */
-    private Integer deleted;
+
 }

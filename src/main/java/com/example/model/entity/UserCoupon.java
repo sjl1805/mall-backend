@@ -1,13 +1,12 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 用户优惠券表
@@ -16,9 +15,8 @@ import java.util.Date;
  */
 @TableName(value = "user_coupon", autoResultMap = true)
 @Data
-public class UserCoupon implements Serializable {
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class UserCoupon extends BaseEntity {
     /**
      * 用户优惠券ID
      */
@@ -43,17 +41,10 @@ public class UserCoupon implements Serializable {
     /**
      * 领取时间
      */
-    private Date getTime;
+    private LocalDateTime getTime;
     /**
      * 使用时间
      */
-    private Date useTime;
-    /**
-     * 乐观锁版本号
-     */
-    private Integer version;
-    /**
-     * 删除标志：0存在 1删除
-     */
-    private Integer deleted;
+    private LocalDateTime useTime;
+
 }

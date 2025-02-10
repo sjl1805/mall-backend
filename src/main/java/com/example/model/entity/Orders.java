@@ -1,14 +1,13 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 订单表
@@ -17,9 +16,8 @@ import java.util.Date;
  */
 @TableName(value = "orders", autoResultMap = true)
 @Data
-public class Orders implements Serializable {
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class Orders extends BaseEntity {
     /**
      * 订单ID
      */
@@ -60,15 +58,15 @@ public class Orders implements Serializable {
     /**
      * 支付时间
      */
-    private Date paymentTime;
+    private LocalDateTime paymentTime;
     /**
      * 发货时间
      */
-    private Date deliveryTime;
+    private LocalDateTime deliveryTime;
     /**
      * 收货时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
     /**
      * 支付方式：1-支付宝 2-微信 3-银联
      */
@@ -85,22 +83,6 @@ public class Orders implements Serializable {
      * 评价状态：0未评价 1已评价
      */
     private Integer commentStatus;
-    /**
-     * 创建时间（带时区）
-     */
-    private Date createTime;
-    /**
-     * 更新时间（带时区）
-     */
-    private Date updateTime;
-    /**
-     * 乐观锁版本号
-     */
-    private Integer version;
-    /**
-     * 删除标志：0存在 1删除
-     */
-    private Integer deleted;
     /**
      * 时区信息
      */
