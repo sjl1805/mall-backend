@@ -14,19 +14,22 @@ public class UserInfoDTO {
     /**
      * 用户ID
      */
-    @Schema(description = "用户ID", example = "12345")
+    @Schema(description = "用户ID", example = "1")
     private Long id;
     /**
      * 用户名
+
      */
-    @Schema(description = "用户名", example = "john_doe")
+    @Schema(description = "用户名", example = "admin")
     private String username;
     /**
+
      * 用户昵称
      */
-    @Schema(description = "用户昵称", example = "John")
+    @Schema(description = "用户昵称", example = "admin")
     private String nickname;
     /**
+
      * 手机号
      */
     @Schema(description = "手机号", example = "12345678901")
@@ -34,9 +37,10 @@ public class UserInfoDTO {
     /**
      * 邮箱
      */
-    @Schema(description = "邮箱", example = "john@example.com")
+    @Schema(description = "邮箱", example = "admin@example.com")
     private String email;
     /**
+
      * 头像
      */
     @Schema(description = "头像", example = "https://example.com/avatar.jpg")
