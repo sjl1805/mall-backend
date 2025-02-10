@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 @Configuration
 @EnableTransactionManagement
 public class MybatisPlusConfig {
@@ -19,4 +18,5 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         return interceptor;
     }
+
 } 

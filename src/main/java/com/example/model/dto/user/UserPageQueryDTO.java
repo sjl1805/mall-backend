@@ -1,6 +1,6 @@
 package com.example.model.dto.user;
 
-import com.example.model.dto.PaginationDTO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.enums.UserGenderEnum;
 import com.example.model.enums.UserRoleEnum;
 import com.example.model.enums.UserStatusEnum;
@@ -8,15 +8,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 import java.time.LocalDateTime;
 
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserPageQueryDTO extends PaginationDTO<AdminUserDTO> {
+public class UserPageQueryDTO extends Page<AdminUserDTO> {
     /**
      * 用户ID
      */
+
     @Schema(description = "用户ID", example = "1")
     private Long id;
     /**
