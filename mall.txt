@@ -1,374 +1,743 @@
-# 用户模块VO类设计方案
+### 1. 用户中心模块
 
-## 1. UserBasicVO
-作用：用户基础信息展示
-字段：
-- Long id
-- String username
-- String nickname
-- String phone
-- String email
-- String avatar
-- UserGenderEnum gender
-- UserStatusEnum status
-- UserRoleEnum role
-- LocalDateTime createTime
+#### 1. 模块概述
+- 功能定位：负责用户账户体系管理和个人数据维护
+- 核心功能：注册登录、信息管理、安全认证、关联数据维护
+- 关联表：`users`（主表）、`user_address`、`user_coupon`、`user_behavior`、`favorite_folder`、`product_favorite`、`cart`
 
-## 2. UserDetailVO
-作用：用户详细信息展示（扩展统计字段）
-字段：
-- UserBasicVO基础字段
-- Integer addressCount
-- Integer orderCount
-- Integer couponCount
-- LocalDateTime lastLoginTime
+#### 2. 子模块划分
 
-## 3. UserAddressVO
-作用：收货地址信息展示
-字段：
-- Long id
-- String receiverName
-- String receiverPhone
-- String fullAddress（省+市+区+详细地址）
-- UserAddressStatusEnum isDefault
-- LocalDateTime updateTime
+##### 2.1 账户体系
+- 用户注册（手机/邮箱注册）
+- 登录认证（密码登录、短信验证码登录）
+- 密码管理（重置、修改）
+- 账户注销
+- 多端登录管理
 
-## 4. UserCouponVO
-作用：用户优惠券信息
-字段：
-- Long id
-- String couponName（来自Coupon）
-- CouponTypeEnum couponType
-- BigDecimal value
-- BigDecimal minAmount
-- LocalDateTime startTime
-- LocalDateTime endTime
-- UserCouponStatusEnum status
+##### 2.2 个人信息管理
+- 基本信息展示/修改（昵称、头像、性别）
+- 联系方式管理（绑定/解绑手机、邮箱）
+- 时区设置
 
-## 5. UserBehaviorVO
-作用：用户行为记录
-字段：
-- Long id
-- String productName（来自Products）
-- String behaviorTypeDesc（行为类型文字说明）
-- LocalDateTime behaviorTime
-- Integer duration
-- String deviceType
+##### 2.3 安全设置
+- 密码强度管理
+- 登录设备管理
+- 操作日志审计
+- 二次验证（短信/邮箱验证）
 
-## 6. FavoriteFolderVO
-作用：收藏夹信息展示
-字段：
-- Long id
-- String name
-- String description
-- Integer itemCount
-- FavoriteFolderStatusEnum isPublic
-- LocalDateTime updateTime
+##### 2.4 关联数据管理
+- 收货地址管理（增删改查）
+- 收藏夹管理（创建/删除收藏夹、商品收藏）
+- 购物车管理（商品增删改、选中状态）
+- 优惠券管理（领取/使用记录）
+- 行为记录（浏览、收藏、购买历史）
 
-## 7. ProductFavoriteVO
-作用：商品收藏信息
-字段：
-- Long id
-- String productName
-- BigDecimal price
-- String mainImage（首张图片）
-- LocalDateTime createTime
+#### 3. 接口清单
 
-## 8. CartVO
-作用：购物车条目详情
-字段：
-- Long id
-- String productName
-- String specValues（规格组合）
-- BigDecimal price
-- Integer quantity
-- CartCheckedStatusEnum checked
-- Integer stock（实时库存）
+##### 3.1 账户相关
+- POST /api/users/register       用户注册
+- POST /api/users/login          用户登录
+- POST /api/users/logout         用户登出
+- POST /api/users/password/reset 密码重置
 
-## 9. OrderPreviewVO
-作用：订单预览信息
-字段：
-- String orderNo
-- BigDecimal payAmount
-- OrderStatusEnum status
-- String firstProductImage
-- Integer totalQuantity
-- LocalDateTime createTime
+##### 3.2 信息管理
+- GET  /api/users/profile        获取个人信息
+- PUT  /api/users/profile        更新个人信息
+- POST /api/users/avatar         上传头像
 
-## 10. OrderDetailVO
-作用：订单详细信息
-字段：
-- OrderPreviewVO基础字段
-- List<OrderItemVO> items
-- String receiverInfo（姓名+电话）
-- String fullAddress
-- String logisticsInfo（公司+运单号）
+##### 3.3 安全相关
+- PUT  /api/users/password       修改密码
+- POST /api/users/bind-phone     绑定手机
+- POST /api/users/bind-email     绑定邮箱
 
-## 11. ReviewVO
-作用：商品评价信息
-字段：
-- Long id
-- String productName
-- Integer rating
-- String content
-- List<String> images
-- String nickname（来自Users）
-- LocalDateTime createTime
+##### 3.4 地址管理
+- GET  /api/users/addresses      获取地址列表
+- POST /api/users/addresses      新增地址
+- PUT  /api/users/addresses/{id} 修改地址
+- DELETE /api/users/addresses/{id} 删除地址
 
-## 12. UserStatisticsVO
-作用：用户行为统计
-字段：
-- Integer viewCount（浏览数）
-- Integer favoriteCount（收藏数）
-- Integer orderCount（订单数）
-- Integer reviewCount（评价数）
-- LocalDateTime lastActiveTime
+##### 3.5 收藏管理
+- GET  /api/users/favorites      获取收藏列表
+- POST /api/users/favorites      添加收藏
+- DELETE /api/users/favorites/{id} 移除收藏
 
-## 13. UserProfileVO
-作用：个人中心综合信息
-字段：
-- UserBasicVO基础信息
-- UserStatisticsVO统计信息
-- Integer unreadMessageCount
-- Integer pendingOrders
+#### 4. 实体关系
+┌──────────┐       ┌──────────────┐
+│  Users   │◄─┐    │ UserAddress  │
+└──────────┘  │    └──────────────┘
+       ▲      ├───┐      ▲
+       │      │   └──────┘
+┌────────────┐│   ┌─────────────┐
+│UserCoupon  │└──►│ UserBehavior│
+└────────────┘    └─────────────┘
+       ▲             ▲
+       │             │
+┌──────────────┐ ┌─────────────┐
+│FavoriteFolder│ │   Cart     │
+└──────────────┘ └─────────────┘
 
-## 14. UserLoginVO
-作用：登录返回信息
-字段：
-- String token
-- UserBasicVO userInfo
-- List<String> permissions
-- LocalDateTime loginTime
+### 2. 商品展示模块
 
-## 15. UserPageVO
-作用：用户分页结果
-字段：
-- Integer pageNum
-- Integer pageSize
-- Long total
-- List<UserBasicVO> list
+#### 1. 模块概述
+- 功能定位：商品信息展示与分类检索系统
+- 核心功能：分类导航、商品搜索、详情展示、多规格选择
 
-# 设计原则说明
-1. 安全脱敏：所有VO均不包含passwordHash/salt等敏感字段
-2. 关联查询：通过@TableField(select = false)控制MyBatis-Plus查询
-3. 枚举转换：使用@JsonFormat配合自定义序列化器转换枚举值为中文
-4. 地址聚合：在VO层处理省市区字段合并为完整地址
-5. 图片处理：商品图片JSON数组在VO层转换为首图URL
-6. 状态映射：订单状态等业务状态添加文字说明字段
-7. 分页封装：统一分页响应格式保持接口规范
+- 关联表：`category`（分类）、`products`（商品）、`product_spec`（规格）、`product_sku`（SKU）
 
-# 订单模块VO类扩展设计
+#### 2. 子模块划分
 
-## 1. OrderListVO
-作用：订单列表项展示
-字段：
-- String orderNo
-- BigDecimal payAmount
-- OrderStatusEnum status
-- String statusDesc（状态文字说明）
-- String firstProductImage
-- Integer productCount
-- LocalDateTime createTime（格式化为yyyy-MM-dd HH:mm）
+##### 2.1 分类管理
+- 三级分类体系展示（对应Category实体level字段）
+- 分类排序（sort字段）
+- 分类状态控制（status字段）
 
-## 2. OrderDetailVO（增强）
-作用：订单完整详情展示
-字段：
-- OrderListVO基础字段
-- List<OrderItemDetailVO> items
-- String paymentMethodDesc（支付方式说明）
-- String receiverInfo（收件人+电话）
-- String fullAddress（完整地址）
-- String logisticsInfo（物流公司+运单号）
-- BigDecimal couponAmount（优惠券抵扣金额）
-- String couponName（使用优惠券名称）
+##### 2.2 商品列表
+- 多条件筛选（价格区间、分类、库存状态）
+- 排序功能（price价格、sales销量、create_time新品）
+- 分页加载（BaseEntity分页参数）
 
-## 3. OrderItemDetailVO
-作用：订单商品明细
-字段：
-- String productName
-- String specValues
-- BigDecimal price
-- Integer quantity
-- String productImage
-- BigDecimal itemTotal
-- ReviewStatusEnum reviewStatus（评价状态）
+##### 2.3 商品详情
+- 主图/详情图展示（products.images）
+- 规格选择（product_spec.spec_values）
+- SKU库存展示（product_sku.stock）
+- 价格显示（优先显示SKU价格）
 
-## 4. OrderCreateVO
-作用：订单创建返回信息
-字段：
-- String orderNo
-- BigDecimal payAmount
-- LocalDateTime expireTime（支付截止时间）
-- List<Long> couponIds（适用的优惠券ID列表）
+##### 2.4 搜索功能
+- 关键词搜索（商品名称、描述）
+- 搜索历史记录（关联user_behavior表）
+- 热门搜索推荐
 
-## 5. OrderPaymentVO
-作用：支付信息返回
-字段：
-- String orderNo
-- BigDecimal payAmount
-- String paymentForm（支付表单内容）
-- String qrCodeUrl（支付二维码URL）
-- Integer remainSeconds（剩余支付秒数）
+#### 3. 接口清单
 
-## 6. OrderLogisticsVO
-作用：物流信息展示
-字段：
-- String logisticsCompany
-- String trackingNumber
-- String latestStatus
-- LocalDateTime updateTime
-- List<LogisticsTrace> traces（物流轨迹）
+##### 3.1 分类相关
+- GET /api/categories/tree      获取分类树
+- GET /api/categories/{id}      获取分类详情
 
-## 7. OrderStatisticsVO
-作用：订单数据统计
-字段：
-- Integer pendingPayment（待支付）
-- Integer pendingDelivery（待发货）
-- Integer pendingReceive（待收货）
-- BigDecimal monthlyAmount（本月消费金额）
-- Integer returnCount（售后数量）
+##### 3.2 商品列表
+- GET /api/products             商品分页列表
+- GET /api/products/hot         热销商品
+- GET /api/products/new         新品上市
 
-## 8. OrderPageVO
-作用：订单分页结果
-字段：
-- Integer pageNum
-- Integer pageSize
-- Long total
-- List<OrderListVO> list
+##### 3.3 商品详情
+- GET /api/products/{id}        商品基础信息
+- GET /api/products/{id}/skus   商品SKU列表
+- GET /api/products/{id}/specs  商品规格详情
 
-# 设计增强说明
-1. 状态增强：所有状态枚举字段增加对应的文字说明字段（xxxDesc）
-2. 时间格式化：使用@JsonFormat(pattern = "yyyy-MM-dd HH:mm")统一时间格式
-3. 金额处理：BigDecimal字段使用自定义序列化器保留两位小数
-4. 支付安全：支付相关VO不包含敏感支付信息，通过支付平台接口获取
-5. 物流轨迹：LogisticsTrace内部类包含时间+地点+描述信息
-6. 商品快照：保留订单创建时的商品信息，避免后续商品信息变更影响订单数据
+##### 3.4 搜索相关
+- GET /api/search               商品搜索
+- GET /api/search/history       搜索历史
+- GET /api/search/hot           热门搜索词
 
-# 商品模块VO类设计
+#### 4. 实体关系
+┌───────────┐        ┌──────────┐
+│ Category  │◄───┐   │ Products │
+└───────────┘    │   └──────────┘
+     ▲           ├─────►  ▲
+     │           │        │
+┌───────────┐    │   ┌──────────┐
+│ProductSpec│◄───┘   │ProductSku│
+└───────────┘         └──────────┘
 
-## 1. ProductListVO
-作用：商品列表展示
-字段：
-- Long id
-- String name
-- BigDecimal minPrice（最低SKU价格）
-- String mainImage（首张主图）
-- Integer sales（总销量）
-- ProductStatusEnum status
-- String statusDesc（状态说明）
-- LocalDateTime createTime
+### 3. 购物车模块
 
-## 2. ProductDetailVO
-作用：商品详情展示
-字段：
-- ProductListVO基础字段
-- String description
-- List<String> imageList（完整图片列表）
-- List<ProductSpecVO> specs（规格参数）
-- List<SkuVO> skus（SKU列表）
-- ReviewStatisticsVO reviewStats（评价统计）
+#### 1. 模块概述
+- 功能定位：用户商品暂存与结算管理
+- 核心功能：商品暂存、批量操作、选中结算、库存校验
+- 关联表：`cart`（主表）、`products`、`product_sku`
 
-## 3. SkuVO
-作用：商品SKU信息
-字段：
-- Long id
-- String specCombination（规格组合）
-- BigDecimal price
-- Integer stock
-- String mainImage
-- ProductSkuStatusEnum status
-- String stockStatus（库存状态说明）
 
-## 4. ProductSpecVO
-作用：商品规格参数
-字段：
-- String specName
-- List<String> specValues
-- Integer sort
+#### 2. 子模块划分
 
-## 5. ReviewStatisticsVO
-作用：评价统计数据
-字段：
-- Integer totalReviews
-- BigDecimal averageRating
-- Map<Integer, Integer> ratingDistribution（评分分布）
-- Integer imageReviewCount（带图评价数）
+##### 2.1 基础功能
+- 添加商品到购物车（支持SKU选择）
+- 修改商品数量（quantity字段）
+- 移除单个商品
+- 清空购物车
 
-## 6. ReviewPageVO
-作用：评价分页数据
-字段：
-- Integer pageNum
-- Integer pageSize
-- Long total
-- List<ProductReviewVO> list
+##### 2.2 批量操作
+- 全选/反选（checked字段）
+- 批量删除选中商品
+- 批量修改商品数量
 
-## 7. ProductReviewVO
-作用：商品评价详情
-字段：
-- String nickname
-- String avatar
-- Integer rating
-- String content
-- List<String> images
-- LocalDateTime createTime
-- String specValues（购买时的规格）
+##### 2.3 状态管理
+- 选中状态同步（CartCheckedStatusEnum）
+- 库存状态实时校验（关联product_sku.stock）
+- 价格变动提醒（对比product_sku.price）
 
-## 8. RecommendProductVO
-作用：推荐商品信息
-字段：
-- Long id
-- String name
-- String recommendReason
-- BigDecimal price
-- String mainImage
-- RecommendTypeEnum type
-- String typeDesc（推荐类型说明）
-- BigDecimal weight（推荐权重）
+##### 2.4 数据校验
+- 最大数量限制（单商品≤99）
+- 库存不足提示
+- 失效商品标记（商品下架时）
 
-## 9. CategoryTreeVO
-作用：分类树形结构
-字段：
-- Long id
-- String name
-- String icon
-- Integer level
-- List<CategoryTreeVO> children
+#### 3. 接口清单
 
-## 10. FavoriteProductVO
-作用：收藏商品信息
-字段：
-- Long favoriteId
-- String productName
-- BigDecimal currentPrice（现价）
-- String mainImage
-- LocalDateTime collectTime
-- String folderName（所属收藏夹）
+##### 3.1 基础操作
+- GET  /api/cart             获取购物车列表
+- POST /api/cart             添加商品到购物车
+- PUT  /api/cart/{id}        修改商品数量
+- DELETE /api/cart/{id}      移除单个商品
 
-## 11. CartProductVO
-作用：购物车商品信息
-字段：
-- Long cartId
-- ProductBasicVO productInfo
-- SkuBasicVO skuInfo
-- Integer quantity
-- Boolean checked
+##### 3.2 批量操作
+- PUT  /api/cart/batch       批量修改选中状态
+- DELETE /api/cart/batch     批量删除商品
+- POST /api/cart/clear       清空购物车
 
-## 12. ProductPageVO
-作用：商品分页结果
-字段：
-- Integer pageNum
-- Integer pageSize
-- Long total
-- List<ProductListVO> list
+##### 3.3 状态校验
+- GET  /api/cart/check       库存/价格校验
+- POST /api/cart/sync        同步本地购物车
 
-# 设计要点说明
-1. 价格展示：商品列表显示最低SKU价格，详情页展示完整SKU价格体系
-2. 图片处理：使用FastJSON的JSONArray转换图片JSON字符串为List<String>
-3. 库存状态：根据库存数量显示「充足」「紧张」「缺货」等状态
-4. 规格组合：使用Map存储规格键值对，前端渲染时生成规格矩阵
-5. 评价统计：计算好评率、带图评价比例等数据
-6. 分类展示：使用树形结构VO实现三级分类联动
-7. 实时价格：商品详情价格取自SKU表，与主商品表解耦
-8. 推荐算法：展示推荐权重和算法版本便于后期优化
-9. 收藏状态：关联收藏夹信息展示多维数据
-10. 缓存策略：为高频访问的VO数据添加@Cacheable注解
+#### 4. 实体关系
+┌──────────┐       ┌──────────┐
+│  Cart    │──────►│ Products │
+└──────────┘       └──────────┘
+   │   ▲                ▲
+   ▼   │                │
+┌──────────┐        ┌──────────┐
+│ ProductSku│◄──────┤ UserBehavior│
+└──────────┘        └──────────┘
+
+### 4. 订单模块
+
+#### 1. 模块概述
+- 功能定位：交易流程管理与订单生命周期控制
+- 核心功能：订单创建、支付处理、状态流转、物流跟踪、售后服务
+- 关联表：`orders`（主表）、`order_item`、`coupon`、`user_coupon`
+
+
+#### 2. 子模块划分
+
+##### 2.1 订单生命周期
+- 订单状态管理（OrderStatusEnum）
+- 超时自动取消（待支付订单）
+- 支付成功回调处理
+- 订单完成确认（自动/手动）
+
+##### 2.2 支付管理
+- 多支付方式接入（OrderPaymentMethodEnum）
+- 支付流水记录
+- 退款申请处理
+
+##### 2.3 物流管理
+- 物流信息绑定（logistics_company + tracking_number）
+- 物流状态查询接口
+- 签收确认（自动/手动）
+
+##### 2.4 售后服务
+- 退货/换货申请
+- 评价管理（关联product_review）
+- 投诉建议处理
+
+#### 3. 接口清单
+
+##### 3.1 订单操作
+- POST /api/orders             创建订单（购物车结算）
+- GET  /api/orders/{id}       获取订单详情
+- PUT  /api/orders/{id}/cancel 取消订单
+- GET  /api/orders            订单分页查询
+
+##### 3.2 支付相关
+- POST /api/orders/{id}/pay   发起支付
+- POST /api/pay/notify        支付回调通知
+- GET  /api/orders/{id}/payment 支付流水查询
+
+##### 3.3 物流相关
+- PUT  /api/orders/{id}/delivery 更新物流信息
+- GET  /api/orders/{id}/logistics 查询物流详情
+
+##### 3.4 售后相关
+- POST /api/orders/{id}/refund 申请退款
+- POST /api/orders/{id}/comment 提交评价
+
+#### 4. 实体关系
+┌──────────┐       ┌─────────────┐
+│  Orders  │◄──────┤ OrderItem   │
+└──────────┘1..*   └─────────────┘
+   │   ▲                ▲
+   ▼   │                │
+┌──────────┐        ┌────────────┐
+│ UserCoupon│◄─────┤  Coupon    │
+└──────────┘        └────────────┘
+   ▲                     ▲
+   │                     │
+┌──────────┐        ┌────────────┐
+│UserAddress│      │  Products  │
+└──────────┘        └────────────┘
+
+### 5. 地址管理模块
+
+#### 1. 模块概述
+- 功能定位：用户收货地址管理与智能选址服务
+- 核心功能：地址维护、智能解析、默认地址管理、使用统计
+- 关联表：`user_address`（主表）、`users`、`orders`
+
+
+#### 2. 子模块划分
+
+##### 2.1 基础功能
+- 三级地址选择（province/city/district）
+- 详细地址智能分词（detail_address）
+- 收件人信息校验（姓名、手机号格式）
+- 地址标签管理（家庭、公司等）
+
+##### 2.2 智能服务
+- 地图定位解析
+- 地址相似度检测（防重复）
+- 常用地址智能推荐
+- 历史订单地址快速复用
+
+##### 2.3 状态管理
+- 默认地址设置（is_default字段）
+- 地址使用次数统计
+- 最近使用时间记录
+
+##### 2.4 数据校验
+- 手机号格式校验（receiver_phone）
+- 地址完整性校验（必须包含省市区）
+- 最大地址数量限制（≤20条）
+
+#### 3. 接口清单
+
+##### 3.1 基础操作
+- GET  /api/addresses         地址分页列表（支持排序）
+- POST /api/addresses         新增地址（自动解析省市区）
+- PUT  /api/addresses/{id}    修改地址
+- DELETE /api/addresses/{id}  删除地址
+
+##### 3.2 智能服务
+- POST /api/addresses/parse    地址智能解析
+- GET  /api/addresses/frequent 常用地址
+- POST /api/addresses/check    地址有效性校验
+
+##### 3.3 默认地址
+- PUT  /api/addresses/default/{id} 设为默认地址
+- GET  /api/addresses/default     获取默认地址
+
+#### 4. 实体关系
+┌─────────────┐       ┌──────────────┐
+│ UserAddress │◄──────┤    Users     │
+└─────────────┘       └──────────────┘
+   ▲                       ▲
+   │                       │
+┌─────────────┐        ┌────────────┐
+│   Orders    │───────►│UserBehavior│
+└─────────────┘        └────────────┘
+
+### 6. 优惠券模块
+
+#### 1. 模块概述
+- 功能定位：营销工具与折扣策略管理
+- 核心功能：优惠券发放、领取使用、规则配置、效果分析
+- 关联表：`coupon`（主表）、`user_coupon`、`orders`、`products`
+
+
+#### 2. 子模块划分
+
+##### 2.1 发放规则
+- 优惠券类型管理（CouponTypeEnum）
+- 使用门槛设置（min_amount字段）
+- 有效期控制（start_time/end_time）
+- 发放渠道管理（活动页、注册赠送等）
+
+##### 2.2 用户侧功能
+- 优惠券领取（关联user_coupon表）
+- 我的优惠券列表（分未使用/已使用/已过期）
+- 订单自动匹配可用优惠券
+- 优惠券分享功能
+
+##### 2.3 使用限制
+- 商品分类限制（关联category表）
+- 指定商品白名单
+- 用户领取次数限制
+- 叠加使用规则
+
+##### 2.4 数据统计
+- 领取/使用率分析
+- 优惠金额统计
+- 效果对比报表
+- 过期提醒推送
+
+#### 3. 接口清单
+
+##### 3.1 管理端
+- POST /api/coupons         创建优惠券
+- PUT  /api/coupons/{id}    修改优惠券
+- POST /api/coupons/batch   批量发放
+- GET  /api/coupons/stats   优惠券统计
+
+##### 3.2 用户端
+- GET  /api/coupons         可领取优惠券列表
+- POST /api/coupons/{id}    领取优惠券
+- GET  /api/coupons/my      我的优惠券
+- GET  /api/coupons/usable  订单可用优惠券
+
+##### 3.3 订单集成
+- POST /api/coupons/apply   应用优惠券到订单
+- POST /api/coupons/refund 优惠券退回处理
+
+#### 4. 实体关系
+┌──────────┐        ┌─────────────┐
+│  Coupon  │◄──────┤ UserCoupon  │
+└──────────┘1..*   └─────────────┘
+   ▲   │                ▲
+   │   ▼                │
+┌──────────┐        ┌────────────┐
+│ Orders   │───────►│  Products  │
+└──────────┘        └────────────┘
+
+### 7. 收藏与推荐模块
+
+#### 1. 模块概述
+- 功能定位：用户兴趣管理与智能推荐服务
+- 核心功能：收藏管理、推荐策略、行为分析、个性化展示
+- 关联表：`favorite_folder`、`product_favorite`、`recommend_product`、`user_behavior`
+
+
+#### 2. 子模块划分
+
+##### 2.1 收藏管理
+- 收藏夹创建/删除（favorite_folder表）
+- 商品收藏/取消（product_favorite表）
+- 收藏分类管理（folder_id字段）
+- 公开/私密设置（is_public字段）
+
+##### 2.2 推荐策略
+- 热门推荐（recommend_product.type=1）
+- 新品推荐（recommend_product.type=2）
+- 协同过滤推荐
+- 基于收藏的相似推荐
+
+##### 2.3 行为分析
+- 用户行为记录（user_behavior表）
+- 兴趣标签生成
+- 浏览深度分析（duration字段）
+- 设备偏好分析（device_type字段）
+
+##### 2.4 推荐管理
+- 推荐位管理（首页/商品详情页等）
+- 推荐算法版本控制（algorithm_version字段）
+- 推荐效果AB测试
+- 人工干预推荐（recommend_reason字段）
+
+#### 3. 接口清单
+
+##### 3.1 收藏相关
+- GET  /api/favorites/folders   收藏夹列表
+- POST /api/favorites/folders    创建收藏夹
+- DELETE /api/favorites/folders/{id} 删除收藏夹
+- POST /api/favorites/{productId} 收藏商品
+- DELETE /api/favorites/{productId} 取消收藏
+
+##### 3.2 推荐相关
+- GET  /api/recommend/hot       热门推荐
+- GET  /api/recommend/new       新品推荐
+- GET  /api/recommend/personal  个性化推荐
+- GET  /api/recommend/similar/{productId} 相似商品推荐
+
+##### 3.3 行为记录
+- POST /api/behaviors           记录用户行为
+- GET  /api/behaviors/analysis  行为分析报告
+
+#### 4. 实体关系
+┌──────────────┐       ┌─────────────────┐
+│FavoriteFolder│◄─────┤ ProductFavorite │
+└──────────────┘       └─────────────────┘
+   ▲   │                        ▲
+   │   ▼                        │
+┌──────────────┐        ┌────────────────┐
+│RecommendProduct│◄────┤  UserBehavior  │
+└──────────────┘        └────────────────┘
+
+### 8. 评价与互动模块
+
+#### 1. 模块概述
+- 功能定位：用户评价管理与商品互动交流
+- 核心功能：评价管理、问答互动、内容审核、数据分析
+- 关联表：`product_review`（主表）、`users`、`products`、`orders`
+
+
+
+#### 2. 子模块划分
+
+##### 2.1 评价管理
+- 评价发布（关联订单完成状态）
+- 评价修改/追评
+- 评价图片上传（images字段）
+- 评分统计（rating字段）
+
+##### 2.2 互动功能
+- 评价点赞/点踩
+- 用户问答（商品咨询）
+- 评价回复（商家回复）
+- 举报不良评价
+
+##### 2.3 审核流程
+- 自动敏感词过滤
+- 人工审核（status字段）
+- 审核记录追踪
+- 评价隐藏/删除
+
+##### 2.4 数据统计
+- 评分分布分析（RatingEnum）
+- 评价关键词提取
+- 回复及时率统计
+- 用户参与度分析
+
+#### 3. 接口清单
+
+##### 3.1 用户端
+- POST /api/reviews          发布评价
+- GET  /api/reviews          商品评价列表（分页）
+- POST /api/reviews/{id}/like 点赞评价
+- POST /api/reviews/questions 提交商品咨询
+
+##### 3.2 管理端
+- PUT  /api/reviews/{id}/status 修改审核状态
+- GET  /api/reviews/pending   待审核评价列表
+- GET  /api/reviews/stats     评价统计报表
+- POST /api/reviews/{id}/reply 商家回复
+
+##### 3.3 商品集成
+- GET  /api/products/{id}/reviews 商品评价概览
+- GET  /api/products/{id}/rating 商品评分统计
+- GET  /api/products/{id}/hot-reviews 热门评价
+
+#### 4. 实体关系
+┌──────────────┐       ┌──────────────┐
+│ProductReview│◄─────┤    Users     │
+└──────────────┘       └──────────────┘
+   ▲   │                        ▲
+   │   ▼                        │
+┌──────────────┐        ┌────────────┐
+│  Products   │◄───────┤  Orders    │
+└──────────────┘        └────────────┘
+
+### 9. 用户行为分析模块
+
+#### 1. 模块概述
+- 功能定位：用户行为数据采集与分析系统
+- 核心功能：行为追踪、数据分析、用户画像、智能预警
+- 关联表：`user_behavior`（主表）、`users`、`products`、`orders`
+
+
+
+#### 2. 子模块划分
+
+##### 2.1 数据采集
+- 全埋点采集（浏览/收藏/购买）
+- 自定义事件追踪
+- 页面停留时长统计（duration字段）
+- 设备信息记录（device_type字段）
+
+##### 2.2 行为分析
+- 用户路径分析
+- 转化漏斗分析
+- 热力图分析
+- 跳出率/留存率计算
+
+##### 2.3 用户画像
+- 基础属性标签（性别、地区）
+- 行为特征标签（浏览偏好、购买力）
+- 设备偏好分析
+- RFM模型分析
+
+##### 2.4 智能应用
+- 异常行为检测
+- 实时流量监控
+- 自动生成分析报告
+- 行为预测模型
+
+#### 3. 接口清单
+
+##### 3.1 数据采集
+- POST /api/behaviors         记录用户行为（兼容多种事件类型）
+- POST /api/behaviors/batch   批量记录行为
+
+##### 3.2 分析查询
+- GET  /api/analytics/behavior 行为分析报告
+- GET  /api/analytics/funnel  转化漏斗分析
+- GET  /api/analytics/retention 用户留存分析
+
+##### 3.3 用户画像
+- GET  /api/profiles/{userId} 用户完整画像
+- GET  /api/profiles/tags     用户标签库
+- POST /api/profiles/segment 用户分群查询
+
+##### 3.4 监控预警
+- GET  /api/monitor/realtime  实时监控看板
+- POST /api/alerts/rules      预警规则设置
+- GET  /api/alerts/history    预警历史记录
+
+#### 4. 实体关系
+┌──────────────┐       ┌──────────────┐
+│UserBehavior │◄─────┤    Users     │
+└──────────────┘       └──────────────┘
+   ▲   │                        ▲
+   │   ▼                        │
+┌──────────────┐        ┌────────────┐
+│  Products   │◄───────┤  Orders    │
+└──────────────┘        └────────────┘
+
+### 10. 后台管理模块
+
+#### 1. 模块概述
+- 功能定位：系统综合管理与数据监控中心
+- 核心功能：全局数据管理、权限控制、运营分析、系统监控
+- 关联表：`users`（管理员）、`products`、`orders`、`coupon`等全表
+
+
+
+#### 2. 子模块划分
+
+##### 2.1 用户管理
+- 用户列表查询（过滤：角色/状态）
+- 用户状态修改（启用/禁用）
+- 角色权限分配（UserRoleEnum）
+- 操作日志审计
+
+##### 2.2 商品管理
+- 商品上下架管理（ProductStatusEnum）
+- 商品信息审核
+- 分类管理（CategoryStatusEnum控制）
+- 评价审核（关联product_review.status）
+
+##### 2.3 订单管理
+- 订单状态追踪（OrderStatusEnum）
+- 退款/退货审核
+- 物流信息维护
+- 交易数据统计
+
+##### 2.4 营销管理
+- 优惠券发放（批量生成user_coupon）
+- 推荐位管理（RecommendProduct）
+- 活动页面配置
+- 广告位管理
+
+##### 2.5 数据统计
+- 实时数据看板
+- 销售数据多维分析
+- 用户行为分析（基于user_behavior）
+- 商品热度排行
+
+##### 2.6 系统设置
+- 权限角色管理
+- 系统参数配置
+- 操作日志查询
+- 敏感词过滤设置
+
+#### 3. 接口清单
+
+##### 3.1 用户管理
+- GET  /admin/users         用户分页列表
+- PUT  /admin/users/{id}    修改用户信息
+- PUT  /admin/users/{id}/status 修改用户状态
+- GET  /admin/users/logs    操作日志查询
+
+##### 3.2 商品管理
+- POST /admin/products/audit 商品审核
+- PUT  /admin/products/{id}/status 商品状态修改
+- GET  /admin/categories    分类树管理
+- PUT  /admin/reviews/{id}/status 评价审核
+
+##### 3.3 订单管理
+- GET  /admin/orders        订单高级查询
+- PUT  /admin/orders/{id}/status 强制修改订单状态
+- POST /admin/orders/{id}/refund 人工退款
+- GET  /admin/orders/stats  订单统计报表
+
+##### 3.4 营销管理
+- POST /admin/coupons      创建优惠券
+- POST /admin/recommends    配置推荐商品
+- GET  /admin/activities    营销活动管理
+- POST /admin/banners       轮播图管理
+
+##### 3.5 数据统计
+- GET  /admin/stats/realtime 实时数据看板
+- GET  /admin/stats/sales   销售数据多维分析
+- GET  /admin/stats/user-growth 用户增长分析
+- GET  /admin/stats/hot-products 商品热度榜
+
+##### 3.6 系统设置
+- GET  /admin/roles         角色权限列表
+- POST /admin/params        系统参数配置
+- GET  /admin/sensitive-words 敏感词管理
+- GET  /admin/database/monitor 数据库监控
+
+#### 4. 实体关系
+┌──────────┐       ┌──────────────┐
+│  Admin   │──────►│ SystemConfig │
+└──────────┘       └──────────────┘
+   │   ▲
+   ▼   │
+┌──────────┐       ┌──────────────┐
+│ AuditLog│◄─────┤  All Entities │
+└──────────┘       └──────────────┘
+
+### 11. 通用功能模块
+
+#### 1. 模块概述
+- 功能定位：系统级基础服务与跨模块功能支持
+- 核心功能：文件管理、消息通知、系统配置、全局服务
+
+
+- 关联表：`system_config`（需新增）、`files`（需新增）、`sms_log`（需新增）
+
+#### 2. 子模块划分
+
+##### 2.1 文件服务
+- 统一文件上传（兼容本地/OSS）
+- 图片处理（缩放、裁剪、水印）
+- 文件分类管理（商品图/头像/评价图）
+- 文件访问权限控制
+
+##### 2.2 消息服务
+- 短信验证码发送（注册/登录场景）
+- 站内信通知（订单状态变更）
+- 邮件通知（密码重置）
+- 消息模板管理
+
+##### 2.3 系统服务
+- 地区数据管理（省市区三级联动）
+- 时区时间转换（基于Orders时区字段）
+- 数据字典管理（枚举值维护）
+- 系统参数配置
+
+##### 2.4 公共服务
+- 图形验证码生成
+- 全局ID生成服务
+- 数据导出（Excel/CSV）
+- 第三方服务对接（支付/物流）
+
+#### 3. 接口清单
+
+##### 3.1 文件服务
+- POST /api/files/upload      文件上传
+- GET  /api/files/{id}       文件下载
+- DELETE /api/files/{id}     文件删除
+- POST /api/images/process   图片处理
+
+##### 3.2 消息服务
+- POST /api/sms/send         发送短信
+- GET  /api/messages         站内信列表
+- POST /api/emails/send      发送邮件
+- GET  /api/messages/templates 消息模板
+
+##### 3.3 系统服务
+- GET  /api/regions         获取地区数据
+- GET  /api/time/convert    时区时间转换
+- GET  /api/dict/{type}     数据字典查询
+- PUT  /api/configs/{key}   修改系统参数
+
+##### 3.4 公共服务
+- GET  /api/captcha          获取图形验证码
+- GET  /api/export/{type}    数据导出
+- POST /api/third-party/callback 第三方回调
+
+#### 4. 实体关系
+┌────────────┐       ┌──────────────┐
+│ SystemConfig│◄─────┤  All Modules │
+└────────────┘       └──────────────┘
+   ▲   │
+   │   ▼
+┌────────────┐       ┌──────────────┐
+│   File    │◄─────┤  SmsLog     │
+└────────────┘       └──────────────┘
