@@ -77,6 +77,9 @@ public interface CartMapper extends BaseMapper<Cart> {
     int updateQuantityWithLock(@Param("cartId") Long cartId,
                                @Param("quantity") Integer quantity,
                                @Param("version") Integer version);
+
+    @Select("SELECT * FROM cart WHERE user_id = #{userId}")
+    List<Cart> selectByUserId(@Param("userId") Long userId);
 }
 
 

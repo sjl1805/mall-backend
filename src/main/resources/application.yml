@@ -35,10 +35,12 @@ spring:
         max-idle: 10      # 连接池中的最大空闲连接
         min-idle: 5       # 连接池中的最小空闲连接
       shutdown-timeout: 100ms  # 关闭超时时间
+  main:
+    allow-bean-definition-overriding: true
 
 jwt:
   expiration-hours: 24  # 令牌有效期（小时）
-  secret-key: "your-256-bit-secret-key-in-base64-format" # 示例：使用 openssl rand -base64 32 生成
+  secret-key: "c3VwZXItc2VjdXJlLXNlY3JldC1rZXktZm9yLWhzMjU2LWF1dGg=" # 替换为有效的Base64编码字符串
   issuer: "mall-backend"  # 新增签发者标识
   algorithm: HS256       # 指定签名算法
 
@@ -59,22 +61,21 @@ springdoc:
   default-produces-media-type: application/json
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.model.entity 
+  type-aliases-package: com.example.model.entity
 
 mybatis-plus:
+  type-aliases-package: com.example.model.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
-  type-enums-package: com.example.model.enums # 枚举包路径
   global-config:
     db-config:
-      id-type: auto
-
-      logic-delete-field: deleted  # 逻辑删除字段
+      id-type: assign_id
+      logic-delete-field: deleted
       logic-delete-value: 1
-      logic-not-delete-value: 0 
+      logic-not-delete-value: 0
+  # 如果使用纯注解方式，请注释掉以下配置
+  # mapper-locations: classpath*:mapper/**/*.xml
 
 # 可选缓存配置
 cache:
