@@ -10,13 +10,14 @@ import com.example.model.enums.UserStatusEnum;
 
 import java.util.Optional;
 
+
 /**
  * @author 31815
  * @description 针对表【users(用户表)】的数据库操作Service
  * @createDate 2025-02-10 02:08:11
  */
 public interface UsersService extends IService<Users> {
-    Optional<Users> getUserByLoginId(String loginId);
+
 
     Optional<Users> getUserByPhone(String phone);
 

@@ -1,6 +1,6 @@
 package com.example.config;
 
-import com.example.common.ApiResponse;
+import com.example.common.Result;
 import com.example.common.ResultCode;
 import com.example.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,15 +20,16 @@ public class GlobalExceptionHandler {
 
     // 处理业务异常
     @ExceptionHandler(BusinessException.class)
-    public ApiResponse<?> handleBusinessException(BusinessException e, HttpServletRequest request) {
+    public Result<?> handleBusinessException(BusinessException e, HttpServletRequest request) {
         log.warn("业务异常 => URI: {} | 错误码: {} | 错误信息: {}",
                 request.getRequestURI(), e.getResultCode().getCode(), e.getMessage());
-        return ApiResponse.fail(e.getResultCode());
+        return Result.error(e.getResultCode().getCode(), e.getMessage());
     }
+
 
     // 处理参数校验异常
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
-    public ApiResponse<?> handleValidationException(Exception e) {
+    public Result<?> handleValidationException(Exception e) {
         String errorMsg = "参数校验失败";
         //Object errorSource = null;
 
@@ -39,27 +40,30 @@ public class GlobalExceptionHandler {
             FieldError fieldError = ((BindException) e).getBindingResult().getFieldError();
             errorMsg = fieldError != null ? fieldError.getDefaultMessage() : "无效的请求参数";
         }
-        return ApiResponse.fail(ResultCode.BAD_REQUEST.getCode(), errorMsg);
+        return Result.error(ResultCode.BAD_REQUEST.getCode(), errorMsg);
     }
+
 
     // 处理请求参数格式错误
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ApiResponse<?> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
+    public Result<?> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
         log.error("请求参数解析失败: {}", e.getMessage());
-        return ApiResponse.fail(ResultCode.BAD_REQUEST.getCode(), "请求参数格式错误");
+        return Result.error(ResultCode.BAD_REQUEST.getCode(), "请求参数格式错误");
     }
+
 
     // 处理其他未捕获异常
     @ExceptionHandler(Exception.class)
-    public ApiResponse<?> handleException(Exception e, HttpServletRequest request) {
+    public Result<?> handleException(Exception e, HttpServletRequest request) {
         log.error("系统异常 => URI: {} | 错误信息: {}", request.getRequestURI(), e.getMessage(), e);
-        return ApiResponse.fail(ResultCode.INTERNAL_ERROR);
+        return Result.error(ResultCode.INTERNAL_ERROR.getCode(), e.getMessage());
     }
+
 
     // 处理JSR303校验异常
     @ExceptionHandler(ConstraintViolationException.class)
-    public ApiResponse<?> handleConstraintViolationException(ConstraintViolationException e) {
+    public Result<?> handleConstraintViolationException(ConstraintViolationException e) {
         String errorMsg = e.getConstraintViolations().iterator().next().getMessage();
-        return ApiResponse.fail(ResultCode.BAD_REQUEST.getCode(), errorMsg);
+        return Result.error(ResultCode.BAD_REQUEST.getCode(), errorMsg);
     }
 } 

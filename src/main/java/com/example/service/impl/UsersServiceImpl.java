@@ -24,13 +24,7 @@ import java.util.Optional;
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         implements UsersService {
 
-
     private final UsersMapper usersMapper;
-
-    @Override
-    public Optional<Users> getUserByLoginId(String loginId) {
-        return usersMapper.selectByLoginId(loginId);
-    }
 
     @Override
     public Optional<Users> getUserByPhone(String phone) {

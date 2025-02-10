@@ -37,8 +37,10 @@ spring:
       shutdown-timeout: 100ms  # 关闭超时时间
 
 jwt:
-  token-expire-hour: 24  # token有效期(小时)
-  secret-key: "your-secret-key-here-please-change-it-to-a-secure-random-string" # 建议使用Base64编码的256位随机字符串
+  expiration-hours: 24  # 令牌有效期（小时）
+  secret-key: "your-256-bit-secret-key-in-base64-format" # 示例：使用 openssl rand -base64 32 生成
+  issuer: "mall-backend"  # 新增签发者标识
+  algorithm: HS256       # 指定签名算法
 
 springdoc:
   swagger-ui:
