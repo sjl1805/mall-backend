@@ -41,6 +41,7 @@ springdoc:
     contact:
       name: Developer
       email: dev@example.com 
+  default-produces-media-type: application/json
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

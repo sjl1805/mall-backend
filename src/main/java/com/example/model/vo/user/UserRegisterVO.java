@@ -17,8 +17,8 @@ public class UserRegisterVO {
 
     @Schema(name = "password", description = "密码", example = "Test1234", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "密码不能为空")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$", 
-             message = "密码需8-20位且包含字母和数字")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+            message = "密码需8-20位且包含字母和数字")
     private String password;
 
     @Schema(name = "phone", description = "手机号", example = "13800138000", requiredMode = Schema.RequiredMode.REQUIRED)

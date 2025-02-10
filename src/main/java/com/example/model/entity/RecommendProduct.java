@@ -3,14 +3,13 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.RecommendProductStatusEnum;
+import com.example.model.enums.RecommendTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import com.example.model.enums.RecommendProductStatusEnum;
-import com.example.model.enums.RecommendTypeEnum;
 
 /**
  * 推荐商品表

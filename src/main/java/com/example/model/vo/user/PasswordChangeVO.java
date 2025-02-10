@@ -12,8 +12,8 @@ public class PasswordChangeVO {
 
     @Schema(name = "newPassword", description = "新密码", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "新密码不能为空")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$", 
-             message = "密码需8-20位且包含字母和数字")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+            message = "密码需8-20位且包含字母和数字")
     private String newPassword;
 
     // Getters and Setters
