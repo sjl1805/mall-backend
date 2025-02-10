@@ -16,7 +16,6 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:24
  * @Entity gg.model.Category
  */
-@Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
     @Results(id = "categoryTreeMap", value = {

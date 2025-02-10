@@ -20,7 +20,7 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:11
  * @Entity gg.model.Users
  */
-@Mapper
+
 public interface UsersMapper extends BaseMapper<Users> {
 
     /**

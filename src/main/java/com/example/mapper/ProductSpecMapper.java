@@ -15,7 +15,6 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:54
  * @Entity gg.model.ProductSpec
  */
-@Mapper
 public interface ProductSpecMapper extends BaseMapper<ProductSpec> {
 
     /**

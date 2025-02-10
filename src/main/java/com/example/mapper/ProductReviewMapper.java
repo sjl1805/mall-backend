@@ -16,7 +16,6 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:09:03
  * @Entity gg.model.ProductReview
  */
-@Mapper
 public interface ProductReviewMapper extends BaseMapper<ProductReview> {
 
     @Results(id = "adminReviewMap", value = {

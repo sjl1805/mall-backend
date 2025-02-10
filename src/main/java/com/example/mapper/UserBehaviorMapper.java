@@ -19,7 +19,6 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:35
  * @Entity gg.model.UserBehavior
  */
-@Mapper
 public interface UserBehaviorMapper extends BaseMapper<UserBehavior> {
 
     /**

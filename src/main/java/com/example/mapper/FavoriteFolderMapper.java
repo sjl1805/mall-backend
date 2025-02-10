@@ -14,8 +14,8 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:17
  * @Entity gg.model.FavoriteFolder
  */
-@Mapper
 public interface FavoriteFolderMapper extends BaseMapper<FavoriteFolder> {
+
 
     @Results(id = "folderMap", value = {
             @Result(property = "isPublic", column = "is_public"),

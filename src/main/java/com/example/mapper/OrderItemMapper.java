@@ -14,7 +14,6 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:15
  * @Entity gg.model.OrderItem
  */
-@Mapper
 public interface OrderItemMapper extends BaseMapper<OrderItem> {
 
     @Results(id = "orderItemMap", value = {

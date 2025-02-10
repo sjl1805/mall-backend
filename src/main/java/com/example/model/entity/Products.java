@@ -3,11 +3,14 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.example.model.enums.ProductStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 商品表
@@ -46,7 +49,8 @@ public class Products extends BaseEntity {
     /**
      * 商品图片JSON数组
      */
-    private Object images;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> images;
     /**
      * 商品状态：0-下架 1-上架
      */

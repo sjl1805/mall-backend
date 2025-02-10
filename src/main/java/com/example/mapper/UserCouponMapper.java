@@ -14,7 +14,6 @@ import java.util.List;
  * @createDate 2025-02-10 02:08:27
  * @Entity gg.model.UserCoupon
  */
-@Mapper
 public interface UserCouponMapper extends BaseMapper<UserCoupon> {
 
     /**

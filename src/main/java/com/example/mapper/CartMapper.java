@@ -13,7 +13,6 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:28
  * @Entity gg.model.Cart
  */
-@Mapper
 public interface CartMapper extends BaseMapper<Cart> {
 
     @Results(id = "cartItemMap", value = {

@@ -13,7 +13,6 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:07
  * @Entity gg.model.ProductFavorite
  */
-@Mapper
 public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
 
     @Results(id = "favoriteItemMap", value = {

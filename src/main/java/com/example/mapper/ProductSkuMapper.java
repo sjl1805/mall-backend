@@ -17,7 +17,6 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:59
  * @Entity gg.model.ProductSku
  */
-@Mapper
 public interface ProductSkuMapper extends BaseMapper<ProductSku> {
 
     /**

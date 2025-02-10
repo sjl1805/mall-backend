@@ -15,8 +15,8 @@ import java.util.List;
  * @createDate 2025-02-10 02:09:21
  * @Entity gg.model.Coupon
  */
-@Mapper
 public interface CouponMapper extends BaseMapper<Coupon> {
+
 
     @Results(id = "adminCouponMap", value = {
             @Result(property = "totalIssued", column = "total_issued"),

@@ -16,7 +16,6 @@ import java.util.Optional;
  * @createDate 2025-02-10 02:08:40
  * @Entity gg.model.UserAddress
  */
-@Mapper
 public interface UserAddressMapper extends BaseMapper<UserAddress> {
 
     /**
