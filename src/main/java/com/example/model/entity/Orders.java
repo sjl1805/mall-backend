@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.model.enums.OrderStatusEnum;
+import com.example.model.enums.OrderPaymentMethodEnum;
+import com.example.model.enums.OrderCommentStatusEnum;
 
 /**
  * 订单表
@@ -72,7 +74,7 @@ public class Orders extends BaseEntity {
     /**
      * 支付方式：1-支付宝 2-微信 3-银联
      */
-    private Integer paymentMethod;
+    private OrderPaymentMethodEnum paymentMethod;
     /**
      * 物流公司
      */
@@ -84,7 +86,7 @@ public class Orders extends BaseEntity {
     /**
      * 评价状态：0未评价 1已评价
      */
-    private Integer commentStatus;
+    private OrderCommentStatusEnum commentStatus;
     /**
      * 时区信息
      */
