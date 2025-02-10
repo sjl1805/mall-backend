@@ -2,10 +2,17 @@ package com.example.model.dto.cart;
 
 import com.example.model.enums.CartCheckedStatusEnum;
 import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "购物车分页查询参数")
 @Data
 public class CartPageQueryDTO {
+    @Schema(description = "商品名称模糊查询", example = "手机")
     private String productName;
+    
+    @Schema(description = "选中状态过滤", implementation = CartCheckedStatusEnum.class)
     private CartCheckedStatusEnum checkedStatus;
-    private Boolean inStock; // 是否只查有库存
+    
+    @Schema(description = "是否仅显示有库存商品", example = "true")
+    private Boolean inStock;
 } 
