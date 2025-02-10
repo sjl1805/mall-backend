@@ -1,8 +1,7 @@
 package com.example.model.dto.coupon;
 
-import com.example.model.enums.CouponTypeEnum;
+
 import lombok.Data;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
