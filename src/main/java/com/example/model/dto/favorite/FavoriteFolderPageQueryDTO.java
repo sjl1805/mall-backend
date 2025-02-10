@@ -1,14 +1,18 @@
 package com.example.model.dto.favorite;
 
+import com.example.model.dto.PaginationDTO;
 import com.example.model.enums.FavoriteFolderStatusEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Schema(description = "收藏夹分页查询参数")
 @Data
-public class FavoriteFolderPageQueryDTO {
+@EqualsAndHashCode(callSuper = true)
+public class FavoriteFolderPageQueryDTO extends PaginationDTO<AdminFavoriteFolderDTO> {
     @Schema(description = "收藏夹名称（模糊查询）", example = "数码")
     private String name;
+
 
     @Schema(description = "收藏夹状态", implementation = FavoriteFolderStatusEnum.class)
     private FavoriteFolderStatusEnum status;

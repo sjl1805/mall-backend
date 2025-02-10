@@ -1,16 +1,20 @@
 package com.example.model.dto.behavior;
 
+import com.example.model.dto.PaginationDTO;
 import com.example.model.enums.UserBehaviorTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 @Schema(description = "用户行为分页查询参数")
 @Data
-public class BehaviorPageQueryDTO {
+@EqualsAndHashCode(callSuper = true)
+public class BehaviorPageQueryDTO extends PaginationDTO<AdminBehaviorDTO> {
     @Schema(description = "用户ID", example = "12345")
     private Long userId;
+
 
     @Schema(description = "商品ID", example = "3001")
     private Long productId;

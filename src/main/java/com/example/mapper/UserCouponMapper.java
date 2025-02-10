@@ -1,13 +1,10 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.coupon.CouponPageQueryDTO;
-import com.example.model.dto.coupon.UserCouponDTO;
 import com.example.model.entity.UserCoupon;
 import org.apache.ibatis.annotations.*;
-import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 
 import java.util.List;
 
@@ -44,9 +41,10 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "</if>" +
             "ORDER BY uc.get_time DESC" +
             "</script>")
-    IPage<UserCouponDTO> selectUserCoupons(Page<UserCouponDTO> page,
-                                          @Param("userId") Long userId,
-                                          @Param("query") CouponPageQueryDTO query);
+    @Options(useCache = true, flushCache = Options.FlushCachePolicy.FALSE)
+    CouponPageQueryDTO selectUserCoupons(@Param("query") CouponPageQueryDTO query,
+                                         @Param("userId") Long userId
+    );
 
     /**
      * 批量标记优惠券为已使用
@@ -60,6 +58,7 @@ public interface UserCouponMapper extends BaseMapper<UserCoupon> {
             "AND user_id = #{userId} " +
             "AND status = 'UNUSED'" +
             "</script>")
+    @Options(timeout = 30)
     int batchMarkAsUsed(@Param("couponIds") List<Long> couponIds, @Param("userId") Long userId);
 
     /**

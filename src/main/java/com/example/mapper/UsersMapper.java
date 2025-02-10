@@ -1,9 +1,8 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.user.AdminUserDTO;
+import com.example.model.dto.user.UserPageQueryDTO;
 import com.example.model.entity.Users;
 import com.example.model.enums.UserRoleEnum;
 import com.example.model.enums.UserStatusEnum;
@@ -55,10 +54,8 @@ public interface UsersMapper extends BaseMapper<Users> {
             "</where>" +
             "ORDER BY create_time DESC" +
             "</script>")
-    IPage<AdminUserDTO> selectAdminUserList(Page<AdminUserDTO> page,
-                                           @Param("role") UserRoleEnum role,
-                                           @Param("username") String username,
-                                           @Param("phone") String phone);
+    UserPageQueryDTO selectAdminUserList(@Param("query") UserPageQueryDTO query);
+
 
     /**
      * 根据ID获取管理员视角用户详情

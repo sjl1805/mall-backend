@@ -1,9 +1,6 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.dto.sku.AdminSkuDTO;
 import com.example.model.dto.sku.SkuDetailDTO;
 import com.example.model.dto.sku.SkuPageQueryDTO;
 import com.example.model.entity.ProductSku;
@@ -50,8 +47,8 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
             "</where>" +
             "ORDER BY sku.create_time DESC" +
             "</script>")
-    IPage<AdminSkuDTO> selectAdminSkuList(Page<AdminSkuDTO> page,
-                                         @Param("query") SkuPageQueryDTO query);
+    SkuPageQueryDTO selectAdminSkuList(@Param("query") SkuPageQueryDTO query);
+
 
     /**
      * 更新SKU库存（带乐观锁）

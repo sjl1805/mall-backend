@@ -1,14 +1,12 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.model.dto.address.AddressPageQueryDTO;
-import com.example.model.dto.address.AdminAddressDTO;
 import com.example.model.entity.UserAddress;
 import com.example.model.enums.UserAddressStatusEnum;
 import org.apache.ibatis.annotations.*;
-import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +39,8 @@ public interface UserAddressMapper extends BaseMapper<UserAddress> {
             "</where>" +
             "ORDER BY a.create_time DESC" +
             "</script>")
-    IPage<AdminAddressDTO> selectAdminAddressList(Page<AdminAddressDTO> page, @Param("query") AddressPageQueryDTO query);
+    AddressPageQueryDTO selectAdminAddressList(@Param("query") AddressPageQueryDTO query);
+
 
     /**
      * 设置用户默认地址（带事务）

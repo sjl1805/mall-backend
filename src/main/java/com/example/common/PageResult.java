@@ -10,13 +10,13 @@ import java.util.List;
 public class PageResult<T> {
     @Schema(name = "total", description = "总记录数", example = "100")
     private long total;
-    
+
     @Schema(name = "list", description = "数据列表")
     private List<T> list;
-    
+
     @Schema(name = "page", description = "当前页码", example = "1")
     private int page;
-    
+
     @Schema(name = "size", description = "每页数量", example = "10")
     private int size;
 

@@ -1,9 +1,6 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.dto.favorite.FavoriteItemDTO;
 import com.example.model.dto.favorite.FavoritePageQueryDTO;
 import com.example.model.entity.ProductFavorite;
 import org.apache.ibatis.annotations.*;
@@ -43,9 +40,9 @@ public interface ProductFavoriteMapper extends BaseMapper<ProductFavorite> {
             "</if>" +
             "ORDER BY pf.create_time DESC" +
             "</script>")
-    IPage<FavoriteItemDTO> selectFavoriteItems(Page<FavoriteItemDTO> page,
-                                              @Param("userId") Long userId,
-                                              @Param("query") FavoritePageQueryDTO query);
+    FavoritePageQueryDTO selectFavoriteItems(@Param("userId") Long userId,
+                                             @Param("query") FavoritePageQueryDTO query);
+
 
     @Update("<script>" +
             "DELETE FROM product_favorite " +

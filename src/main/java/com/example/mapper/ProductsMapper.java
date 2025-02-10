@@ -1,9 +1,6 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.dto.product.AdminProductDTO;
 import com.example.model.dto.product.ProductDetailDTO;
 import com.example.model.dto.product.ProductPageQueryDTO;
 import com.example.model.entity.Products;
@@ -51,8 +48,8 @@ public interface ProductsMapper extends BaseMapper<Products> {
             "</where>" +
             "ORDER BY p.create_time DESC" +
             "</script>")
-    IPage<AdminProductDTO> selectAdminProductList(Page<AdminProductDTO> page,
-                                                 @Param("query") ProductPageQueryDTO query);
+    ProductPageQueryDTO selectAdminProductList(@Param("query") ProductPageQueryDTO query);
+
 
     /**
      * 更新商品库存（带乐观锁）

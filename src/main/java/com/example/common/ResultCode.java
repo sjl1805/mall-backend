@@ -63,7 +63,7 @@ public enum ResultCode {
 
     @Schema(name = "code", description = "状态码", example = "200")
     private final int code;
-    
+
 
     @Schema(name = "message", description = "状态信息", example = "操作成功")
     private final String message;

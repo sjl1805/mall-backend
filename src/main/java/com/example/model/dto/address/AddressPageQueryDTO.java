@@ -1,13 +1,17 @@
 package com.example.model.dto.address;
 
+import com.example.model.dto.PaginationDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Schema(description = "地址分页查询参数")
 @Data
-public class AddressPageQueryDTO {
+@EqualsAndHashCode(callSuper = true)
+public class AddressPageQueryDTO extends PaginationDTO<AdminAddressDTO> {
     @Schema(description = "收货人姓名（模糊查询）", example = "张")
     private String receiverName;
+
 
     @Schema(description = "手机号（模糊查询）", example = "1380")
     private String receiverPhone;

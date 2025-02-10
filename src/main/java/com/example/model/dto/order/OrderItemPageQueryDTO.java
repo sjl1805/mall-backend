@@ -1,15 +1,19 @@
 package com.example.model.dto.order;
 
+import com.example.model.dto.PaginationDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 @Schema(description = "订单项分页查询参数")
 @Data
-public class OrderItemPageQueryDTO {
+@EqualsAndHashCode(callSuper = true)
+public class OrderItemPageQueryDTO extends PaginationDTO<AdminOrderItemDTO> {
     @Schema(description = "订单编号", example = "20240315123456")
     private String orderNo;
+
 
     @Schema(description = "商品名称（模糊查询）", example = "手机")
     private String productName;

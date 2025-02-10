@@ -1,14 +1,12 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.model.dto.recommend.AdminRecommendDTO;
 import com.example.model.dto.recommend.RecommendDetailDTO;
 import com.example.model.dto.recommend.RecommendPageQueryDTO;
 import com.example.model.entity.RecommendProduct;
 import org.apache.ibatis.annotations.*;
-import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
+
 import java.util.Optional;
 
 /**
@@ -39,7 +37,8 @@ public interface RecommendProductMapper extends BaseMapper<RecommendProduct> {
             + "   <if test='query.status != null'>AND rp.status = #{query.status}</if>"
             + "</where>"
             + "</script>")
-    IPage<AdminRecommendDTO> selectAdminRecommendList(Page<AdminRecommendDTO> page, @Param("query") RecommendPageQueryDTO query);
+    RecommendPageQueryDTO selectAdminRecommendList(@Param("query") RecommendPageQueryDTO query);
+
 
     /**
      * 获取推荐商品详情

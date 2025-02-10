@@ -2,10 +2,15 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.mapper.RecommendProductMapper;
+import com.example.model.dto.recommend.RecommendDetailDTO;
+import com.example.model.dto.recommend.RecommendPageQueryDTO;
 import com.example.model.entity.RecommendProduct;
 import com.example.service.RecommendProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * @author 31815
@@ -13,10 +18,33 @@ import org.springframework.stereotype.Service;
  * @createDate 2025-02-10 02:08:45
  */
 @Service
+@RequiredArgsConstructor
 public class RecommendProductServiceImpl extends ServiceImpl<RecommendProductMapper, RecommendProduct>
         implements RecommendProductService {
 
+    private final RecommendProductMapper recommendProductMapper;
 
+    @Override
+    public RecommendPageQueryDTO getRecommendPage(RecommendPageQueryDTO query) {
+        return recommendProductMapper.selectAdminRecommendList(query);
+    }
+
+
+    @Override
+    public Optional<RecommendDetailDTO> getRecommendDetail(Long recommendId) {
+        return recommendProductMapper.selectRecommendDetail(recommendId);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateRecommendStatus(Long id, Integer status) {
+        return recommendProductMapper.updateStatus(id, status) > 0;
+    }
+
+    @Override
+    public boolean checkRecommendExists(Long productId, Integer type) {
+        return recommendProductMapper.existsRecommend(productId, type) > 0;
+    }
 }
 
 
