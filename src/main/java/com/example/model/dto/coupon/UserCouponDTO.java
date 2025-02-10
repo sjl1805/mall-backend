@@ -7,13 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class UserCouponDTO {
-    private Long couponId;
-    private String name;
-    private CouponTypeEnum type;
-    private BigDecimal value;
-    private BigDecimal minAmount;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Long userCouponId;
+    private String couponName;
+    private String discountDesc;
     private String statusDesc;
-    private Boolean isExpired;
+    private LocalDateTime getTime;
+    private LocalDateTime expireTime;
 } 

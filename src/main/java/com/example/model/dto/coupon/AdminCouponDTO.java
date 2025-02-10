@@ -20,4 +20,11 @@ public class AdminCouponDTO {
     private LocalDateTime updateTime;
     private Integer totalIssued; // 已发放数量
     private Integer usedCount;   // 已使用数量
+    private Long userId;
+    private String userName;
+    private String couponName;
+    private String statusDesc;
+    private LocalDateTime getTime;
+    private LocalDateTime useTime;
+    private Long orderId;
 } 
