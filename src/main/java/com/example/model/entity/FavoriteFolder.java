@@ -3,6 +3,8 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.FavoriteFolderStatusEnum;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -36,7 +38,7 @@ public class FavoriteFolder extends BaseEntity {
     /**
      * 公开状态：0-私密 1-公开
      */
-    private Integer isPublic;
+    private FavoriteFolderStatusEnum isPublic;
     /**
      * 排序
      */

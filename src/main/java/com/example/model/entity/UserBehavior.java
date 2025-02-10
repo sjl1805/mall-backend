@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-
+import com.example.model.enums.UserBehaviorTypeEnum;
 /**
  * 用户行为记录表
  *
@@ -36,7 +36,7 @@ public class UserBehavior extends BaseEntity {
     /**
      * 行为类型：1-浏览 2-收藏 3-购买
      */
-    private Integer behaviorType;
+    private UserBehaviorTypeEnum behaviorType;
     /**
      * 行为时间
      */

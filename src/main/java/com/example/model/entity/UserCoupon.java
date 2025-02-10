@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-
+import com.example.model.enums.UserCouponStatusEnum;
 /**
  * 用户优惠券表
  *
@@ -33,7 +33,7 @@ public class UserCoupon extends BaseEntity {
     /**
      * 用户优惠券状态：0-未使用 1-已使用 2-已过期
      */
-    private Integer status;
+    private UserCouponStatusEnum status;
     /**
      * 使用的订单ID
      */

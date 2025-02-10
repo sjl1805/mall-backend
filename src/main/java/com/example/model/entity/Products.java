@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.example.model.enums.ProductStatusEnum;
 
 import java.math.BigDecimal;
 
@@ -49,5 +50,5 @@ public class Products extends BaseEntity {
     /**
      * 商品状态：0-下架 1-上架
      */
-    private Integer status;
+    private ProductStatusEnum status;
 }

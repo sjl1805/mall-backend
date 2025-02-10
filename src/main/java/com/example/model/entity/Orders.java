@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.example.model.enums.OrderStatusEnum;
+
 /**
  * 订单表
  *
@@ -42,7 +44,7 @@ public class Orders extends BaseEntity {
     /**
      * 订单状态：0-待支付 1-已支付 2-已发货 3-已完成 4-已取消
      */
-    private Integer status;
+    private OrderStatusEnum status;
     /**
      * 收货人姓名
      */

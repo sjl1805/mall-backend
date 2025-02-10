@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.example.model.enums.CartCheckedStatusEnum;
 
 /**
  * 购物车表
@@ -37,5 +38,5 @@ public class Cart extends BaseEntity {
     /**
      * 选中状态：0-未选中 1-已选中
      */
-    private Integer checked;
+    private CartCheckedStatusEnum checked;
 }

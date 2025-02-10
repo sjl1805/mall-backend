@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+import com.example.model.enums.RecommendProductStatusEnum;
 /**
  * 推荐商品表
  *
@@ -38,7 +38,7 @@ public class RecommendProduct extends BaseEntity {
     /**
      * 推荐状态：0-未生效 1-生效中
      */
-    private Integer status;
+    private RecommendProductStatusEnum status;
     /**
      * 开始时间
      */

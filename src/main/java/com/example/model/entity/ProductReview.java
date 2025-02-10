@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.example.model.enums.ReviewStatusEnum;
+import com.example.model.enums.RatingEnum;
 
 /**
  * 商品评价表
@@ -35,7 +37,7 @@ public class ProductReview extends BaseEntity {
     /**
      * 评分：1-5分
      */
-    private Integer rating;
+    private RatingEnum rating;
     /**
      * 评价内容
      */
@@ -47,6 +49,6 @@ public class ProductReview extends BaseEntity {
     /**
      * 审核状态：0-待审核 1-已通过 2-已拒绝
      */
-    private Integer status;
+    private ReviewStatusEnum status;
 
 }

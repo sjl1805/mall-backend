@@ -45,3 +45,8 @@ springdoc:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.model.entity 
+
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+  type-enums-package: com.example.enums # 枚举包路径 

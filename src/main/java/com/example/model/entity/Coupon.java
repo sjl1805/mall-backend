@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.example.model.enums.CouponStatusEnum;
+import com.example.model.enums.CouponTypeEnum;
 /**
  * 优惠券表
  *
@@ -30,7 +32,7 @@ public class Coupon extends BaseEntity {
     /**
      * 优惠券类型：1-满减券 2-折扣券
      */
-    private Integer type;
+    private CouponTypeEnum type;
     /**
      * 优惠券面值
      */
@@ -50,5 +52,5 @@ public class Coupon extends BaseEntity {
     /**
      * 状态：0-失效 1-生效
      */
-    private Integer status;
+    private CouponStatusEnum status;
 }

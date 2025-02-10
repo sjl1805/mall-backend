@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.example.model.enums.UserAddressStatusEnum;
 
 /**
  * 用户收货地址表
@@ -27,7 +28,7 @@ public class UserAddress extends BaseEntity {
     /**
      * 默认地址状态：0-非默认 1-默认
      */
-    private Integer isDefault;
+    private UserAddressStatusEnum isDefault;
     /**
      *
      */

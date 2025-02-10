@@ -3,6 +3,8 @@ package com.example.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.model.enums.CategoryStatusEnum;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -43,5 +45,5 @@ public class Category extends BaseEntity {
     /**
      * 状态：0-禁用 1-启用
      */
-    private Integer status;
+    private CategoryStatusEnum status;
 }

@@ -34,7 +34,8 @@ CREATE TABLE users
     UNIQUE INDEX `idx_username` ( `username` ),
     UNIQUE INDEX `idx_phone` ( `phone` ),
     UNIQUE INDEX `idx_email` ( `email` )
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户表';-- 2. 商品分类表（包含BaseEntity字段）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户表';
+-- 2. 商品分类表（包含BaseEntity字段）
 CREATE TABLE `category`
 (
     `id`          BIGINT      NOT NULL AUTO_INCREMENT COMMENT '分类ID',
@@ -50,7 +51,8 @@ CREATE TABLE `category`
     `deleted`     TINYINT   DEFAULT 0 COMMENT '删除标志：0存在 1删除',
     PRIMARY KEY (`id`),
     INDEX         `idx_parent_id` ( `parent_id` )
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品分类表';-- 3. 商品表（使用JSON类型）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品分类表';
+-- 3. 商品表（使用JSON类型）
 CREATE TABLE products
 (
     `id`          BIGINT         NOT NULL AUTO_INCREMENT COMMENT '商品ID',
@@ -68,7 +70,8 @@ CREATE TABLE products
     PRIMARY KEY (`id`),
     INDEX         `idx_products_search` ( `name`, `category_id`, `price` ),
     FOREIGN KEY (`category_id`) REFERENCES category (`id`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品表';-- 4. 优惠券表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品表';
+-- 4. 优惠券表
 CREATE TABLE `coupon`
 (
     `id`          BIGINT         NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
@@ -84,7 +87,8 @@ CREATE TABLE `coupon`
     `version`     INT       DEFAULT 0 COMMENT '乐观锁版本号',
     `deleted`     TINYINT   DEFAULT 0 COMMENT '删除标志：0存在 1删除',
     PRIMARY KEY (`id`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '优惠券表';-- 5. 用户地址表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '优惠券表';
+-- 5. 用户地址表
 CREATE TABLE user_address
 (
     `id`              BIGINT       NOT NULL AUTO_INCREMENT,
@@ -110,7 +114,8 @@ CREATE TABLE user_address
     INDEX             `idx_city` ( `city` ),
     INDEX             `idx_district` ( `district` ),
     INDEX             `idx_detail_address` ( `detail_address` )
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户收货地址表';-- 6. 收藏夹表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户收货地址表';
+-- 6. 收藏夹表
 CREATE TABLE `favorite_folder`
 (
     `id`          BIGINT      NOT NULL AUTO_INCREMENT COMMENT '收藏夹ID',
@@ -126,7 +131,8 @@ CREATE TABLE `favorite_folder`
     PRIMARY KEY (`id`),
     INDEX         `idx_user_id` ( `user_id` ),
     FOREIGN KEY (`user_id`) REFERENCES users (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '收藏夹表';-- 7. 购物车表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '收藏夹表';
+-- 7. 购物车表
 CREATE TABLE `cart`
 (
     `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT '购物车ID',
@@ -143,7 +149,8 @@ CREATE TABLE `cart`
     FOREIGN KEY (`user_id`) REFERENCES users (`id`),
     FOREIGN KEY (`product_id`) REFERENCES products (`id`),
     UNIQUE INDEX `uk_user_product` ( `user_id`, `product_id` )
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '购物车表';-- 8. 订单表（完整状态字段）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '购物车表';
+-- 8. 订单表（完整状态字段）
 CREATE TABLE orders
 (
     `id`                BIGINT         NOT NULL AUTO_INCREMENT COMMENT '订单ID',
@@ -173,7 +180,8 @@ CREATE TABLE orders
     INDEX               `idx_payment_time` ( `payment_time` ),
     INDEX               `idx_logistics` ( `logistics_company`, `tracking_number` ),
     FOREIGN KEY (`user_id`) REFERENCES users (`id`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表';-- 9. 订单项表（级联删除）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表';
+-- 9. 订单项表（级联删除）
 CREATE TABLE `order_item`
 (
     `id`            BIGINT         NOT NULL AUTO_INCREMENT COMMENT '订单商品ID',
@@ -193,7 +201,8 @@ CREATE TABLE `order_item`
     INDEX           `idx_product_id` ( `product_id` ),
     FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`product_id`) REFERENCES products (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '订单商品表';-- 10. 用户优惠券表（依赖用户、优惠券）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '订单商品表';
+-- 10. 用户优惠券表（依赖用户、优惠券）
 CREATE TABLE `user_coupon`
 (
     `id`        BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户优惠券ID',
@@ -212,7 +221,8 @@ CREATE TABLE `user_coupon`
     FOREIGN KEY (`coupon_id`) REFERENCES coupon (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE
         SET NULL
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户优惠券表';-- 11. 商品规格表（依赖商品）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '用户优惠券表';
+-- 11. 商品规格表（依赖商品）
 CREATE TABLE `product_spec`
 (
     `id`          BIGINT      NOT NULL AUTO_INCREMENT COMMENT '规格ID',
@@ -226,7 +236,8 @@ CREATE TABLE `product_spec`
     PRIMARY KEY (`id`),
     INDEX         `idx_product_id` ( `product_id` ),
     FOREIGN KEY (`product_id`) REFERENCES products (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品规格表';-- 12. 商品SKU表（带默认主图）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品规格表';
+-- 12. 商品SKU表（带默认主图）
 CREATE TABLE `product_sku`
 (
     `id`          BIGINT         NOT NULL AUTO_INCREMENT COMMENT 'SKU ID',
@@ -247,7 +258,8 @@ CREATE TABLE `product_sku`
     INDEX         `idx_sales` ( `sales` ),
     INDEX         `idx_price_stock` ( `price`, `stock` ),
     FOREIGN KEY (`product_id`) REFERENCES products (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品SKU表';-- 13. 商品评价表（依赖订单、用户、商品）
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品SKU表';
+-- 13. 商品评价表（依赖订单、用户、商品）
 CREATE TABLE `product_review`
 (
     `id`          BIGINT  NOT NULL AUTO_INCREMENT COMMENT '评价ID',
@@ -269,7 +281,8 @@ CREATE TABLE `product_review`
     FOREIGN KEY (`user_id`) REFERENCES users (`id`),
     FOREIGN KEY (`product_id`) REFERENCES products (`id`),
     UNIQUE INDEX `uk_order_product` ( `order_id`, `product_id` )
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品评价表';-- 14. 商品收藏表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品评价表';
+-- 14. 商品收藏表
 CREATE TABLE `product_favorite`
 (
     `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT '收藏ID',
@@ -285,7 +298,8 @@ CREATE TABLE `product_favorite`
     FOREIGN KEY (`folder_id`) REFERENCES favorite_folder (`id`) ON DELETE
         SET NULL,
     FOREIGN KEY (`user_id`) REFERENCES users (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品收藏表';-- 15. 推荐商品表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '商品收藏表';
+-- 15. 推荐商品表
 CREATE TABLE `recommend_product`
 (
     `id`                BIGINT         NOT NULL AUTO_INCREMENT COMMENT '推荐商品ID',
@@ -305,7 +319,8 @@ CREATE TABLE `recommend_product`
     PRIMARY KEY (`id`),
     INDEX               `idx_product_id` ( `product_id` ),
     FOREIGN KEY (`product_id`) REFERENCES products (`id`) ON DELETE CASCADE
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '推荐商品表';-- 16. 用户行为表
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COMMENT = '推荐商品表';
+-- 16. 用户行为表
 CREATE TABLE user_behavior
 (
     `id`            BIGINT  NOT NULL AUTO_INCREMENT COMMENT '行为记录ID',

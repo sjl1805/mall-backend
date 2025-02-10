@@ -7,7 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-
+import com.example.model.enums.UserGenderEnum;
+import com.example.model.enums.UserStatusEnum;  
 /**
  * 用户表
  *
@@ -53,11 +54,11 @@ public class Users extends BaseEntity {
     /**
      * 性别：0未知 1男 2女
      */
-    private Integer gender;
+    private UserGenderEnum gender;
     /**
      * 状态：0禁用 1启用
      */
-    private Integer status;
+    private UserStatusEnum status;
     /**
      *
      */
