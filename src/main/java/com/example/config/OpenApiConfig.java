@@ -12,9 +12,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("用户管理系统 API")
+                        .title("Mall API")
                         .version("1.0")
-                        .description("用户管理相关接口文档")
-                        .termsOfService("https://example.com/terms"));
+                        .description("电商平台接口文档"));
     }
 } 
