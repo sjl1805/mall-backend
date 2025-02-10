@@ -2,85 +2,57 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  # 文件上传限制配置
+  max-http-header-size: 80KB
+  max-file-size: 50MB
+  max-request-size: 50MB
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mall_db?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      connection-test-query: SELECT 1
-      auto-commit: true
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 30000
-      max-lifetime: 1800000
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password:
-      timeout: 5000
+  
   redis:
-    host: 127.0.0.1  # Redis服务器地址
-    port: 6379       # Redis服务器端口
-    password:        # 密码（没有密码留空）
-    database: 0      # 数据库索引（0-15）
-    timeout: 3000ms  # 连接超时时间
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
     lettuce:
       pool:
-        max-active: 20    # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: -1ms    # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-idle: 10      # 连接池中的最大空闲连接
-        min-idle: 5       # 连接池中的最小空闲连接
-      shutdown-timeout: 100ms  # 关闭超时时间
-  main:
-    allow-bean-definition-overriding: true
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
 
+  # MyBatis-Plus 配置
+  mybatis-plus:
+    type-aliases-package: com.example.model.entity
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    global-config:
+      db-config:
+        logic-delete-field: deleted  # 逻辑删除字段
+        logic-delete-value: 1        # 删除状态值
+        logic-not-delete-value: 0    # 未删除状态值
+        id-type: auto                # 主键生成策略
+
+# JWT配置
 jwt:
-  expiration-hours: 24  # 令牌有效期（小时）
-  secret-key: "c3VwZXItc2VjdXJlLXNlY3JldC1rZXktZm9yLWhzMjU2LWF1dGg=" # 替换为有效的Base64编码字符串
-  issuer: "mall-backend"  # 新增签发者标识
-  algorithm: HS256       # 指定签名算法
+  secretKey: mall-secret-1234567890  # 请替换为实际密钥
+  accessTokenExpiration: 3600        # token有效期(秒)
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  info:
-    title: Mall Backend API
-    description: 电商平台后端接口文档
-    version: 1.0.0
-    contact:
-      name: Developer
-      email: dev@example.com 
-  default-produces-media-type: application/json
+# 安全配置
+security:
+  oauth2:
+    client:
+      registration:
+        github:
+          client-id: your-client-id
+          client-secret: your-client-secret
 
-mybatis:
-  type-aliases-package: com.example.model.entity
-
-mybatis-plus:
-  type-aliases-package: com.example.model.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  global-config:
-    db-config:
-      id-type: assign_id
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-  # 如果使用纯注解方式，请注释掉以下配置
-  # mapper-locations: classpath*:mapper/**/*.xml
-
-# 可选缓存配置
-cache:
-  type: redis
-  redis:
-    time-to-live: 3600000  # 缓存过期时间（毫秒），1小时
-    key-prefix: CACHE_     # 缓存key前缀
-    cache-null-values: true # 是否缓存空值 
+# 日志配置
+logging:
+  level:
+    root: info
+    com.example: debug 

@@ -1,6 +1,8 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.example.model.dto.user.AdminUserDTO;
 import com.example.model.dto.user.UserPageQueryDTO;
 import com.example.model.entity.Users;
@@ -8,6 +10,7 @@ import com.example.model.enums.UserRoleEnum;
 import com.example.model.enums.UserStatusEnum;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +93,8 @@ public interface UsersMapper extends BaseMapper<Users> {
     /**
      * 根据用户名查询（继承自BaseMapper）
      */
-    Optional<Users> selectByUsername(@Param("username") String username);
+    @Select("SELECT * FROM users WHERE username = #{username}")
+    Users selectByUsername(String username);
 
     /**
      * 批量更新状态（示例）
@@ -102,6 +106,12 @@ public interface UsersMapper extends BaseMapper<Users> {
             "</foreach>" +
             "</script>")
     int batchUpdateStatus(@Param("ids") List<Long> ids, @Param("status") UserStatusEnum status);
+
+    @Update("UPDATE users SET last_login_time = #{loginTime} WHERE id = #{userId}")
+    int updateLoginTime(@Param("userId") Long userId, @Param("loginTime") LocalDateTime loginTime);
+
+    @Select("SELECT * FROM users WHERE ${ew.sqlSegment}")
+    List<Users> selectListByWrapper(@Param(Constants.WRAPPER) QueryWrapper<Users> wrapper);
 }
 
 
