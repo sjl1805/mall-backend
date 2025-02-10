@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import com.example.model.enums.UserGenderEnum;
 import com.example.model.enums.UserStatusEnum;  
+import com.example.model.enums.UserRoleEnum;
 /**
  * 用户表
  *
@@ -60,9 +61,9 @@ public class Users extends BaseEntity {
      */
     private UserStatusEnum status;
     /**
-     *
+     * 角色：0游客 1用户 2商家 9管理员
      */
-    private Integer role;
+    private UserRoleEnum role;
     /**
      * 创建时间（带时区）
      */
