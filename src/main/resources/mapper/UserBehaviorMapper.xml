@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserBehaviorMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.model.entity.UserBehavior">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="behaviorType" column="behavior_type"/>
+        <result property="behaviorTime" column="behavior_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,product_id,behavior_type,behavior_time,create_time,
+        update_time
+    </sql>
+</mapper>
