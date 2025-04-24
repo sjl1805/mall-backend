@@ -49,7 +49,7 @@ jwt:
 # 文件上传配置
 file:
   upload:
-    path: ./uploads/
+    path: C:/Users/28619/OneDrive/桌面/mall/mall-backend/uploads/
 
 # OpenAPI配置
 springdoc:

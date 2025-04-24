@@ -10,7 +10,6 @@ import com.example.model.entity.Product;
 import com.example.model.entity.User;
 import com.example.model.vo.OrderVO;
 import com.example.service.*;
-import com.example.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -38,11 +37,7 @@ public class AdminController {
     private final UserService userService;
     private final OrderService orderService;
     private final ProductService productService;
-    private final ProductSimilarityService productSimilarityService;
-    private final UserPreferenceService userPreferenceService;
-    private final RecommendationService recommendationService;
     private final StatisticsService statisticsService;
-    private final UserUtil userUtil;
 
     /**
      * 获取用户列表（分页）
@@ -676,101 +671,6 @@ public class AdminController {
 
         String statusText = status == 1 ? "上架" : "下架";
         return Result.success(result, "批量" + statusText + "商品成功");
-    }
-
-    /**
-     * 计算所有商品间的相似度
-     * 这是一个耗时操作，适合作为定时任务执行
-     *
-     * @return 计算结果
-     */
-    @PostMapping("/products/similarity/calculate/all")
-    public Result<Integer> calculateAllProductSimilarities() {
-        log.info("开始计算所有商品间的相似度");
-        int count = productSimilarityService.calculateAndUpdateAllProductSimilarities();
-        return Result.success(count, "成功计算并更新了" + count + "条商品相似度数据");
-    }
-
-    /**
-     * 计算指定商品与其他所有商品的相似度
-     *
-     * @param productId 商品ID
-     * @return 计算结果
-     */
-    @PostMapping("/products/similarity/calculate/{productId}")
-    public Result<Integer> calculateProductSimilarities(@PathVariable Long productId) {
-        if (productId == null) {
-            return Result.error("商品ID不能为空");
-        }
-        log.info("开始计算商品{}与其他商品的相似度", productId);
-        int count = productSimilarityService.calculateAndUpdateSimilaritiesForProduct(productId);
-        return Result.success(count, "成功计算并更新了" + count + "条商品相似度数据");
-    }
-
-    /**
-     * 计算用户偏好
-     *
-     * @param userId 用户ID，为空则计算所有用户
-     * @return 计算结果
-     */
-    @PostMapping("/recommendation/calculate/preference")
-    public Result<Integer> calculateUserPreferences(@RequestParam(required = false) Long userId) {
-        int count;
-        if (userId != null) {
-            count = userPreferenceService.calculateAndUpdateUserPreferences(userId);
-            return Result.success(count, "成功更新用户偏好记录" + count + "条");
-        } else {
-            count = userPreferenceService.calculateAndUpdateAllUserPreferences();
-            return Result.success(count, "成功更新所有用户偏好记录" + count + "条");
-        }
-    }
-
-    /**
-     * 生成用户推荐结果
-     *
-     * @param userId 用户ID，为空则生成所有用户的推荐
-     * @param limit  每种推荐类型的数量限制
-     * @return 生成结果
-     */
-    @PostMapping("/recommendation/calculate/recommendation")
-    public Result<Integer> calculateRecommendations(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(defaultValue = "10") int limit) {
-
-        int count;
-        if (userId != null) {
-            count = recommendationService.updateUserRecommendations(userId, limit);
-            return Result.success(count, "成功更新用户推荐记录" + count + "条");
-        } else {
-            count = recommendationService.updateAllUsersRecommendations(limit);
-            return Result.success(count, "成功更新所有用户推荐记录" + count + "条");
-        }
-    }
-
-    /**
-     * 获取用户与其他用户的相似度
-     *
-     * @param userId 用户ID
-     * @param limit  数量限制
-     * @return 相似用户列表及相似度
-     */
-    @GetMapping("/recommendation/similar-users")
-    public Result<Map<String, Object>> getSimilarUsers(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(defaultValue = "5") int limit) {
-
-        // 如果未指定用户ID，使用当前登录用户
-        if (userId == null) {
-            userId = userUtil.getCurrentUserId();
-        }
-
-        Map<Long, Double> similarUsers = userPreferenceService.getSimilarUsers(userId, limit);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("userId", userId);
-        result.put("similarUsers", similarUsers);
-
-        return Result.success(result);
     }
 
     /**

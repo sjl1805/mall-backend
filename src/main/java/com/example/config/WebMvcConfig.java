@@ -30,8 +30,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         // 将上传文件夹映射为静态资源路径
+        String uploadPath = new File(this.uploadPath).getAbsolutePath();
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + File.separator);
+                .addResourceLocations("file:" + uploadPath + "/");
 
         // 添加Swagger UI资源映射
         registry.addResourceHandler("/swagger-ui/**")

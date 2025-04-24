@@ -1,200 +1,204 @@
--- 插入用户数据
-INSERT INTO `user` (`username`, `password`, `nickname`, `phone`, `email`, `avatar`, `gender`, `birthday`, `status`, `role`, `last_login_time`, `create_time`, `update_time`)
-VALUES
-('admin', MD5('admin123'), '管理员', '12345678901', 'admin@example.com', '', 1, '1990-01-01', 1, 1, NOW(), NOW(), NOW()),
-('user1', MD5('password1'), '用户1', '12345678902', 'user1@example.com', '', 1, '1991-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user2', MD5('password2'), '用户2', '12345678903', 'user2@example.com', '', 2, '1992-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user3', MD5('password3'), '用户3', '12345678904', 'user3@example.com', '', 1, '1993-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user4', MD5('password4'), '用户4', '12345678905', 'user4@example.com', '', 2, '1994-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user5', MD5('password5'), '用户5', '12345678906', 'user5@example.com', '', 1, '1995-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user6', MD5('password6'), '用户6', '12345678907', 'user6@example.com', '', 2, '1996-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user7', MD5('password7'), '用户7', '12345678908', 'user7@example.com', '', 1, '1997-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user8', MD5('password8'), '用户8', '12345678909', 'user8@example.com', '', 2, '1998-01-01', 1, 2, NOW(), NOW(), NOW()),
-('user9', MD5('password9'), '用户9', '12345678910', 'user9@example.com', '', 1, '1999-01-01', 1, 2, NOW(), NOW(), NOW());
+-- 插入用户测试数据
+INSERT INTO `user` (`username`, `password`, `nickname`, `phone`, `email`, `avatar`, `gender`, `birthday`, `status`, `role`, `last_login_time`) VALUES
+-- 管理员用户
+('admin', 'e10adc3949ba59abbe56e057f20f883e', '系统管理员', '13800138000', 'admin@mall.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1990-01-01', 1, 1, '2024-03-20 10:00:00'),
 
--- 插入商品分类数据
-INSERT INTO `category` (`parent_id`, `name`, `level`, `sort`, `icon`, `status`, `create_time`, `update_time`)
-VALUES
-(0, '电子产品', 1, 1, '', 1, NOW(), NOW()),
-(1, '手机', 2, 1, '', 1, NOW(), NOW()),
-(1, '笔记本电脑', 2, 2, '', 1, NOW(), NOW()),
-(1, '平板电脑', 2, 3, '', 1, NOW(), NOW()),
-(1, '智能手表', 2, 4, '', 1, NOW(), NOW()),
-(1, '相机', 2, 5, '', 1, NOW(), NOW()),
-(1, '耳机', 2, 6, '', 1, NOW(), NOW()),
-(1, '音响', 2, 7, '', 1, NOW(), NOW()),
-(1, '智能家居', 2, 8, '', 1, NOW(), NOW()),
-(1, '无人机', 2, 9, '', 1, NOW(), NOW()),
-(1, '游戏机', 2, 10, '', 1, NOW(), NOW()),
-(1, '投影仪', 2, 11, '', 1, NOW(), NOW()),
-(1, '智能眼镜', 2, 12, '', 1, NOW(), NOW()),
-(1, '智能音箱', 2, 13, '', 1, NOW(), NOW()),
-(1, 'VR设备', 2, 14, '', 1, NOW(), NOW());
+-- 普通用户
+('zhangwei', 'e10adc3949ba59abbe56e057f20f883e', '张伟', '13911112222', 'zhangwei@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1995-03-15', 1, 2, '2024-03-19 15:30:00'),
+('lixiaomei', 'e10adc3949ba59abbe56e057f20f883e', '李晓梅', '13922223333', 'lixiaomei@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1998-06-22', 1, 2, '2024-03-19 16:45:00'),
+('wangfang', 'e10adc3949ba59abbe56e057f20f883e', '王芳', '13933334444', 'wangfang@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1992-09-10', 1, 2, '2024-03-19 14:20:00'),
+('liuyang', 'e10adc3949ba59abbe56e057f20f883e', '刘洋', '13944445555', 'liuyang@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1994-12-05', 1, 2, '2024-03-18 09:15:00'),
+('chenjing', 'e10adc3949ba59abbe56e057f20f883e', '陈静', '13955556666', 'chenjing@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1997-08-18', 1, 2, '2024-03-18 11:30:00'),
+('zhaoming', 'e10adc3949ba59abbe56e057f20f883e', '赵明', '13966667777', 'zhaoming@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1993-04-25', 1, 2, '2024-03-17 16:20:00'),
+('sunxue', 'e10adc3949ba59abbe56e057f20f883e', '孙雪', '13977778888', 'sunxue@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1996-11-30', 1, 2, '2024-03-17 13:45:00'),
+('zhangjun', 'e10adc3949ba59abbe56e057f20f883e', '张军', '13988889999', 'zhangjun@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1991-07-14', 1, 2, '2024-03-16 17:10:00'),
+('wangxia', 'e10adc3949ba59abbe56e057f20f883e', '王霞', '13999990000', 'wangxia@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1999-02-28', 1, 2, '2024-03-16 10:25:00'),
+('lihong', 'e10adc3949ba59abbe56e057f20f883e', '李红', '13900001111', 'lihong@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1995-10-08', 1, 2, '2024-03-15 14:50:00'),
+('yangming', 'e10adc3949ba59abbe56e057f20f883e', '杨明', '13911112222', 'yangming@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1994-05-20', 1, 2, '2024-03-15 09:30:00'),
+('zhaowei', 'e10adc3949ba59abbe56e057f20f883e', '赵伟', '13922223333', 'zhaowei@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1997-12-15', 1, 2, '2024-03-14 16:40:00'),
+('chenli', 'e10adc3949ba59abbe56e057f20f883e', '陈丽', '13933334444', 'chenli@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 2, '1998-08-03', 1, 2, '2024-03-14 11:20:00'),
+('wangbin', 'e10adc3949ba59abbe56e057f20f883e', '王斌', '13944445555', 'wangbin@example.com', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1, '1996-03-25', 1, 2, '2024-03-13 15:15:00');
 
--- 插入商品数据
-INSERT INTO `product` (`category_id`, `name`, `price`, `original_price`, `stock`, `sales`, `image`, `images`, `description`, `detail`, `status`, `create_time`, `update_time`)
-VALUES
-(2, 'iPhone 13', 6999.00, 7999.00, 100, 50, '', '', '苹果最新款智能手机，搭载A15芯片，支持5G网络。', 'iPhone 13配备6.1英寸超视网膜XDR显示屏，支持HDR显示，拥有更长的电池续航时间。', 1, NOW(), NOW()),
-(2, 'Samsung Galaxy S21', 5999.00, 6999.00, 80, 30, '', '', '三星旗舰智能手机，搭载Exynos 2100处理器，支持5G网络。', 'Samsung Galaxy S21配备6.2英寸动态AMOLED 2X显示屏，支持120Hz刷新率，拥有强大的拍摄功能。', 1, NOW(), NOW()),
-(3, 'MacBook Pro', 12999.00, 13999.00, 50, 20, '', '', '苹果高性能笔记本电脑，搭载M1芯片，适合专业用户。', 'MacBook Pro配备13.3英寸视网膜显示屏，支持P3广色域，拥有长达20小时的电池续航时间。', 1, NOW(), NOW()),
-(3, 'Dell XPS 13', 8999.00, 9999.00, 60, 25, '', '', '戴尔高性能笔记本电脑，搭载第11代英特尔酷睿处理器。', 'Dell XPS 13配备13.4英寸FHD+显示屏，支持触控操作，拥有超长的电池续航时间。', 1, NOW(), NOW()),
-(4, 'iPad Pro', 7999.00, 8999.00, 70, 40, '', '', '苹果最新款平板电脑，搭载M1芯片，支持Apple Pencil。', 'iPad Pro配备12.9英寸Liquid Retina XDR显示屏，支持ProMotion技术，拥有强大的多任务处理能力。', 1, NOW(), NOW()),
-(4, 'Samsung Galaxy Tab', 4999.00, 5999.00, 90, 35, '', '', '三星高性能平板电脑，搭载Exynos 2100处理器。', 'Samsung Galaxy Tab配备11英寸TFT显示屏，支持S Pen，拥有强大的多媒体功能。', 1, NOW(), NOW()),
-(5, 'Apple Watch', 2999.00, 3499.00, 120, 60, '', '', '苹果智能手表，支持心率监测和运动追踪。', 'Apple Watch配备Retina显示屏，支持血氧检测和ECG心电图功能，拥有全天候健康监测能力。', 1, NOW(), NOW()),
-(5, 'Fitbit Versa', 1999.00, 2499.00, 110, 55, '', '', 'Fitbit智能手表，支持心率监测和睡眠追踪。', 'Fitbit Versa配备AMOLED显示屏，支持GPS定位和音乐播放，拥有长达6天的电池续航时间。', 1, NOW(), NOW()),
-(6, 'Canon EOS R5', 25999.00, 26999.00, 30, 10, '', '', '佳能全画幅无反相机，支持8K视频拍摄。', 'Canon EOS R5配备4500万像素全画幅CMOS传感器，支持双像素CMOS AF II自动对焦系统，拥有强大的视频拍摄能力。', 1, NOW(), NOW()),
-(6, 'Nikon Z6', 15999.00, 16999.00, 40, 15, '', '', '尼康全画幅无反相机，支持4K视频拍摄。', 'Nikon Z6配备2450万像素全画幅CMOS传感器，支持273点自动对焦系统，拥有出色的低光拍摄能力。', 1, NOW(), NOW()),
-(7, 'Sony WH-1000XM4', 2999.00, 3499.00, 150, 70, '', '', '索尼降噪耳机，支持蓝牙连接。', 'Sony WH-1000XM4配备40mm驱动单元，支持LDAC高解析度音频传输，拥有出色的降噪效果。', 1, NOW(), NOW()),
-(7, 'Bose QuietComfort 35', 2499.00, 2999.00, 140, 65, '', '', 'Bose降噪耳机，支持蓝牙连接。', 'Bose QuietComfort 35配备TriPort声学结构，支持Bose AR增强现实音频，拥有舒适的佩戴体验。', 1, NOW(), NOW()),
-(8, 'JBL Charge 4', 999.00, 1299.00, 200, 90, '', '', 'JBL便携音响，支持蓝牙连接。', 'JBL Charge 4配备20W功率输出，支持IPX7防水，拥有长达20小时的电池续航时间。', 1, NOW(), NOW()),
-(8, 'Sony SRS-XB43', 1499.00, 1799.00, 180, 85, '', '', '索尼便携音响，支持蓝牙连接。', 'Sony SRS-XB43配备双被动振膜，支持EXTRA BASS™技术，拥有出色的低音表现。', 1, NOW(), NOW()),
-(9, 'Google Nest Hub', 1999.00, 2299.00, 100, 50, '', '', '谷歌智能家居设备，支持语音控制。', 'Google Nest Hub配备7英寸触控屏幕，支持Google Assistant，拥有智能家居控制功能。', 1, NOW(), NOW()),
-(9, 'Amazon Echo', 999.00, 1299.00, 120, 60, '', '', '亚马逊智能音箱，支持语音控制。', 'Amazon Echo配备360度环绕声，支持Alexa语音助手，拥有智能家居控制功能。', 1, NOW(), NOW()),
-(10, 'DJI Mavic Air 2', 7999.00, 8999.00, 50, 20, '', '', '大疆无人机，支持4K视频拍摄。', 'DJI Mavic Air 2配备1/2英寸CMOS传感器，支持智能跟随3.0，拥有长达34分钟的飞行时间。', 1, NOW(), NOW()),
-(10, 'Parrot Anafi', 5999.00, 6999.00, 60, 25, '', '', 'Parrot无人机，支持4K视频拍摄。', 'Parrot Anafi配备21MP摄像头，支持180度旋转拍摄，拥有长达25分钟的飞行时间。', 1, NOW(), NOW()),
-(11, 'PlayStation 5', 4999.00, 5999.00, 70, 30, '', '', '索尼游戏机，支持4K游戏体验。', 'PlayStation 5配备AMD Ryzen Zen 2处理器，支持光线追踪技术，拥有超高速SSD存储。', 1, NOW(), NOW()),
-(11, 'Xbox Series X', 4999.00, 5999.00, 80, 35, '', '', '微软游戏机，支持4K游戏体验。', 'Xbox Series X配备AMD Zen 2处理器，支持光线追踪技术，拥有1TB SSD存储。', 1, NOW(), NOW());
+-- 插入商品分类测试数据
+INSERT INTO `category` (`parent_id`, `name`, `level`, `sort`, `icon`, `status`) VALUES
+-- 一级分类
+(0, '手机数码', 1, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(0, '电脑办公', 1, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(0, '智能设备', 1, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(0, '家用电器', 1, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(0, '影音娱乐', 1, 5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
 
--- 插入购物车数据
-INSERT INTO `cart` (`user_id`, `product_id`, `quantity`, `checked`, `create_time`, `update_time`)
-VALUES
-(1, 1, 2, 1, NOW(), NOW()),
-(1, 3, 1, 1, NOW(), NOW()),
-(2, 2, 1, 1, NOW(), NOW()),
-(2, 4, 2, 1, NOW(), NOW()),
-(3, 5, 1, 1, NOW(), NOW()),
-(3, 6, 1, 1, NOW(), NOW()),
-(4, 7, 3, 1, NOW(), NOW()),
-(4, 8, 1, 1, NOW(), NOW()),
-(5, 9, 2, 1, NOW(), NOW()),
-(5, 10, 1, 1, NOW(), NOW()),
-(6, 11, 1, 1, NOW(), NOW()),
-(6, 12, 2, 1, NOW(), NOW()),
-(7, 13, 1, 1, NOW(), NOW()),
-(7, 14, 1, 1, NOW(), NOW()),
-(8, 15, 2, 1, NOW(), NOW()),
-(8, 16, 1, 1, NOW(), NOW()),
-(9, 17, 1, 1, NOW(), NOW()),
-(9, 18, 2, 1, NOW(), NOW()),
-(10, 19, 1, 1, NOW(), NOW()),
-(10, 20, 1, 1, NOW(), NOW());
+-- 手机数码二级分类
+(1, '手机', 2, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(1, '平板电脑', 2, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(1, '数码相机', 2, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(1, '智能手表', 2, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
 
--- 插入订单数据
-INSERT INTO `orders` (`order_no`, `user_id`, `total_amount`, `pay_amount`, `freight_amount`, `pay_type`, `status`, `address_id`, `receiver_name`, `receiver_phone`, `receiver_address`, `note`, `create_time`, `update_time`)
-VALUES
-('ORD001', 1, 13998.00, 13998.00, 0.00, 1, 3, 1, '张三', '12345678901', '北京市朝阳区某街道1号', '', NOW(), NOW()),
-('ORD002', 2, 11998.00, 11998.00, 0.00, 2, 3, 2, '李四', '12345678902', '上海市浦东新区某街道2号', '', NOW(), NOW()),
-('ORD003', 3, 15998.00, 15998.00, 0.00, 1, 3, 3, '王五', '12345678903', '广州市天河区某街道3号', '', NOW(), NOW()),
-('ORD004', 4, 9998.00, 9998.00, 0.00, 2, 3, 4, '赵六', '12345678904', '深圳市南山区某街道4号', '', NOW(), NOW()),
-('ORD005', 5, 7998.00, 7998.00, 0.00, 1, 3, 5, '孙七', '12345678905', '杭州市西湖区某街道5号', '', NOW(), NOW());
+-- 电脑办公二级分类
+(2, '笔记本', 2, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(2, '台式机', 2, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(2, '显示器', 2, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(2, '打印机', 2, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
 
--- 插入订单商品数据
-INSERT INTO `order_item` (`order_id`, `order_no`, `product_id`, `product_name`, `product_image`, `price`, `quantity`, `total_price`, `create_time`, `update_time`)
-VALUES
-(1, 'ORD001', 1, 'iPhone 13', '', 6999.00, 2, 13998.00, NOW(), NOW()),
-(2, 'ORD002', 2, 'Samsung Galaxy S21', '', 5999.00, 2, 11998.00, NOW(), NOW()),
-(3, 'ORD003', 3, 'MacBook Pro', '', 12999.00, 1, 12999.00, NOW(), NOW()),
-(3, 'ORD003', 4, 'Dell XPS 13', '', 8999.00, 1, 8999.00, NOW(), NOW()),
-(4, 'ORD004', 5, 'Apple Watch', '', 2999.00, 2, 5998.00, NOW(), NOW());
+-- 智能设备二级分类
+(3, '智能音箱', 2, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(3, '智能门锁', 2, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(3, '智能摄像头', 2, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(3, '智能家居', 2, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
 
--- 插入收货地址数据
-INSERT INTO `address` (`user_id`, `receiver_name`, `receiver_phone`, `province`, `city`, `district`, `detail_address`, `is_default`, `create_time`, `update_time`)
-VALUES
-(1, '张三', '12345678901', '北京市', '北京市', '朝阳区', '某街道1号', 1, NOW(), NOW()),
-(2, '李四', '12345678902', '上海市', '上海市', '浦东新区', '某街道2号', 1, NOW(), NOW()),
-(3, '王五', '12345678903', '广东省', '广州市', '天河区', '某街道3号', 1, NOW(), NOW()),
-(4, '赵六', '12345678904', '广东省', '深圳市', '南山区', '某街道4号', 1, NOW(), NOW()),
-(5, '孙七', '12345678905', '浙江省', '杭州市', '西湖区', '某街道5号', 1, NOW(), NOW());
+-- 家用电器二级分类
+(4, '电视', 2, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(4, '空调', 2, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(4, '冰箱', 2, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(4, '洗衣机', 2, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
 
--- 插入用户收藏数据
-INSERT INTO `favorite` (`user_id`, `product_id`, `create_time`, `update_time`)
-VALUES
-(1, 1, NOW(), NOW()),
-(2, 2, NOW(), NOW()),
-(3, 3, NOW(), NOW()),
-(4, 4, NOW(), NOW()),
-(5, 5, NOW(), NOW());
+-- 影音娱乐二级分类
+(5, '游戏机', 2, 1, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(5, '耳机耳麦', 2, 2, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(5, '音响', 2, 3, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1),
+(5, '投影仪', 2, 4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 1);
 
--- 插入用户评价数据
-INSERT INTO `review` (`user_id`, `product_id`, `order_id`, `content`, `rating`, `images`, `anonymous`, `create_time`, `update_time`)
-VALUES
-(1, 1, 1, '非常满意，手机很好用！', 5, '', 0, NOW(), NOW()),
-(2, 2, 2, '性价比很高，值得购买。', 4, '', 0, NOW(), NOW()),
-(3, 3, 3, '笔记本性能强劲，推荐！', 5, '', 0, NOW(), NOW()),
-(4, 4, 4, '手表功能丰富，外观漂亮。', 4, '', 0, NOW(), NOW()),
-(5, 5, 5, '相机拍照效果很好。', 5, '', 0, NOW(), NOW());
+-- 插入商品测试数据
+INSERT INTO `product` (`category_id`, `name`, `price`, `original_price`, `stock`, `sales`, `image`, `images`, `description`, `detail`, `status`) VALUES
+-- 手机类商品
+(6, 'iPhone 15 Pro Max', 9999.00, 10999.00, 1000, 500, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '新一代iPhone旗舰机型，搭载A17芯片', '详细的产品参数和规格说明', 1),
+(6, '华为Mate 60 Pro', 8999.00, 9599.00, 800, 400, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '华为最新旗舰，搭载麒麟芯片', '详细的产品参数和规格说明', 1),
+(6, '小米14 Pro', 4999.00, 5299.00, 1200, 300, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '小米年度旗舰，影像新突破', '详细的产品参数和规格说明', 1),
 
--- 插入用户行为记录数据
-INSERT INTO `user_behavior` (`user_id`, `product_id`, `behavior_type`, `behavior_time`, `create_time`, `update_time`)
-VALUES
-(1, 1, 1, NOW(), NOW(), NOW()),
-(1, 2, 2, NOW(), NOW(), NOW()),
-(2, 3, 3, NOW(), NOW(), NOW()),
-(2, 4, 4, NOW(), NOW(), NOW()),
-(3, 5, 5, NOW(), NOW(), NOW()),
-(3, 6, 1, NOW(), NOW(), NOW()),
-(4, 7, 2, NOW(), NOW(), NOW()),
-(4, 8, 3, NOW(), NOW(), NOW()),
-(5, 9, 4, NOW(), NOW(), NOW()),
-(5, 10, 5, NOW(), NOW(), NOW());
+-- 平板电脑类商品
+(7, 'iPad Pro 2024', 6999.00, 7599.00, 500, 200, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '强大的M2芯片，专业办公首选', '详细的产品参数和规格说明', 1),
+(7, '华为MatePad Pro', 4599.00, 4999.00, 600, 150, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '全新HarmonyOS系统，多屏协同', '详细的产品参数和规格说明', 1),
 
--- 插入商品相似度数据
-INSERT INTO `product_similarity` (`product_id`, `similar_product_id`, `similarity`, `create_time`, `update_time`)
-VALUES
-(1, 2, 0.9, NOW(), NOW()),
-(3, 4, 0.85, NOW(), NOW()),
-(5, 6, 0.8, NOW(), NOW()),
-(7, 8, 0.75, NOW(), NOW()),
-(9, 10, 0.7, NOW(), NOW());
+-- 数码相机类商品
+(8, '索尼A7M4', 15999.00, 16999.00, 200, 50, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '专业全画幅微单相机', '详细的产品参数和规格说明', 1),
+(8, '佳能R6 Mark II', 14999.00, 15999.00, 150, 40, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '高速连拍，专业视频拍摄', '详细的产品参数和规格说明', 1),
 
--- 插入用户偏好数据
-INSERT INTO `user_preference` (`user_id`, `product_id`, `preference_score`, `create_time`, `update_time`)
-VALUES
-(1, 1, 0.95, NOW(), NOW()),
-(2, 2, 0.9, NOW(), NOW()),
-(3, 3, 0.85, NOW(), NOW()),
-(4, 4, 0.8, NOW(), NOW()),
-(5, 5, 0.75, NOW(), NOW());
+-- 智能手表类商品
+(9, 'Apple Watch Series 9', 3299.00, 3599.00, 800, 300, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '健康监测，运动管理', '详细的产品参数和规格说明', 1),
+(9, '华为Watch GT4', 1999.00, 2199.00, 1000, 400, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '长续航，多功能运动监测', '详细的产品参数和规格说明', 1),
 
--- 插入推荐结果数据
-INSERT INTO `recommendation` (`user_id`, `product_id`, `recommend_type`, `score`, `create_time`, `update_time`)
-VALUES
-(1, 1, 1, 0.95, NOW(), NOW()),
-(2, 2, 2, 0.9, NOW(), NOW()),
-(3, 3, 3, 0.85, NOW(), NOW()),
-(4, 4, 1, 0.8, NOW(), NOW()),
-(5, 5, 2, 0.75, NOW(), NOW());
+-- 笔记本电脑类商品
+(10, 'MacBook Pro 16', 18999.00, 19999.00, 300, 100, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 'M3 Max芯片，专业创作首选', '详细的产品参数和规格说明', 1),
+(10, '联想小新Pro16', 6999.00, 7599.00, 500, 200, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '高性能轻薄本，性价比之选', '详细的产品参数和规格说明', 1),
 
--- 更新商品数据，完善商品描述和商品详情
-UPDATE `product` SET `description` = '苹果最新款智能手机，搭载A15芯片，支持5G网络。', `detail` = 'iPhone 13配备6.1英寸超视网膜XDR显示屏，支持HDR显示，拥有更长的电池续航时间。' WHERE `name` = 'iPhone 13';
-UPDATE `product` SET `description` = '三星旗舰智能手机，搭载Exynos 2100处理器，支持5G网络。', `detail` = 'Samsung Galaxy S21配备6.2英寸动态AMOLED 2X显示屏，支持120Hz刷新率，拥有强大的拍摄功能。' WHERE `name` = 'Samsung Galaxy S21';
-UPDATE `product` SET `description` = '苹果高性能笔记本电脑，搭载M1芯片，适合专业用户。', `detail` = 'MacBook Pro配备13.3英寸视网膜显示屏，支持P3广色域，拥有长达20小时的电池续航时间。' WHERE `name` = 'MacBook Pro';
-UPDATE `product` SET `description` = '戴尔高性能笔记本电脑，搭载第11代英特尔酷睿处理器。', `detail` = 'Dell XPS 13配备13.4英寸FHD+显示屏，支持触控操作，拥有超长的电池续航时间。' WHERE `name` = 'Dell XPS 13';
-UPDATE `product` SET `description` = '苹果最新款平板电脑，搭载M1芯片，支持Apple Pencil。', `detail` = 'iPad Pro配备12.9英寸Liquid Retina XDR显示屏，支持ProMotion技术，拥有强大的多任务处理能力。' WHERE `name` = 'iPad Pro';
-UPDATE `product` SET `description` = '三星高性能平板电脑，搭载Exynos 2100处理器。', `detail` = 'Samsung Galaxy Tab配备11英寸TFT显示屏，支持S Pen，拥有强大的多媒体功能。' WHERE `name` = 'Samsung Galaxy Tab';
-UPDATE `product` SET `description` = '苹果智能手表，支持心率监测和运动追踪。', `detail` = 'Apple Watch配备Retina显示屏，支持血氧检测和ECG心电图功能，拥有全天候健康监测能力。' WHERE `name` = 'Apple Watch';
-UPDATE `product` SET `description` = 'Fitbit智能手表，支持心率监测和睡眠追踪。', `detail` = 'Fitbit Versa配备AMOLED显示屏，支持GPS定位和音乐播放，拥有长达6天的电池续航时间。' WHERE `name` = 'Fitbit Versa';
-UPDATE `product` SET `description` = '佳能全画幅无反相机，支持8K视频拍摄。', `detail` = 'Canon EOS R5配备4500万像素全画幅CMOS传感器，支持双像素CMOS AF II自动对焦系统，拥有强大的视频拍摄能力。' WHERE `name` = 'Canon EOS R5';
-UPDATE `product` SET `description` = '尼康全画幅无反相机，支持4K视频拍摄。', `detail` = 'Nikon Z6配备2450万像素全画幅CMOS传感器，支持273点自动对焦系统，拥有出色的低光拍摄能力。' WHERE `name` = 'Nikon Z6';
-UPDATE `product` SET `description` = '索尼降噪耳机，支持蓝牙连接。', `detail` = 'Sony WH-1000XM4配备40mm驱动单元，支持LDAC高解析度音频传输，拥有出色的降噪效果。' WHERE `name` = 'Sony WH-1000XM4';
-UPDATE `product` SET `description` = 'Bose降噪耳机，支持蓝牙连接。', `detail` = 'Bose QuietComfort 35配备TriPort声学结构，支持Bose AR增强现实音频，拥有舒适的佩戴体验。' WHERE `name` = 'Bose QuietComfort 35';
-UPDATE `product` SET `description` = 'JBL便携音响，支持蓝牙连接。', `detail` = 'JBL Charge 4配备20W功率输出，支持IPX7防水，拥有长达20小时的电池续航时间。' WHERE `name` = 'JBL Charge 4';
-UPDATE `product` SET `description` = '索尼便携音响，支持蓝牙连接。', `detail` = 'Sony SRS-XB43配备双被动振膜，支持EXTRA BASS™技术，拥有出色的低音表现。' WHERE `name` = 'Sony SRS-XB43';
-UPDATE `product` SET `description` = '谷歌智能家居设备，支持语音控制。', `detail` = 'Google Nest Hub配备7英寸触控屏幕，支持Google Assistant，拥有智能家居控制功能。' WHERE `name` = 'Google Nest Hub';
-UPDATE `product` SET `description` = '亚马逊智能音箱，支持语音控制。', `detail` = 'Amazon Echo配备360度环绕声，支持Alexa语音助手，拥有智能家居控制功能。' WHERE `name` = 'Amazon Echo';
-UPDATE `product` SET `description` = '大疆无人机，支持4K视频拍摄。', `detail` = 'DJI Mavic Air 2配备1/2英寸CMOS传感器，支持智能跟随3.0，拥有长达34分钟的飞行时间。' WHERE `name` = 'DJI Mavic Air 2';
-UPDATE `product` SET `description` = 'Parrot无人机，支持4K视频拍摄。', `detail` = 'Parrot Anafi配备21MP摄像头，支持180度旋转拍摄，拥有长达25分钟的飞行时间。' WHERE `name` = 'Parrot Anafi';
-UPDATE `product` SET `description` = '索尼游戏机，支持4K游戏体验。', `detail` = 'PlayStation 5配备AMD Ryzen Zen 2处理器，支持光线追踪技术，拥有超高速SSD存储。' WHERE `name` = 'PlayStation 5';
-UPDATE `product` SET `description` = '微软游戏机，支持4K游戏体验。', `detail` = 'Xbox Series X配备AMD Zen 2处理器，支持光线追踪技术，拥有1TB SSD存储。' WHERE `name` = 'Xbox Series X';
+-- 台式机类商品
+(11, '外星人Aurora R15', 15999.00, 16999.00, 100, 30, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '顶级游戏主机，极致性能体验', '详细的产品参数和规格说明', 1),
+(11, '惠普暗影精灵', 8999.00, 9599.00, 200, 80, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '高性价比游戏主机', '详细的产品参数和规格说明', 1),
 
--- 更新商品分类数据，设置分类图标
-UPDATE `category` SET `icon` = '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg';
+-- 显示器类商品
+(12, '三星49寸超宽屏', 5999.00, 6599.00, 150, 40, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '超宽视野，专业设计显示器', '详细的产品参数和规格说明', 1),
+(12, '戴尔27寸4K显示器', 2999.00, 3299.00, 300, 100, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '4K高清显示，专业色彩校准', '详细的产品参数和规格说明', 1),
 
--- 更新商品数据，设置商品图片
-UPDATE `product` SET `image` = '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', `images` = '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg';
+-- 智能设备类商品
+(14, '小米智能音箱Pro', 299.00, 399.00, 2000, 800, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 'AI语音助手，智能家居控制', '详细的产品参数和规格说明', 1),
+(15, '华为智能门锁Pro', 1999.00, 2199.00, 500, 150, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '指纹解锁，人脸识别，智能防盗', '详细的产品参数和规格说明', 1),
 
--- 更新用户数据，设置用户头像
-UPDATE `user` SET `avatar` = '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg';
+-- 家用电器类商品
+(18, '索尼65寸OLED电视', 12999.00, 13999.00, 200, 80, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 'OLED屏幕，4K超高清', '详细的产品参数和规格说明', 1),
+(19, '格力新能效空调', 3999.00, 4599.00, 400, 150, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '变频节能，智能控温', '详细的产品参数和规格说明', 1),
 
--- 更新用户评价数据，设置评论图片
-UPDATE `review` SET `images` = '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg';
+-- 影音娱乐类商品
+(22, 'Sony WH-1000XM5', 2699.00, 2999.00, 600, 200, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '顶级降噪耳机，高解析音质', '详细的产品参数和规格说明', 1),
+(23, 'Bose音响系统', 4999.00, 5499.00, 300, 100, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '家庭影院系统，环绕音效', '详细的产品参数和规格说明', 1),
+
+-- 打印机类商品
+(13, '惠普彩色激光打印机', 2999.00, 3299.00, 200, 60, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '商用打印机，高速双面打印', '详细的产品参数和规格说明', 1),
+
+-- 智能摄像头类商品
+(16, '萤石C8C监控摄像头', 399.00, 499.00, 1000, 400, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '360度全景监控，夜视功能', '详细的产品参数和规格说明', 1),
+
+-- 智能家居类商品
+(17, '米家智能窗帘', 999.00, 1199.00, 800, 300, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '自动遮光，语音控制', '详细的产品参数和规格说明', 1),
+
+-- 冰箱类商品
+(20, '海尔对开门冰箱', 5999.00, 6599.00, 150, 50, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '风冷无霜，智能控温', '详细的产品参数和规格说明', 1),
+
+-- 洗衣机类商品
+(21, '西门子滚筒洗衣机', 4599.00, 4999.00, 200, 80, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '变频节能，智能投放', '详细的产品参数和规格说明', 1),
+
+-- 游戏机类商品
+(22, 'PlayStation 5', 3899.00, 4299.00, 400, 200, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '次世代游戏主机，4K游戏体验', '详细的产品参数和规格说明', 1),
+
+-- 投影仪类商品
+(24, '极米H3S投影仪', 3999.00, 4399.00, 300, 100, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', '1080P高清投影，自动对焦', '详细的产品参数和规格说明', 1);
+
+-- 插入收货地址测试数据
+INSERT INTO `address` (`user_id`, `receiver_name`, `receiver_phone`, `province`, `city`, `district`, `detail_address`, `is_default`) VALUES
+(2, '张伟', '13911112222', '北京市', '北京市', '海淀区', '中关村科技园23号楼506室', 1),
+(3, '李晓梅', '13922223333', '广东省', '深圳市', '南山区', '科技园南区A栋1203室', 1),
+(4, '王芳', '13933334444', '上海市', '上海市', '浦东新区', '张江高科技园区88号2单元701室', 1),
+(5, '刘洋', '13944445555', '浙江省', '杭州市', '西湖区', '文三路478号文创园C座305室', 1),
+(6, '陈静', '13955556666', '四川省', '成都市', '武侯区', '锦江区人民南路二段16号1栋18楼', 1),
+(7, '赵明', '13966667777', '江苏省', '南京市', '玄武区', '珠江路88号25楼', 0),
+(8, '孙雪', '13977778888', '湖北省', '武汉市', '洪山区', '光谷大道35号创业街A4栋502室', 1),
+(9, '张军', '13988889999', '陕西省', '西安市', '雁塔区', '高新四路15号科技广场B座1206室', 1),
+(10, '王霞', '13999990000', '福建省', '厦门市', '思明区', '软件园二期观日路56号402室', 1),
+(11, '李红', '13900001111', '山东省', '青岛市', '市南区', '香港中路66号远洋大厦1单元801室', 1);
+
+-- 插入购物车测试数据
+INSERT INTO `cart` (`user_id`, `product_id`, `quantity`, `checked`) VALUES
+(2, 1, 2, 1),  -- 张伟的购物车：iPhone 15 Pro Max
+(3, 2, 1, 1),  -- 李晓梅的购物车：华为Mate 60 Pro
+(4, 5, 1, 1),  -- 王芳的购物车：华为MatePad Pro
+(5, 10, 1, 1), -- 刘洋的购物车：MacBook Pro 16
+(6, 15, 2, 1), -- 陈静的购物车：华为智能门锁Pro
+(7, 18, 1, 0), -- 赵明的购物车：索尼65寸OLED电视
+(8, 20, 1, 1), -- 孙雪的购物车：海尔对开门冰箱
+(9, 22, 1, 1), -- 张军的购物车：PlayStation 5
+(10, 23, 1, 1), -- 王霞的购物车：Bose音响系统
+(11, 24, 1, 1); -- 李红的购物车：极米H3S投影仪
+
+-- 插入用户收藏表测试数据
+INSERT INTO `favorite` (`user_id`, `product_id`) VALUES
+(2, 3),  -- 张伟收藏：小米14 Pro
+(3, 4),  -- 李晓梅收藏：iPad Pro 2024
+(4, 6),  -- 王芳收藏：索尼A7M4
+(5, 8),  -- 刘洋收藏：佳能R6 Mark II
+(6, 10), -- 陈静收藏：MacBook Pro 16
+(7, 12), -- 赵明收藏：戴尔27寸4K显示器
+(8, 14), -- 孙雪收藏：小米智能音箱Pro
+(9, 16), -- 张军收藏：萤石C8C监控摄像头
+(10, 18), -- 王霞收藏：索尼65寸OLED电视
+(11, 22); -- 李红收藏：PlayStation 5
+
+-- 插入用户评价测试数据
+INSERT INTO `review` (`user_id`, `product_id`, `order_id`, `content`, `rating`, `images`, `anonymous`, `create_time`) VALUES
+(2, 1, 1001, 'iPhone 15 Pro Max真的很惊艳！相机系统的提升很大，尤其是暗光下的表现，拍照效果完全超出预期。续航也有明显提升，一天重度使用都没问题。外观设计很高级，钛金属边框手感特别好。', 
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-18 15:30:00'),
+
+(3, 2, 1002, '华为Mate 60 Pro使用两周后来评价，整体很满意。信号非常好，卫星通话很实用，拍照效果也很出色，尤其是夜景模式。系统流畅度完全不输iPhone，而且有很多贴心的本地化功能。',
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-17 14:20:00'),
+
+(4, 5, 1003, '华为MatePad Pro作为办公平板很好用，屏幕素质高，手写笔的响应速度快，延迟低。多屏协同功能很实用，经常用来扩展电脑屏幕。唯一美中不足的是某些常用软件还是需要替代方案。', 
+4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-16 16:45:00'),
+
+(5, 10, 1004, 'MacBook Pro 16寸M3版本性能确实强大，专业软件运行非常流畅，完全没有风扇噪音。电池续航惊人，充一次电可以工作一整天。屏幕素质一如既往的优秀，就是价格确实不便宜。', 
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+1, '2024-03-15 09:30:00'),
+
+(6, 15, 1005, '华为智能门锁Pro安装简单，指纹识别速度快且准确，人脸识别功能也很实用。手机APP控制方便，可以随时查看开锁记录。一次充电可以用很久，总体来说很满意这次购买。', 
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-14 11:20:00'),
+
+(7, 18, 1006, '索尼这款OLED电视画质确实惊艳，尤其是看4K内容时，画面细节和色彩表现都很出色。音响效果也不错，内置的音响就能提供不错的音效。智能系统反应速度快，操作很流畅。', 
+4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-13 17:40:00'),
+
+(8, 20, 1007, '海尔这款冰箱容量很大，温度控制精准，制冷效果好。风冷无霜功能很实用，不用再手动除霜。就是价格稍贵，希望能再优惠一些。', 
+4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+1, '2024-03-12 10:15:00'),
+
+(9, 22, 1008, 'PS5主机真的很棒！画面表现力很强，游戏加载速度快，手柄的触感反馈很真实。自带的游戏《星际争霸》玩起来很过瘾。就是游戏价格偏贵，建议多打折。', 
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-11 20:30:00'),
+
+(10, 23, 1009, 'Bose音响系统音质非常棒，低音浑厚，人声清晰，环绕音效很真实。设置简单，手机蓝牙连接稳定。就是价格确实不便宜，建议等促销时购买。', 
+4, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-10 13:25:00'),
+
+(11, 24, 1010, '极米H3S投影仪画质清晰，自动对焦很方便，1080P分辨率看电影完全够用。内置的哈曼卡顿音响音质不错，投射距离适中，100寸的画面效果很好。', 
+5, '/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg,/uploads/2025/04/15/e534b4bfc9fd4bb2804e96b115f2920f.jpg', 
+0, '2024-03-09 19:15:00');

@@ -75,15 +75,54 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
             Long userId = entry.getKey();
             List<UserBehavior> userBehaviorList = entry.getValue();
 
-            // 计算该用户的偏好
-            Map<Long, Double> productScores = calculateUserPreferences(userId, userBehaviorList, behaviorWeights);
+            if (userBehaviorList.isEmpty()) {
+                log.info("用户{}没有行为数据，跳过处理", userId);
+                continue;
+            }
 
-            // 转换为实体对象
-            List<UserPreference> userPreferences = productScores.entrySet().stream()
-                    .map(e -> createUserPreference(userId, e.getKey(), e.getValue()))
-                    .collect(Collectors.toList());
+            // 按商品ID分组
+            Map<Long, List<UserBehavior>> productBehaviors = userBehaviorList.stream()
+                    .collect(Collectors.groupingBy(UserBehavior::getProductId));
 
-            allPreferences.addAll(userPreferences);
+            // 计算每个商品的偏好分数
+            for (Map.Entry<Long, List<UserBehavior>> productEntry : productBehaviors.entrySet()) {
+                Long productId = productEntry.getKey();
+                List<UserBehavior> productBehaviorList = productEntry.getValue();
+
+                double score = 0.0;
+                // 计算所有行为的加权得分
+                for (UserBehavior behavior : productBehaviorList) {
+                    Integer behaviorType = behavior.getBehaviorType();
+                    double weight = behaviorWeights.getOrDefault(behaviorType, 1.0);
+                    score += weight;
+                }
+
+                // 创建用户偏好对象
+                UserPreference preference = createUserPreference(userId, productId, score);
+                allPreferences.add(preference);
+            }
+        }
+
+        // 规范化分数到[0,1]区间
+        if (!allPreferences.isEmpty()) {
+            // 按用户分组
+            Map<Long, List<UserPreference>> userPreferences = allPreferences.stream()
+                    .collect(Collectors.groupingBy(UserPreference::getUserId));
+
+            // 对每个用户的偏好分数进行规范化
+            for (List<UserPreference> userPrefs : userPreferences.values()) {
+                double maxScore = userPrefs.stream()
+                        .mapToDouble(p -> p.getPreferenceScore().doubleValue())
+                        .max()
+                        .orElse(1.0);
+
+                if (maxScore > 0) {
+                    for (UserPreference pref : userPrefs) {
+                        double normalizedScore = pref.getPreferenceScore().doubleValue() / maxScore;
+                        pref.setPreferenceScore(toBigDecimal(normalizedScore));
+                    }
+                }
+            }
         }
 
         // 先删除所有现有偏好记录
