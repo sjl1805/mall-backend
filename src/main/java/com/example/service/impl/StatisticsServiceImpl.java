@@ -216,7 +216,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         wrapper.select("IFNULL(SUM(pay_amount), 0) as total_amount")
                 .ge("create_time", monthStart)
                 .lt("create_time", monthEnd)
-                .eq("deleted", 0)
                 .gt("status", 0); // 只统计已支付的订单
 
         Map<String, Object> result = orderMapper.selectMaps(wrapper).get(0);
