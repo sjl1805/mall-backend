@@ -62,7 +62,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/review/product/**",
                         "/review/stats/**",
                         "/review/latest",
-                        "/review/check",
                         // 文件查看和信息接口
                         "/file/view",
                         "/file/info",
@@ -95,7 +94,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/review/product/**",
                         "/review/stats/**",
                         "/review/latest",
-                        "/review/check",
                         // 文件查看和信息接口
                         "/file/view",
                         "/file/info",

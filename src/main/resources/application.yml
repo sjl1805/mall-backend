@@ -44,7 +44,7 @@ server:
 # JWT配置
 jwt:
   secret: mall-secret-key
-  expiration: 86400000  # 24小时
+  expiration: 2592000000  # 30天
 
 # 文件上传配置
 file:
