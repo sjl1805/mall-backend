@@ -9,6 +9,8 @@ import com.example.mapper.AddressMapper;
 import com.example.model.entity.Address;
 import com.example.service.AddressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
         implements AddressService {
 
     @Override
+    @Cacheable(value = "address", key = "'user:' + #userId + ':addresses'")
     public List<Address> getUserAddresses(Long userId) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -39,6 +42,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
     }
 
     @Override
+    @Cacheable(value = "address", key = "'user:' + #userId + ':default'")
     public Address getDefaultAddress(Long userId) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -53,6 +57,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "address", allEntries = true)
     public Address addAddress(Address address, Long userId) {
         if (address == null || userId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -80,6 +85,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "address", allEntries = true)
     public boolean updateAddress(Address address, Long userId) {
         if (address == null || address.getId() == null || userId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -107,6 +113,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "address", allEntries = true)
     public boolean deleteAddress(Long addressId, Long userId) {
         if (addressId == null || userId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -151,6 +158,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "address", allEntries = true)
     public boolean setDefaultAddress(Long addressId, Long userId) {
         if (addressId == null || userId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);

@@ -9,6 +9,8 @@ import com.example.model.entity.UserBehavior;
 import com.example.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':type:' + TYPE_USER_BASED")
     public int generateUserBasedRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             log.warn("用户ID为空或limit参数无效，无法生成推荐");
@@ -97,6 +100,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':type:' + TYPE_ITEM_BASED")
     public int generateItemBasedRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             log.warn("用户ID为空或limit参数无效，无法生成推荐");
@@ -206,6 +210,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':type:' + TYPE_POPULAR")
     public int generatePopularRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             log.warn("用户ID为空或limit参数无效，无法生成推荐");
@@ -266,6 +271,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':type:' + TYPE_HYBRID")
     public int generateHybridRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             log.warn("用户ID为空或limit参数无效，无法生成推荐");
@@ -325,6 +331,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", allEntries = true)
     public int updateAllUsersRecommendations(int limit) {
         log.info("开始更新所有用户的推荐结果");
 
@@ -359,6 +366,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':*'")
     public int updateUserRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             log.warn("用户ID为空或limit参数无效，无法更新推荐");
@@ -389,6 +397,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      * 获取用户的推荐商品列表
      */
     @Override
+    @Cacheable(value = "recommendation", key = "'user:' + #userId + ':type:' + #recommendType + ':limit:' + #limit")
     public List<Product> getRecommendedProducts(Long userId, Integer recommendType, int limit) {
         if (userId == null || limit <= 0) {
             return new ArrayList<>();
@@ -425,6 +434,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      * 获取用户所有类型的推荐商品
      */
     @Override
+    @Cacheable(value = "recommendation", key = "'user:' + #userId + ':all:limit:' + #limit")
     public Map<Integer, List<Product>> getAllTypeRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             return new HashMap<>();
@@ -447,6 +457,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      * 获取推荐类型描述
      */
     @Override
+    @Cacheable(value = "recommendation", key = "'type:desc:' + #recommendType")
     public String getRecommendTypeDesc(Integer recommendType) {
         if (recommendType == null) {
             return "未知推荐";
@@ -470,6 +481,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      * 清除用户的推荐记录
      */
     @Override
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':type:' + #recommendType")
     public boolean clearUserRecommendations(Long userId, Integer recommendType) {
         if (userId == null) {
             return false;
@@ -490,6 +502,7 @@ public class RecommendationServiceImpl extends ServiceImpl<RecommendationMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "recommendation", key = "'user:' + #userId + ':*'")
     public int updateRecommendationsAfterBehavior(Long userId, Long productId, Integer behaviorType, int limit) {
         if (userId == null || productId == null || behaviorType == null || limit <= 0) {
             log.warn("参数无效，无法更新推荐");

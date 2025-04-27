@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "category")  // 添加缓存配置
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
         implements CategoryService {
 
@@ -35,6 +39,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     private final ProductService productService;
 
     @Override
+    @Cacheable(value = "category", key = "'tree'")
     public List<Category> getCategoryTree() {
         // 获取所有分类
         List<Category> allCategories = this.list();
@@ -86,6 +91,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     }
 
     @Override
+    @Cacheable(value = "category", key = "'enabled'")
     public List<Category> listEnabledCategories() {
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Category::getStatus, 1); // 1表示启用状态
@@ -116,7 +122,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     }
 
     @Override
+    @Cacheable(value = "category", key = "'children:' + #parentId")
+    public List<Category> getChildrenCategories(Long parentId) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getParentId, parentId);
+        queryWrapper.eq(Category::getStatus, 1); // 只获取启用的分类
+        queryWrapper.orderByAsc(Category::getSort); // 按排序字段升序排列
+        List<Category> categories = this.list(queryWrapper);
+        
+        // 将null值的排序放到最后
+        categories.sort(Comparator.comparing(Category::getSort, Comparator.nullsLast(Comparator.naturalOrder())));
+        
+        return categories;
+    }
+
+    @Override
+    @Cacheable(value = "category", key = "'hasProducts:' + #categoryId")
+    public boolean hasProducts(Long categoryId) {
+        LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Product::getCategoryId, categoryId);
+        queryWrapper.last("LIMIT 1"); // 只需要确认是否存在，返回一条记录即可
+        return productService.count(queryWrapper) > 0;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "category", allEntries = true)
     public String uploadIcon(MultipartFile file, Long categoryId) {
         // 验证分类是否存在
         Category category = this.getById(categoryId);
@@ -140,29 +171,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     }
 
     @Override
-    public List<Category> getChildrenCategories(Long parentId) {
-        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Category::getParentId, parentId);
-        queryWrapper.eq(Category::getStatus, 1); // 只获取启用的分类
-        queryWrapper.orderByAsc(Category::getSort); // 按排序字段升序排列
-        List<Category> categories = this.list(queryWrapper);
-        
-        // 将null值的排序放到最后
-        categories.sort(Comparator.comparing(Category::getSort, Comparator.nullsLast(Comparator.naturalOrder())));
-        
-        return categories;
-    }
-
-    @Override
-    public boolean hasProducts(Long categoryId) {
-        LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Product::getCategoryId, categoryId);
-        queryWrapper.last("LIMIT 1"); // 只需要确认是否存在，返回一条记录即可
-        return productService.count(queryWrapper) > 0;
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "category", allEntries = true)
     public boolean batchAddCategories(List<Category> categories) {
         if (categories == null || categories.isEmpty()) {
             return false;
@@ -202,6 +212,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "category", allEntries = true)
     public boolean moveCategory(Long categoryId, Long targetParentId) {
         // 验证分类和目标父分类
         Category category = getById(categoryId);
@@ -294,6 +305,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "category", allEntries = true)
     public boolean updateCategorySort(Long categoryId, Integer sort) {
         Category category = getById(categoryId);
         if (category == null) {

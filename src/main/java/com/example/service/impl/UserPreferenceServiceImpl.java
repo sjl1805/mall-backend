@@ -13,6 +13,8 @@ import com.example.service.UserPreferenceService;
 import com.example.util.SimilarityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userPreference", allEntries = true)
     public int calculateAndUpdateAllUserPreferences() {
         log.info("开始计算所有用户的商品偏好");
 
@@ -140,6 +143,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userPreference", key = "'user:' + #userId + ':preferences'")
     public int calculateAndUpdateUserPreferences(Long userId) {
         if (userId == null) {
             log.warn("用户ID为空，无法计算偏好");
@@ -190,6 +194,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 获取用户对商品的偏好程度
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':product:' + #productId + ':score'")
     public double getUserPreferenceScore(Long userId, Long productId) {
         if (userId == null || productId == null) {
             return 0.0;
@@ -212,6 +217,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 获取用户对商品的偏好程度映射
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':scores'")
     public Map<Long, Double> getUserPreferenceScores(Long userId) {
         if (userId == null) {
             return new HashMap<>();
@@ -233,6 +239,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 获取与用户偏好相似的用户列表
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':similar:limit:' + #limit")
     public Map<Long, Double> getSimilarUsers(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             return new HashMap<>();
@@ -292,6 +299,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 基于用户的协同过滤推荐
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':cf:limit:' + #limit")
     public List<Product> recommendProductsByUserCF(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             return new ArrayList<>();
@@ -363,6 +371,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 基于内容的推荐
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':content:limit:' + #limit")
     public List<Product> recommendProductsByContent(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             return new ArrayList<>();
@@ -434,6 +443,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
      * 混合推荐
      */
     @Override
+    @Cacheable(value = "userPreference", key = "'user:' + #userId + ':hybrid:limit:' + #limit")
     public List<Product> getHybridRecommendations(Long userId, int limit) {
         if (userId == null || limit <= 0) {
             return new ArrayList<>();

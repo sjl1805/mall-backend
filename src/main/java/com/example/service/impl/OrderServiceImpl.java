@@ -17,6 +17,8 @@ import com.example.util.OrderNoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'user:' + #userId + ':orders'")
     public String create(Long userId, OrderCreateDTO orderCreateDTO) {
         if (userId == null || orderCreateDTO == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -150,6 +153,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'orderNo:' + #orderNo")
     public OrderVO getOrderDetail(Long userId, String orderNo) {
         if (orderNo == null) {
             throw new BusinessException("订单编号不能为空", ResultCode.PARAM_ERROR);
@@ -180,6 +184,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean cancel(Long userId, String orderNo) {
         if (userId == null || orderNo == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -223,6 +228,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public Map<String, String> pay(Long userId, String orderNo, Integer payType) {
         if (userId == null || orderNo == null || payType == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -268,6 +274,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean payCallback(String orderNo, String tradeNo) {
         if (orderNo == null) {
             return false;
@@ -292,6 +299,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean confirm(Long userId, String orderNo) {
         if (userId == null || orderNo == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -319,6 +327,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'user:' + #userId + ':orders:status:' + #status + ':page:' + #page + ':size:' + #size")
     public Page<OrderVO> getUserOrders(Long userId, Integer status, long page, long size) {
         if (userId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -359,6 +368,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:status:desc:' + #status")
     public String getOrderStatusDesc(Integer status) {
         if (status == null) {
             return "未知状态";
@@ -381,6 +391,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:payType:desc:' + #payType")
     public String getPayTypeDesc(Integer payType) {
         if (payType == null) {
             return "未支付";
@@ -397,6 +408,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:actions:' + #orderStatus")
     public List<String> getAllowActions(Integer orderStatus) {
         List<String> actions = new ArrayList<>();
 
@@ -427,6 +439,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean deleteOrder(Long userId, String orderNo) {
         if (userId == null || orderNo == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -460,6 +473,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean ship(String orderNo, String shipmentNumber) {
         if (orderNo == null) {
             throw new BusinessException("订单编号不能为空", ResultCode.PARAM_ERROR);
@@ -539,6 +553,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:page:status:' + #status + ':orderNo:' + #orderNo + ':startTime:' + #startTime + ':endTime:' + #endTime + ':page:' + #page + ':size:' + #size")
     public Page<OrderVO> getOrderPage(long page, long size, Integer status, String orderNo, String startTime, String endTime) {
         // 构建查询条件
         LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
@@ -599,6 +614,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean cancelByAdmin(String orderNo) {
         if (orderNo == null) {
             throw new BusinessException("订单编号不能为空", ResultCode.PARAM_ERROR);
@@ -638,6 +654,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:statistics'")
     public Map<String, Object> getOrderStatistics() {
         Map<String, Object> statistics = new HashMap<>();
 
@@ -710,6 +727,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:today:count'")
     public long countTodayOrders() {
         // 获取今日开始时间
         Calendar calendar = Calendar.getInstance();
@@ -725,6 +743,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:total:sales'")
     public BigDecimal calculateTotalSales() {
         // 实现总销售额计算 - 使用查询代替直接调用不存在的Mapper方法
         LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
@@ -737,6 +756,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:today:sales'")
     public BigDecimal calculateTodaySales() {
         // 获取今日开始时间
         Calendar calendar = Calendar.getInstance();
@@ -757,12 +777,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:sold:products'")
     public long countSoldProducts() {
         // 统计已售出商品数量 - 通过订单项计算
         return orderItemService.count();
     }
 
     @Override
+    @Cacheable(value = "order", key = "'order:status:' + #status + ':count'")
     public long countByStatus(int status) {
         return lambdaQuery()
                 .eq(Order::getStatus, status)
@@ -771,6 +793,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "order", key = "'orderNo:' + #orderNo")
     public boolean updateOrderNote(String orderNo, String note) {
         if (orderNo == null) {
             throw new BusinessException("订单编号不能为空", ResultCode.PARAM_ERROR);

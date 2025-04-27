@@ -18,6 +18,8 @@ import com.example.service.UserService;
 import com.example.util.CaptchaUtil;
 import com.example.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +40,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private final CaptchaUtil captchaUtil;
     private final JwtUtil jwtUtil;
 
+    // 添加性别常量
+    private static final int GENDER_UNKNOWN = 0;
+    private static final int GENDER_MALE = 1;
+    private static final int GENDER_FEMALE = 2;
+
+    // 添加性别转换方法
+    private Integer convertGender(String gender) {
+        if (gender == null) {
+            return GENDER_UNKNOWN;
+        }
+        gender = gender.toLowerCase();
+        switch (gender) {
+            case "male":
+            case "1":
+                return GENDER_MALE;
+            case "female":
+            case "2":
+                return GENDER_FEMALE;
+            default:
+                return GENDER_UNKNOWN;
+        }
+    }
+
     @Override
+    @CacheEvict(value = "user", key = "'username:' + #loginDTO.username")
     public UserLoginVO login(LoginDTO loginDTO) {
         // 1. 验证验证码
         boolean captchaValid = captchaUtil.verifyCaptcha(loginDTO.getCaptchaKey(), loginDTO.getCaptcha());
@@ -89,6 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'username:' + #registerDTO.username")
     public UserLoginVO register(RegisterDTO registerDTO) {
         // 1. 验证验证码
         boolean captchaValid = captchaUtil.verifyCaptcha(registerDTO.getCaptchaKey(), registerDTO.getCaptcha());
@@ -114,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setNickname(registerDTO.getNickname() != null ? registerDTO.getNickname() : registerDTO.getUsername());
         user.setPhone(registerDTO.getPhone());
         user.setEmail(registerDTO.getEmail());
-        user.setGender(0); // 默认未知
+        user.setGender(GENDER_UNKNOWN); // 默认未知
         user.setStatus(1); // 默认正常
         user.setRole(2);   // 默认普通用户
         user.setLastLoginTime(new Date()); // 设置注册时间为首次登录时间
@@ -142,6 +169,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'username:' + #username")
     public User getByUsername(String username) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username);
@@ -149,6 +177,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'exists:username:' + #username")
     public boolean existsByUsername(String username) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username);
@@ -157,6 +186,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #userId")
     public boolean updatePassword(Long userId, String oldPassword, String newPassword) {
         // 1. 获取用户信息
         User user = getById(userId);
@@ -180,6 +210,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'page:' + #page + ':size:' + #size + ':query:' + #queryDTO")
     public Page<User> getUserPage(long page, long size, UserQueryDTO queryDTO) {
         Page<User> pageParam = new Page<>(page, size);
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -230,6 +261,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'username:' + #user.username")
     public boolean addUser(User user) {
         // 1. 检查用户名是否已存在
         if (existsByUsername(user.getUsername())) {
@@ -246,7 +278,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         if (user.getGender() == null) {
-            user.setGender(0); // 默认未知
+            user.setGender(GENDER_UNKNOWN); // 默认未知
         }
 
         // 3. 加密密码 - 使用MD5加密
@@ -259,6 +291,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #user.id")
     public boolean updateUser(User user) {
         // 1. 检查用户是否存在
         User existUser = getById(user.getId());
@@ -287,6 +320,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #userId")
     public boolean deleteUser(Long userId) {
         // 检查用户是否存在
         User user = getById(userId);
@@ -300,6 +334,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #userId")
     public boolean updateUserStatus(Long userId, Integer status) {
         // 1. 检查参数
         if (status != 0 && status != 1) {
@@ -322,6 +357,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #userId")
     public boolean resetPassword(Long userId, String newPassword) {
         // 1. 检查用户是否存在
         User user = getById(userId);
@@ -339,6 +375,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "user", key = "'id:' + #userId")
     public boolean updateUserRole(Long userId, Integer role) {
         // 1. 检查参数
         if (role != 1 && role != 2) {
@@ -360,6 +397,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'statistics'")
     public Map<String, Object> getUserStatistics() {
         // 统计用户数据
         Map<String, Object> statisticsMap = new HashMap<>();
@@ -409,6 +447,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'today:new'")
     public long countTodayNewUsers() {
         // 统计今日新增用户数
         return lambdaQuery()
@@ -418,6 +457,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'active:days:' + #days")
     public long countActiveUsers(int days) {
         // 统计近N天内有登录记录的用户数
         Date startDate = DateUtil.offsetDay(new Date(), -days);
@@ -427,27 +467,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    @Cacheable(value = "user", key = "'gender:distribution'")
     public Map<Integer, Long> getGenderDistribution() {
         // 统计用户性别分布
         Map<Integer, Long> distribution = new HashMap<>();
 
         // 0-未知
         long unknownCount = lambdaQuery()
-                .eq(User::getGender, 0)
+                .eq(User::getGender, GENDER_UNKNOWN)
                 .count();
-        distribution.put(0, unknownCount);
+        distribution.put(GENDER_UNKNOWN, unknownCount);
 
         // 1-男
         long maleCount = lambdaQuery()
-                .eq(User::getGender, 1)
+                .eq(User::getGender, GENDER_MALE)
                 .count();
-        distribution.put(1, maleCount);
+        distribution.put(GENDER_MALE, maleCount);
 
         // 2-女
         long femaleCount = lambdaQuery()
-                .eq(User::getGender, 2)
+                .eq(User::getGender, GENDER_FEMALE)
                 .count();
-        distribution.put(2, femaleCount);
+        distribution.put(GENDER_FEMALE, femaleCount);
 
         return distribution;
     }

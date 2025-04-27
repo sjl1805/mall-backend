@@ -13,6 +13,8 @@ import com.example.model.vo.CartVO;
 import com.example.service.CartService;
 import com.example.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +41,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean add(Long userId, Long productId, Integer quantity) {
         // 参数校验
         if (userId == null || productId == null || quantity == null || quantity <= 0) {
@@ -93,6 +96,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean remove(Long userId, Long productId) {
         // 参数校验
         if (userId == null || productId == null) {
@@ -111,6 +115,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean removeBatch(Long userId, Long[] productIds) {
         // 参数校验
         if (userId == null || productIds == null || productIds.length == 0) {
@@ -129,6 +134,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean clear(Long userId) {
         // 参数校验
         if (userId == null) {
@@ -151,6 +157,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean updateQuantity(Long userId, Long productId, Integer quantity) {
         // 参数校验
         if (userId == null || productId == null || quantity == null || quantity <= 0) {
@@ -185,6 +192,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean updateChecked(Long userId, Long productId, Integer checked) {
         // 参数校验
         if (userId == null || productId == null || checked == null || (checked != 0 && checked != 1)) {
@@ -201,6 +209,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean updateCheckedBatch(Long userId, Long[] productIds, Integer checked) {
         // 参数校验
         if (userId == null || productIds == null || productIds.length == 0 || checked == null || (checked != 0 && checked != 1)) {
@@ -217,6 +226,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "cart", key = "'user:' + #userId + ':cart'")
     public boolean updateCheckedAll(Long userId, Integer checked) {
         // 参数校验
         if (userId == null || checked == null || (checked != 0 && checked != 1)) {
@@ -231,6 +241,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
     }
 
     @Override
+    @Cacheable(value = "cart", key = "'user:' + #userId + ':cart'")
     public CartVO getCartByUserId(Long userId) {
         // 参数校验
         if (userId == null) {
@@ -327,6 +338,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
     }
 
     @Override
+    @Cacheable(value = "cart", key = "'user:' + #userId + ':count'")
     public int getCartProductCount(Long userId) {
         // 参数校验
         if (userId == null) {
@@ -343,6 +355,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
     }
 
     @Override
+    @Cacheable(value = "cart", key = "'user:' + #userId + ':product:' + #productId + ':exists'")
     public boolean existsProduct(Long userId, Long productId) {
         // 参数校验
         if (userId == null || productId == null) {

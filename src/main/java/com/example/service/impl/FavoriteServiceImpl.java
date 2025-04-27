@@ -12,6 +12,8 @@ import com.example.service.FavoriteService;
 import com.example.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "favorite", key = "'user:' + #userId + ':favorites'")
     public boolean addFavorite(Long userId, Long productId) {
         if (userId == null || productId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -63,6 +66,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "favorite", key = "'user:' + #userId + ':favorites'")
     public boolean removeFavorite(Long userId, Long productId) {
         if (userId == null || productId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -78,6 +82,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
     }
 
     @Override
+    @Cacheable(value = "favorite", key = "'user:' + #userId + ':product:' + #productId + ':isFavorite'")
     public boolean isFavorite(Long userId, Long productId) {
         if (userId == null || productId == null) {
             return false;
@@ -91,6 +96,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
     }
 
     @Override
+    @Cacheable(value = "favorite", key = "'user:' + #userId + ':favorites:page:' + #page + ':size:' + #size")
     public Page<Product> getUserFavorites(Long userId, long page, long size) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -129,6 +135,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
     }
 
     @Override
+    @Cacheable(value = "favorite", key = "'user:' + #userId + ':count'")
     public int getUserFavoriteCount(Long userId) {
         if (userId == null) {
             return 0;
@@ -141,6 +148,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
     }
 
     @Override
+    @Cacheable(value = "favorite", key = "'user:' + #userId + ':recent:' + #limit")
     public List<Product> getRecentFavorites(Long userId, int limit) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);

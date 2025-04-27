@@ -1,6 +1,8 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.example.config.GenderDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -48,6 +50,7 @@ public class User implements Serializable {
     /**
      * 性别：0-未知，1-男，2-女
      */
+    @JsonDeserialize(using = GenderDeserializer.class)
     private Integer gender;
     /**
      * 生日
@@ -75,5 +78,4 @@ public class User implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
 }

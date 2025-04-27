@@ -14,6 +14,8 @@ import com.example.service.ProductService;
 import com.example.service.UserBehaviorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userBehavior", key = "'user:' + #userId + ':history'")
     public boolean recordBehavior(Long userId, Long productId, Integer behaviorType) {
         if (userId == null || productId == null || behaviorType == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -69,6 +72,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userBehavior", key = "'user:' + #userId + ':history'")
     public boolean recordBehaviorBatch(Long userId, List<Long> productIds, Integer behaviorType) {
         if (userId == null || productIds == null || productIds.isEmpty() || behaviorType == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -102,6 +106,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     }
 
     @Override
+    @Cacheable(value = "userBehavior", key = "'user:' + #userId + ':history:type:' + #behaviorType + ':start:' + #startTime + ':end:' + #endTime + ':limit:' + #limit")
     public List<UserBehavior> getUserBehaviorHistory(Long userId, Integer behaviorType,
                                                      Date startTime, Date endTime, Integer limit) {
         if (userId == null) {
@@ -137,6 +142,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     }
 
     @Override
+    @Cacheable(value = "userBehavior", key = "'user:' + #userId + ':history:vo:type:' + #behaviorType + ':start:' + #startTime + ':end:' + #endTime + ':page:' + #page + ':size:' + #size")
     public Page<UserBehaviorVO> getUserBehaviorHistoryVO(Long userId, Integer behaviorType,
                                                          Date startTime, Date endTime, long page, long size) {
         if (userId == null) {
@@ -228,6 +234,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     }
 
     @Override
+    @Cacheable(value = "userBehavior", key = "'user:' + #userId + ':recent:viewed:limit:' + #limit")
     public List<Product> getRecentViewedProducts(Long userId, int limit) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -272,6 +279,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     }
 
     @Override
+    @Cacheable(value = "userBehavior", key = "'user:' + #userId + ':stats'")
     public Map<Integer, Long> getUserBehaviorStats(Long userId) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -296,6 +304,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userBehavior", key = "'user:' + #userId + ':history'")
     public boolean clearBehaviorRecords(Long userId, Integer behaviorType, Date beforeTime) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -319,6 +328,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "userBehavior", key = "'user:' + #userId + ':history'")
     public boolean cancelBehavior(Long userId, Long productId, Integer behaviorType) {
         if (userId == null || productId == null || behaviorType == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -349,6 +359,7 @@ public class UserBehaviorServiceImpl extends ServiceImpl<UserBehaviorMapper, Use
     }
 
     @Override
+    @Cacheable(value = "userBehavior", key = "'type:desc:' + #behaviorType")
     public String getBehaviorTypeDesc(Integer behaviorType) {
         if (behaviorType == null) {
             return "未知行为";

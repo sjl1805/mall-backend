@@ -12,6 +12,8 @@ import com.example.service.ProductService;
 import com.example.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -34,6 +36,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
 
     @Override
+    @Cacheable(value = "product", key = "'page:category:' + #categoryId + ':keyword:' + #keyword + ':minPrice:' + #minPrice + ':maxPrice:' + #maxPrice + ':page:' + #page + ':size:' + #size")
     public Page<Product> getProductPage(long page, long size, Long categoryId, String keyword,
                                         Double minPrice, Double maxPrice) {
         // 参数验证
@@ -80,6 +83,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @Cacheable(value = "product", key = "'hot:' + #limit")
     public List<Product> getHotProducts(int limit) {
         // 获取销量前N的商品
         LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
@@ -91,6 +95,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @Cacheable(value = "product", key = "'new:' + #limit")
     public List<Product> getNewProducts(int limit) {
         // 获取最新上架的商品
         LambdaQueryWrapper<Product> queryWrapper = new LambdaQueryWrapper<>();
@@ -102,6 +107,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @Cacheable(value = "product", key = "'category:' + #categoryId + ':limit:' + #limit")
     public List<Product> getProductsByCategory(Long categoryId, int limit) {
         if (categoryId == null || categoryId <= 0) {
             throw new BusinessException("分类ID不合法", ResultCode.PARAM_ERROR);
@@ -120,6 +126,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", allEntries = true)
     public boolean increaseSales(Long productId, int quantity) {
         if (productId == null) {
             throw new BusinessException("商品ID不能为空", ResultCode.PARAM_ERROR);
@@ -153,6 +160,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", allEntries = true)
     public boolean decreaseStock(Long productId, int quantity) {
         if (productId == null) {
             throw new BusinessException("商品ID不能为空", ResultCode.PARAM_ERROR);
@@ -188,6 +196,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", key = "'detail:' + #productId")
     public String uploadImage(MultipartFile file, Long productId) {
         if (file == null || file.isEmpty()) {
             throw new BusinessException("文件不能为空", ResultCode.PARAM_ERROR);
@@ -215,6 +224,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", key = "'detail:' + #productId")
     public String uploadProductImage(MultipartFile file, Long productId) {
         if (file == null || file.isEmpty()) {
             throw new BusinessException("文件不能为空", ResultCode.PARAM_ERROR);
@@ -248,6 +258,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", key = "'detail:' + #productId")
     public boolean deleteProductImage(Long productId, String imageUrl) {
         if (productId == null || !StringUtils.hasText(imageUrl)) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -296,6 +307,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
      * @return 商品详情
      */
     @Override
+    @Cacheable(value = "product", key = "'detail:' + #id")
     public Product getProductDetailAndRecordView(Long id, Long userId) {
         // 获取商品详情
         Product product = this.getById(id);
@@ -312,6 +324,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "product", allEntries = true)
     public boolean batchUpdateProductStatus(List<Long> productIds, Integer status) {
         if (productIds == null || productIds.isEmpty()) {
             return false;
@@ -329,6 +342,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @Cacheable(value = "product", key = "'lowStock:' + #threshold")
     public long countLowStockProducts(int threshold) {
         // 统计库存低于阈值的商品数量
         return lambdaQuery()
@@ -338,6 +352,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @Cacheable(value = "product", key = "'active:count'")
     public long countActiveProducts() {
         // 统计上架中的商品数量
         return lambdaQuery()

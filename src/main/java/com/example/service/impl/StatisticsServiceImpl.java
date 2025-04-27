@@ -6,6 +6,7 @@ import com.example.mapper.*;
 import com.example.model.entity.*;
 import com.example.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -34,6 +35,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final ReviewMapper reviewMapper;
 
     @Override
+    @Cacheable(value = "statistics", key = "'user:registrations:days:' + #days")
     public List<Map<String, Object>> getDailyUserRegistrations(int days) {
         List<Map<String, Object>> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -62,6 +64,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'order:daily:days:' + #days")
     public List<Map<String, Object>> getDailyOrderStatistics(int days) {
         List<Map<String, Object>> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -110,6 +113,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'user:growth:days:' + #days")
     public BigDecimal calculateUserGrowthRate(int days) {
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime previousPeriodStart = today.minusDays(days * 2L);
@@ -137,6 +141,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'order:growth:days:' + #days")
     public BigDecimal calculateOrderGrowthRate(int days) {
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime previousPeriodStart = today.minusDays(days * 2L);
@@ -164,6 +169,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'sales:growth:days:' + #days")
     public BigDecimal calculateSalesGrowthRate(int days) {
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime previousPeriodStart = today.minusDays(days * 2L);
@@ -208,6 +214,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'sales:monthly'")
     public BigDecimal calculateMonthlySales() {
         LocalDateTime monthStart = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay();
         LocalDateTime monthEnd = LocalDate.now().plusDays(1).atStartOfDay();
@@ -227,6 +234,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'sales:range:' + #timeRange")
     public Map<String, Object> getSalesStatistics(String timeRange) {
         Map<String, Object> result = new HashMap<>();
         LocalDateTime startTime;
@@ -281,6 +289,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'product:ranking:limit:' + #limit")
     public List<Map<String, Object>> getProductSalesRanking(int limit) {
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -306,6 +315,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'category:sales'")
     public List<Map<String, Object>> getCategorySalesStatistics() {
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -364,6 +374,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'orders:recent:page:' + #page + ':size:' + #size")
     public List<Map<String, Object>> getRecentOrdersWithPagination(int page, int size) {
         List<Map<String, Object>> result = new ArrayList<>();
         int offset = (page - 1) * size;
@@ -403,6 +414,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'sales:trend:days:' + #days")
     public List<Map<String, Object>> getSalesTrend(int days) {
         List<Map<String, Object>> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -440,6 +452,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Cacheable(value = "statistics", key = "'reviews:new:days:' + #days")
     public long countNewReviews(int days) {
         LocalDateTime startTime = LocalDate.now().minusDays(days).atStartOfDay();
 

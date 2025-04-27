@@ -13,6 +13,8 @@ import com.example.service.UserBehaviorService;
 import com.example.util.SimilarityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,7 @@ public class ProductSimilarityServiceImpl extends ServiceImpl<ProductSimilarityM
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "productSimilarity", allEntries = true)
     public int calculateAndUpdateAllProductSimilarities() {
         // 获取所有商品ID
         List<Product> products = productService.list();
@@ -77,6 +80,7 @@ public class ProductSimilarityServiceImpl extends ServiceImpl<ProductSimilarityM
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "productSimilarity", allEntries = true)
     public int calculateAndUpdateProductSimilarities(List<Long> productIds) {
         if (productIds == null || productIds.isEmpty()) {
             log.warn("商品ID列表为空，无法计算相似度");
@@ -135,6 +139,7 @@ public class ProductSimilarityServiceImpl extends ServiceImpl<ProductSimilarityM
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "productSimilarity", key = "'similar:' + #productId")
     public int calculateAndUpdateSimilaritiesForProduct(Long productId) {
         if (productId == null) {
             log.warn("商品ID为空，无法计算相似度");
@@ -230,6 +235,7 @@ public class ProductSimilarityServiceImpl extends ServiceImpl<ProductSimilarityM
      * @return 相似商品列表
      */
     @Override
+    @Cacheable(value = "productSimilarity", key = "'similar:' + #productId + ':limit:' + #limit")
     public List<Product> getMostSimilarProducts(Long productId, int limit) {
         if (productId == null || limit <= 0) {
             return new ArrayList<>();

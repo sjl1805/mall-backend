@@ -17,6 +17,8 @@ import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "review", key = "'product:' + #reviewDTO.productId + ':stats'")
     public Long addReview(Long userId, ReviewDTO reviewDTO) {
         if (userId == null || reviewDTO == null || reviewDTO.getProductId() == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -75,6 +78,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "review", key = "'product:' + #review.productId + ':stats'")
     public boolean deleteReview(Long userId, Long reviewId) {
         if (userId == null || reviewId == null) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -98,6 +102,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
     }
 
     @Override
+    @Cacheable(value = "review", key = "'product:' + #productId + ':page:' + #page + ':size:' + #size")
     public Page<ReviewVO> getProductReviews(Long productId, long page, long size) {
         if (productId == null) {
             throw new BusinessException("商品ID不能为空", ResultCode.PARAM_ERROR);
@@ -114,6 +119,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
     }
 
     @Override
+    @Cacheable(value = "review", key = "'user:' + #userId + ':page:' + #page + ':size:' + #size")
     public Page<ReviewVO> getUserReviews(Long userId, long page, long size) {
         if (userId == null) {
             throw new BusinessException("用户ID不能为空", ResultCode.PARAM_ERROR);
@@ -130,6 +136,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
     }
 
     @Override
+    @Cacheable(value = "review", key = "'product:' + #productId + ':stats'")
     public Map<String, Object> getProductReviewStats(Long productId) {
         if (productId == null) {
             throw new BusinessException("商品ID不能为空", ResultCode.PARAM_ERROR);
@@ -173,6 +180,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
     }
 
     @Override
+    @Cacheable(value = "review", key = "'user:' + #userId + ':product:' + #productId + ':hasReviewed'")
     public boolean hasReviewed(Long userId, Long productId) {
         if (userId == null || productId == null) {
             return false;
@@ -186,6 +194,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
     }
 
     @Override
+    @Cacheable(value = "review", key = "'latest:' + #limit")
     public List<ReviewVO> getLatestReviews(int limit) {
         if (limit <= 0) {
             limit = 10; // 默认获取10条

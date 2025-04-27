@@ -14,6 +14,8 @@ import com.example.service.OrderItemService;
 import com.example.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "orderItem", key = "'order:' + #orderId + ':items'")
     public BigDecimal saveOrderItems(String orderNo, Long orderId, List<CartItemVO> cartItems) {
         if (orderNo == null || orderId == null || cartItems == null || cartItems.isEmpty()) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -80,6 +83,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "orderItem", key = "'order:' + #orderId + ':items'")
     public BigDecimal saveOrderItem(String orderNo, Long orderId, Long productId, Integer quantity) {
         if (orderNo == null || orderId == null || productId == null || quantity == null || quantity <= 0) {
             throw new BusinessException("参数错误", ResultCode.PARAM_ERROR);
@@ -124,6 +128,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
     }
 
     @Override
+    @Cacheable(value = "orderItem", key = "'order:' + #orderId + ':items'")
     public List<OrderItemVO> getOrderItemsByOrderId(Long orderId) {
         if (orderId == null) {
             return new ArrayList<>();
@@ -138,6 +143,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
     }
 
     @Override
+    @Cacheable(value = "orderItem", key = "'orderNo:' + #orderNo + ':items'")
     public List<OrderItemVO> getOrderItemsByOrderNo(String orderNo) {
         if (orderNo == null) {
             return new ArrayList<>();
@@ -153,6 +159,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "orderItem", key = "'order:' + #orderId + ':items'")
     public boolean deleteByOrderId(Long orderId) {
         if (orderId == null) {
             return false;
@@ -166,6 +173,7 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "orderItem", key = "'orderNo:' + #orderNo + ':items'")
     public boolean deleteByOrderNo(String orderNo) {
         if (orderNo == null) {
             return false;
